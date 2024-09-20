@@ -1,4 +1,198 @@
 @import url('variables.css');
 *{
     font-family: "Bellota", system-ui;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+h2 {
+    font-size: 5vw;
+    color: var(--color-2E1108) ;
+}
+body{
+    width: 100%;
+    height: 100vh;
+    background-image:url("../../public/img/Group.png") ;
+    background-size: 25vh; /* Cambia a 'contain' o valores específicos según lo necesites */    background-position: bottom right;
+    background-repeat: no-repeat; /* Para evitar que la imagen se repita */
+}
+header{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    /* background-color: darkcyan; */
+}
+.box-atras{
+    width: 15%;
+    display: flex;
+}
+.box-atras img{
+    height: 9vh;
+}
+.box-atras i{
+    font-size: 3vh;
+    position: absolute;
+    left: 0;
+    top: 3.5vh;
+}
+
+.box-texto{
+    /* background-color: khaki; */
+    padding-top: 3vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.box-texto p{
+    color: #2e110875;
+}
+
+main{
+    max-width: 100%;
+    overflow: hidden;
+    height: 75%;
+    display: flex;
+    flex-direction: column;
+    /* background-color: palegreen; */
+    padding-left: 6vh;
+}
+.box-nombre{
+    width: 100%;
+    height: 4.5vh;
+    /* background-color: paleturquoise; */
+}
+input{
+    outline: none;
+    border: none;
+    border-radius: 1vh;
+    color: var(--color-blanco);
+}
+.box-nombre input {
+    height: 100%;
+    width: 88%;
+    background-color: var(--color-703A31);
+}
+
+.box-numCelu{
+    /* background-color: salmon; */
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.box-numeros{
+    /* background-color: aqua; */
+    display: flex;
+    height: 4vh;
+}
+.codigo{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 1vh;
+    color: #ffffff8f;
+    background-color: var(--color-703A31);
+    display: flex;
+    width: 16vw;
+}
+.num-celular input{
+    margin-left: 4vw;
+    width: 56vw;
+    height: 100%;
+    background-color: var(--color-703A31);
+}
+
+.box-contraseña{
+    /* background-color: khaki; */
+    height: 13vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+h2 {
+    font-size: 5vw;
+    color: var(--color-2E1108) ;
+}
+.box-contraseña p{
+    color: #2e110875;
+}
+.container-contraseña{
+    /* background-color: steelblue; */
+    height: 4.5vh;
+}
+.container-contraseña input{
+    background-color: var(--color-703A31);
+    height: 100%;
+    width: 77vw;
+}
+.box-sexo{
+    /* background-color: gainsboro; */
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.opciones-sexo {
+    border-radius: 1vh;
+    background-color: var(--color-703A31);
+    height: 4vh;
+    width: 76vw;
+    display: flex;
+    justify-content: end;
+}
+
+.box-fecha-nacimiento{
+    /* background-color: dodgerblue; */
+    height: 15vh;
+    color: #ffffff9c;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.container-fechas{
+    width: 35vh;
+    display: flex;
+    height: 4.5vh;
+    /* background-color: pink; */
+    justify-content: space-between;
+}
+.box-dia{
+    width: 16vw;
+    border-radius: 1vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--color-703A31);
+}
+.box-año{
+    width: 20vw;
+    border-radius: 1vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: var(--color-703A31);
+}
+ i{
+    font-size: 7vw;
+}
+footer{
+    width: 100%;
+    height: 10%;
+    /* background-color: darkorchid; */
+}
+.box-adelante{
+    width: 90%;
+    /* background-color: firebrick; */
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: end;
+    color: var(--color-FFA800);
+}
+.box-adelante a{
+    font-size: 4vw;
+    color: var(--color-9D1A1A);
 }
