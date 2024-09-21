@@ -13,8 +13,9 @@ body{
     width: 100%;
     height: 100vh;
     background-image:url("../../public/img/Group.png") ;
-    background-size: 25vh; /* Cambia a 'contain' o valores específicos según lo necesites */    background-position: bottom right;
-    background-repeat: no-repeat; /* Para evitar que la imagen se repita */
+    background-size: 25vh;   
+    background-position: bottom right;
+    background-repeat: no-repeat;
 }
 header{
     width: 100%;
