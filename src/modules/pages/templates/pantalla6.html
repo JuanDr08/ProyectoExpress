@@ -91,3 +91,81 @@
     </footer>
 </body>
 </html>
+
+<!-- import React, { useState } from 'react';
+
+function CustomDatePicker() {
+  const [day, setDay] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
+
+  const handleDayChange = (e) => setDay(e.target.value);
+  const handleMonthChange = (e) => setMonth(e.target.value);
+  const handleYearChange = (e) => setYear(e.target.value);
+
+  return (
+    <div>
+      <h3>Select a date</h3>
+      <select value={day} onChange={handleDayChange}>
+        <option value="">Day</option>
+        {Array.from({ length: 31 }, (_, i) => (
+          <option key={i} value={i + 1}>{i + 1}</option>
+        ))}
+      </select>
+
+      <select value={month} onChange={handleMonthChange}>
+        <option value="">Month</option>
+        {Array.from({ length: 12 }, (_, i) => (
+          <option key={i} value={i + 1}>{i + 1}</option>
+        ))}
+      </select>
+
+      <select value={year} onChange={handleYearChange}>
+        <option value="">Year</option>
+        {Array.from({ length: 100 }, (_, i) => (
+          <option key={i} value={2024 - i}>{2024 - i}</option>
+        ))}
+      </select>
+      
+      <p>Selected Date: {day}/{month}/{year}</p>
+    </div>
+  );
+}
+
+export default CustomDatePicker; -->
+<!-- 
+
+import React, { useState } from 'react';
+
+const countryCodes = [
+  { code: '+57', country: 'Colombia' },
+  { code: '+52', country: 'Mexico' },
+  { code: '+1', country: 'United States' },
+  { code: '+44', country: 'United Kingdom' },
+  // Agrega más países según necesites
+];
+
+function CountryCodeSelector() {
+  const [selectedCode, setSelectedCode] = useState('');
+
+  const handleChange = (event) => {
+    setSelectedCode(event.target.value);
+  };
+
+  return (
+    <div>
+      <h3>Select your country code</h3>
+      <select value={selectedCode} onChange={handleChange}>
+        <option value="">Select a code</option>
+        {countryCodes.map((country) => (
+          <option key={country.code} value={country.code}>
+            {country.code} - {country.country}
+          </option>
+        ))}
+      </select>
+      <p>Selected Code: {selectedCode}</p>
+    </div>
+  );
+}
+
+export default CountryCodeSelector; -->
