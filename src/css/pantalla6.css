@@ -49,8 +49,11 @@ header{
 .box-texto p{
     color: #2e110875;
 }
+p{
+    font-size: 3.5vw;
+}
 
-main{
+form{
     max-width: 100%;
     overflow: hidden;
     height: 75%;

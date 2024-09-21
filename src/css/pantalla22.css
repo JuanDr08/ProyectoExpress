@@ -10,6 +10,7 @@ i{
 }
 body{
     width: 100%;
+    overflow: hidden;
 }
 
 header{
@@ -51,50 +52,84 @@ header .box-img img{
     color: var(--color-9D1A1A);
     top: 2vh;
 }
-
 main{
     width: 100%;
     gap: 3vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 8vw;
+    overflow: hidden;
 }
-.search-container{
+
+.canjear {
     /* background-color: firebrick; */
     width: 100%;
+    height: 18vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 8vh;
-}
-.buscador{
-    background-color: var(--color-703A31);
-    height: 4.5vh;
-    width: 80%;
-    border-radius: 1vh;
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-evenly;
 }
-.buscador input{
+
+.canjear h4{
+    color: var(--color-9D1A1A);
+}
+.box-canjear{
+    background-color: var(--color-703A31);
+    display: flex;
+    width: 85%;
+    height: 6vh;
+    border-radius: 1vh;
+    justify-content: space-evenly;
+    align-items: center;
+}
+input{
+    background-color: var(--color-703A31);
     outline: none;
     border: none;
     border-radius: 1vh;
     color: var(--color-blanco);
-    width: 80%;
-    font-size: 3.5vw;
-    background-color: var(--color-703A31);
+}
+.validar{
+    background-color: var(--color-2E1108);
+    font-size: 3vw;
+    width: 14vw;
+    height: 4vh;
+    cursor: pointer;
+}
+.validar:hover{
+    border: 1px solid var(--color-blanco);
+}
+
+.section-cupones {
+    /* background-color: teal; */
+    width: 100%;
+}
+.section-cupones article{
+    /* background-color: yellow; */
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    color: var(--color-9D1A1A);
+
+}
+.section-cupones article p{
+    font-size: 4vw;
+    color: #9d1a1a80;
 }
 .box{
+    margin-top: 3vh;
     background-color: var(--color-703A31);
-    width: 93%;
-    height: 18vh;
-    border: 1vh;
-    overflow: hidden;
-    display: flex;
-    font-size: 3.5vw;
-    gap: 2vw;
+    width: 88vw;
     color: var(--color-blanco);
+    display: flex;
+    justify-content: space-between;
+    height: 16vh;
+    border: 1vh;
+    font-size: 3.5vw;
+    gap: 3vw;
+    overflow: hidden;
 }
 .box .box-img {
     width: 40%;
@@ -107,24 +142,25 @@ main{
     height: 100%;
     object-fit: cover;
 }
-.box a{
-    color: var(--color-blanco);
-}
+
 .info{
+    /* background-color: yellow; */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
-.nombre-artesano{
+
+.taller{
     font-weight: bold;
 }
 .info button{
     border: none;
     background-color: var(--color-2E1108);
     border-radius: 1vh;
-    width: 95%;
+    width: 20vw;
     height: 3.5vh;
-    font-size: 2.8vw;
+    font-size: 3vw;
+    color: var(--color-blanco);
     cursor: pointer;
 }
 .info button:hover{
