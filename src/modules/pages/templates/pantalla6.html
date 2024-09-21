@@ -11,7 +11,7 @@
     <header>
         <div class="box-atras">
             <img src=".././../../../public/img/Group 53.png" alt="triangulo">
-            <a href="#"><i class='bx bx-arrow-back' style='color:#ffa800'  ></i></a>
+            <a href="#"><i class='bx bx-arrow-back' style='color:#ffa800' ></i></a>
         </div>
         <div class="box-texto">
             <h2>Nombre de usuario*</h2>
@@ -26,8 +26,10 @@
             <h2>Número de celular*</h2>
             <div class="box-numeros">
                 <div class="codigo">
-                    <h4>+51</h4>
-                    <i class='bx bx-chevron-down' style='color:#ffa800' ></i>
+                    <select id="select-number" class="clase-numero">
+                        <option value="+51">+51</option>
+                        <option value="+52">+52</option>
+                    </select>
                 </div>
                 <div class="num-celular"><input type="text"></div>
             </div>
@@ -36,8 +38,10 @@
             <h2>Confirma tu celular*</h2>
             <div class="box-numeros">
                 <div class="codigo">
-                    <h4>+51</h4>
-                    <i class='bx bx-chevron-down' style='color:#ffa800' ></i>
+                    <select id="select-number" class="clase-numero">
+                        <option value="+51">+51</option>
+                        <option value="+52">+52</option>
+                    </select>
                 </div>
                 <div class="num-celular"><input type="text"></div>
             </div>
@@ -54,25 +58,31 @@
         </div>
         <div class="box-sexo">
             <h2>Sexo</h2>
-            <div class="opciones-sexo">
-                <i class='bx bx-chevron-down' style='color:#ffa800' ></i>
-            </div>
+            <select class="opciones-sexo">
+                <option value=""></option>
+                <option value="femenino">femenino</option>
+                <option value="masculino">masculino</option>
+                <option value="indefinido">Indefinido</option>
+            </select>
         </div>
         <div class="box-fecha-nacimiento">
             <h2>Fecha de nacimiento</h2>
             <div class="container-fechas">
-                <div class="box-dia">
-                    <h4>DD</h4>
-                    <i class='bx bx-chevron-down' style='color:#ffa800' ></i>
-                </div>
-                <div class="box-dia">
-                    <h4>MM</h4>
-                    <i class='bx bx-chevron-down' style='color:#ffa800' ></i>
-                </div>
-                <div class="box-año">
-                    <h4>YYYY</h4>
-                    <i class='bx bx-chevron-down' style='color:#ffa800' ></i>
-                </div>
+                <select class="box-dia">
+                    <option value=""></option>
+                    <option value="DD">DD</option>
+                    <option value="">01</option>
+                </select>
+                <select class="box-dia">
+                    <option value=""></option>
+                    <option value="MM">MM</option>
+                    <option value="">01</option>
+                </select>
+                <select class="box-dia">
+                    <option value=""></option>
+                    <option value="YYYY">YYYY</option>
+                    <option value="">2024</option>
+                </select>
             </div>
         </div>
     </main>
