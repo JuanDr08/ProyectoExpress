@@ -7,6 +7,8 @@ import Carga from "./pages/Carga";
 import Entrada from "./pages/Entrada";
 import InicioSesion from "./pages/InicioSesion";
 import InicioSesionRuraq from "./pages/InicioSesionRuraq";
+import InfoCraft from "./pages/InfoCraft";
+import TallerCeramica from "./pages/CraftInscription";
 
 
 const router = createBrowserRouter([
@@ -25,6 +27,14 @@ const router = createBrowserRouter([
     {
         path:"/SesionRuraq",
         element: <InicioSesionRuraq/>
+    },
+    {
+        path:"/InfoCraft",
+        element: <InfoCraft/>
+    },
+    {
+        path:"/TallerCeramica",
+        element: <TallerCeramica/>
     }
 ]);
 
