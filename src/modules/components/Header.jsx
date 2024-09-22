@@ -1,6 +1,6 @@
 export function Header() {
     return(
-        <header class="bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center ">
+        <header className="bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center ">
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="#FFA800" className="transform: ;msFilter:;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
 
             <div className="flex items-center bg-[var(--color-703A31)] h-[40px] rounded-md p-2">
