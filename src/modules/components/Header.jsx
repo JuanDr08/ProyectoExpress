@@ -30,7 +30,7 @@ export function Header() {
             <input
                 type="text"
                 placeholder="Buscar producto o tienda..."
-                className="flex-1 bg-transparent border-none outline-none"
+                className="flex-1 bg-transparent border-none outline-none text-white"
             />
         </div>
         </header>
