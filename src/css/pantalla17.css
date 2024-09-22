@@ -121,3 +121,29 @@ span{
     font-size: 3.6vw;
     justify-content: space-evenly;
 }
+
+.descuento{
+    /* background-color: blue; */
+    width: 15vw;
+    height: 10vh;
+    position: absolute;
+    top: 30vh;
+}
+.descuento i{
+    font-size: 15vw;
+}
+.descuento p{
+    color: var(--color-blanco);
+    font-size: 4vw;
+    position: absolute;
+    top: 2.5vh;
+    left: 2.5vw;
+}
+.invisible{
+    display: none;
+}
+.antiguo {
+    text-decoration: line-through;
+    text-decoration-color: var(--color-FFA800);
+    padding-right: 3vw;
+}
