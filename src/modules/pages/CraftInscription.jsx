@@ -18,42 +18,44 @@ function TallerCeramica() {
           className="object-cover w-full h-full"
         />
       </div>
-
-      {/* Contenedor con fondo marrón para la información del taller */}
-      <div className="text-white space-y-4">
-        <div className="bg-[#2E1108] relative flex items-center">
+        <div className="text-white bg-[#2E1108] relative flex items-center h-[3em]">
           {/* Triángulo apuntando hacia el título */}
           <img src='/img/Rectangle.png' className='w-5'/>
           {/* Título del taller */}
-          <h2 className="text-2xl font-bold ml-4">Taller de Cerámica Artesanal</h2>
+          <h2 className="text-2xl font-bold ml-4 text-[1.1em]">Taller de Cerámica Artesanal</h2>
         </div>
 
+      <div className="flex flex-col p-4 space-y-4">
+
         {/* Descripción del taller */}
-        <p className="text-sm">
-          En este taller dado por los artesanos de Cerámicas Tater Vera aprenderán a usar la arcilla para crear cosas para el hogar con diseños típicos ayacuchanos.
+        <p >
+          En este taller dado por los artesanos de Cerámicas Tater Vera aprenderán a usar la arcilla para crear cosas para el hogar con diseños típicos Santandereanos.
         </p>
 
         {/* Especificaciones del taller */}
-        <div className="text-sm space-y-2">
-          <p><strong>Para el público en general</strong></p>
-          <p>*Los niños menores de 8 años se recomienda que estén acompañados de un adulto</p>
-          <p><strong>Duración:</strong> 2 meses</p>
-          <p><strong>Fecha de inicio:</strong> 8 de Julio</p>
-          <p><strong>Horario:</strong> 4 a 6 PM cada sábado</p>
-          <p><strong>Materiales:</strong> Materiales dados en clase</p>
-          <p><strong>Modalidad:</strong> Presencial</p>
-          <p><strong>Lugar:</strong> En el Ministerio de Cultura, Santander Colombia</p>
+        <div className=" space-y-2">
+          <p><strong className="text-[1.2em]">Para el público en general</strong></p>
+          <p style={{ color: '#9D1A1A' }} className='text-[.85em]'>*Los niños menores de 8 años se recomienda que estén acompañados de un adulto</p>
+          <p><strong className="text-[--color-9D1A1A]">Duración:</strong> 2 meses</p>
+          <p><strong className="text-[--color-9D1A1A]">Fecha de inicio:</strong> 8 de Julio</p>
+          <p><strong className="text-[--color-9D1A1A]">Horario:</strong> 4 a 6 PM cada sábado</p>
+          <p><strong className="text-[--color-9D1A1A]">Materiales:</strong> Materiales dados en clase</p>
+          <p><strong className="text-[--color-9D1A1A]">Modalidad:</strong> Presencial</p>
+          <p><strong className="text-[--color-9D1A1A]">Lugar:</strong> En el Ministerio de Cultura, Santander Colombia</p>
         </div>
 
         {/* Botón de inscripción */}
-        <button className="bg-[#8B5A48] text-white py-2 px-4 flex items-center rounded-lg mt-4">
-          <img
-            src="/img/BookInscription.png"
-            alt="Icono de inscripción"
-            className="w-6 h-auto mr-2"
-          />
-          Inscribirse al taller
-        </button>
+        <div className="flex items-center gap-5 pt-5">
+          <button className="flex justify-center items-center bg-[--color-2E1108] w-[12em] h-[2.5em] rounded-lg text-white ">
+            <img
+              src="/img/BookInscription.png"
+              alt="Icono de inscripción"
+              className="w-6 h-auto mr-2"
+            />
+            Inscribirse al taller
+          </button>
+          <label className="text-[--color-9D1A1A] text-[.8em]">*Cupos limitados</label>
+        </div>
       </div>
     </div>
   );
