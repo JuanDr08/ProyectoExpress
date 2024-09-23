@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export function Footer() {
-    const [activeButton, setActiveButton] = useState(2); // Estado para el botón activo
+    const [activeButton, setActiveButton] = useState(0); // Estado para el botón activo
 
     const handleButtonClick = (index) => {
         setActiveButton(index); // Cambiamos el botón activo al clic

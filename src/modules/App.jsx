@@ -5,11 +5,12 @@ import {
 
 import { Home } from "./pages/Home";
 import { CraftWorkshops } from "./pages/Craft_Workshops";
+import { DiscountsPromotions } from "./pages/Discounts_Promotions";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <CraftWorkshops/>,
+        element: <DiscountsPromotions/>,
     }
 ]);
 
