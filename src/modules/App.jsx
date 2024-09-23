@@ -9,6 +9,7 @@ import InicioSesion from "./pages/InicioSesion";
 import InicioSesionRuraq from "./pages/InicioSesionRuraq";
 import InfoCraft from "./pages/InfoCraft";
 import TallerCeramica from "./pages/CraftInscription";
+import Purchase from "./pages/Purchase";
 
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
     {
         path:"/TallerCeramica",
         element: <TallerCeramica/>
+    },
+    {
+        path:"/Compra",
+        element: <Purchase/>
     }
 ]);
 
