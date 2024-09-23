@@ -19,8 +19,8 @@ body{
 }
 
 header{
-    width: 100%;
-    height: 20%;
+    width: 100vw;
+    height: 20vh;
     display: flex;
     justify-content: space-between;
     /* background-color: darkcyan; */
@@ -53,8 +53,8 @@ header{
 
 }
 main{
-    width: 100%;
-    height: 70%;
+    width: 100vw;
+    height: 70vh;
 }
 
 article{
@@ -118,8 +118,8 @@ span a{
 
 
 footer{
-    width: 100%;
-    height: 10%;
+    width: 100vw;
+    height: 10vh;
     /* background-color: darkorchid; */
 }
 .box-adelante{
@@ -135,3 +135,7 @@ footer{
     font-size: 4vw;
     color: var(--color-9D1A1A);
 }
+.subrayado {
+    text-decoration: underline;
+  }
+  

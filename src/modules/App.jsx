@@ -3,11 +3,12 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import {Pantalla6} from "./pages/pantalla6";
+import Pantalla7 from "./pages/pantalla7";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Pantalla6/>,
+        element: <Pantalla7/>,
     }
 ]);
 
