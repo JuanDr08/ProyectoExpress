@@ -9,7 +9,7 @@ h2 {
     font-size: 5vw;
     color: var(--color-2E1108) ;
 }
-body{
+.body{
     width: 100%;
     height: 100vh;
     background-image:url("../../public/img/Group.png") ;
@@ -61,6 +61,7 @@ form{
     flex-direction: column;
     /* background-color: palegreen; */
     padding-left: 6vh;
+    color: var(--color-blanco);
 }
 .box-nombre{
     width: 100%;

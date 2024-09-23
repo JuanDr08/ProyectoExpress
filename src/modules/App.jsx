@@ -2,11 +2,12 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
+import {Pantalla6} from "./pages/pantalla6";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <div>Hello world!</div>,
+        element: <Pantalla6/>,
     }
 ]);
 
