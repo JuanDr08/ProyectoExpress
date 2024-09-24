@@ -120,8 +120,11 @@ span{
     align-items: center;
     font-size: 3.6vw;
     justify-content: space-evenly;
+    cursor: pointer;
 }
-
+.carrito button:hover{
+    border: 1px solid var(--color-blanco);
+}
 .descuento{
     /* background-color: blue; */
     width: 15vw;

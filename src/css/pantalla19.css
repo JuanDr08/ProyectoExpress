@@ -36,6 +36,7 @@ header{
 }
 header .box-img{
     width: 17vw;
+    height: 100%;
     display: flex;
     justify-content: end;
     align-items: start;
@@ -68,7 +69,7 @@ main{
     width: 100%;
     display: flex;
     padding-left: 8vw;
-    gap: 3vw;
+    gap: 2vw;
     overflow: hidden;
     /* background-color: aqua; */
     flex-wrap: wrap;
