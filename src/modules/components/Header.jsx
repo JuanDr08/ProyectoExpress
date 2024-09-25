@@ -1,7 +1,33 @@
+import { useState, useRef, useEffect } from "react"
+import { LeftMenu } from "./Leftmenu"
+
 export function Header() {
+
+    const [menuchange, setMenuChange] = useState(false)
+
+    const menuRef = useRef(null)
+
+    useEffect(()=> {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuChange(false)
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [])
+
     return(
         <header className="bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="#FFA800" className="transform: ;msFilter:;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
+            
+            {
+                menuchange&&(<div ref={menuRef}><LeftMenu /></div>)
+            }
+
+            <svg onClick={()=> setMenuChange(!menuchange)} xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="#FFA800" className="transform: ;msFilter:;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
 
             <div className="flex items-center bg-[var(--color-703A31)] h-[40px] rounded-md p-2">
             <svg

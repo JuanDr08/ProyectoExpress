@@ -37,12 +37,11 @@ export function Profile() {
 
     return (
         <main>
-            <LeftMenu />
             <Header />
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
-                <div className="profileimg rounded-full outline w-[200px]">
-                    <img src="https://unavatar.io/microlink/microlink.io" alt="Perfil" />
+                <div className="profileimg rounded-full outline w-[200px] h-[200px] overflow-hidden">
+                    <img className='w-full h-full object-cover' src="https://unavatar.io/microlink/microlink.io" alt="Perfil" />
                 </div>
             </div>
 
