@@ -2,11 +2,11 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import { Chat } from "./pages/ChatView";
+import { Categories } from "./pages/Categories";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Chat nombre='Taller Awaq Ayllus'/>,
+        element: <Categories/>,
     }
 ]);
 
