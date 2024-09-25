@@ -15,11 +15,11 @@ const productValidator = require('../validator/productValidator.cjs');
 const ProductController = new productController();
 const ProductValidator = new productValidator();
 
-const currentDirectory = process.cwd();
-let EXPRESS_STATIC = currentDirectory + '/src'
-router.get("/", async (req, res)=>{
-    res.sendFile(path.join(EXPRESS_STATIC, '/modules/pages/'));
-})
+// const currentDirectory = process.cwd();
+// let EXPRESS_STATIC = currentDirectory + '/src'
+// router.get("/", async (req, res)=>{
+//     res.sendFile(path.join(EXPRESS_STATIC, '/modules/pages/'));
+// })
 
 router.get("/products", async (req, res) => {
     try {
@@ -44,8 +44,10 @@ router.get("/v2.0.0", sessionGoogleOAuth, (req, res)=>{
 
 
 router.get('/:id', ProductValidator.validateProductId(), (req, res) => ProductController.getProduct(req, res));
-router.put('/:id', ProductValidator.validateProductUpdateDataById(), (req, res) => ProductController.updateProduct(req, res));
-router.delete('/:id', ProductValidator.validateProductId(), (req, res) => ProductController.deleteProduct(req, res));
-router.get('/search', (req, res) => ProductController.searchProducts(req, res));
+router.get('/find/:category', ProductValidator.validateProductCategory(), (req, res) => ProductController.getProductCategory(req, res));
+router.get('/', (req, res) => ProductController.getAllProduct(req, res));
+// router.put('/:id', ProductValidator.validateProductUpdateDataById(), (req, res) => ProductController.updateProduct(req, res));
+// router.delete('/:id', ProductValidator.validateProductId(), (req, res) => ProductController.deleteProduct(req, res));
+// router.get('/search', (req, res) => ProductController.searchProducts(req, res));
 
 module.exports = router;

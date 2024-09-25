@@ -10,10 +10,10 @@ class ProductRepository {
             throw new Error(JSON.stringify({status: 400, message: 'Error retrieving Product'}));
         }
     }
-    async getByCategory(id) {
+    async getByCategory(category) {
         try {
             const Product = new product();
-            return await Product.findById(id);
+            return await Product.findByCategory(category);
         } catch (error) {
             throw new Error(JSON.stringify({status: 400, message: 'Error retrieving Product'}));
         }

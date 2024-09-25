@@ -60,6 +60,29 @@ class ProductValidator {
         ];
     };
 
+    
+    validateProductCategory = () => {
+        return [
+            param('category').isString().withMessage('Category must be a string').trim().isLength({ min: 1 }).withMessage('Category cannot be empty'),
+
+            // Validar que no se envíen parámetros adicionales en la URL
+            query().custom((value, { req }) => {
+                if (Object.keys(req.query).length > 0) {
+                    throw new Error("Don't send anything in the URL");
+                }
+                return true;
+            }),
+
+            // Validar que no se envíen datos en el cuerpo de la solicitud
+            body().custom((value, { req }) => {
+                if (Object.keys(req.body).length > 0) {
+                    throw new Error('Do not send anything in the body');
+                }
+                return true;
+            })
+        ];
+    };
+
     validateProductId = () => {
         return [
             param('id').custom((value, { req }) => {
