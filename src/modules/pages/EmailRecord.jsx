@@ -1,9 +1,8 @@
-import { Form } from 'react-router-dom'
-import { Muesca } from '../components/Muesca'
-import { Input } from '../components/Inputs'
-import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
 import { useState } from 'react';
+import "react-datepicker/dist/react-datepicker.css";
+import { Form } from 'react-router-dom';
+import { Input } from '../components/Inputs';
+import { Muesca } from '../components/Muesca';
 
 export const EmailRecord = () => {
 
@@ -62,7 +61,7 @@ export const EmailRecord = () => {
                     </div>
                     <button className='flex gap-[10px] self-end underline  items-center text-9D1A1A' type='submit'>
                         <svg width="15" height="15" viewBox="0 0 27 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.64563 1.79232L20.8184 17.9651C22.771 19.9177 22.7711 23.0836 20.8184 25.0362L4.64563 41.209" stroke="#FFA800" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M4.64563 1.79232L20.8184 17.9651C22.771 19.9177 22.7711 23.0836 20.8184 25.0362L4.64563 41.209" stroke="#FFA800" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
 
                         Continuar

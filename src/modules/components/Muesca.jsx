@@ -10,8 +10,8 @@ export const Muesca = ({color="703A31"}) => {
             </svg>  
             <Link to={-1}>
                 <svg className="absolute top-[40%] ml-[7px]" width="20" height="20" viewBox="0 0 70 75" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M65.6514 37.4414H3.5022" stroke="#FFA800" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M30.495 4L3.5 37.4417L30.495 70.8834" stroke="#FFA800" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M65.6514 37.4414H3.5022" stroke="#FFA800" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M30.495 4L3.5 37.4417L30.495 70.8834" stroke="#FFA800" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             </Link>
         </div>

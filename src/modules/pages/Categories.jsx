@@ -1,7 +1,8 @@
 import { Muesca } from '../components/Muesca'
 import { CategoryHeaders } from '../components/CategoryHeaders'
 import { CategoryIcons } from '../components/CategoryIcons';
-import { useRef } from 'react';
+import { ProductCategoryCard } from '../components/ProductCategoryCard'
+import { useState, useRef, useEffect } from 'react';
 
 const categories = [
     { name: "Textilería", icon: <svg width="40" viewBox="0 0 112 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.999997 5.0596L1 64.9404C1 67.1851 2.82396 69 5.06809 69L101.932 69C104.176 69 106 67.1851 106 64.9404L106 5.0596C106 2.81493 104.176 0.999996 101.932 0.999996L5.06808 1C2.82395 1 0.999997 2.81494 0.999997 5.0596ZM5.06809 65.4702C4.77053 65.4702 4.53404 65.2304 4.53404 64.9404L4.53404 5.0596C4.53404 4.76961 4.77053 4.5298 5.06808 4.5298L101.932 4.5298C102.229 4.5298 102.466 4.7696 102.466 5.0596L102.466 64.9404C102.466 65.2304 102.229 65.4702 101.932 65.4702L5.06809 65.4702Z" fill="white" stroke="white" strokeWidth="2" /><path fillRule="evenodd" clipRule="evenodd" d="M104 61.5C104 60.6716 104.358 60 104.8 60L111.2 60C111.642 60 112 60.6716 112 61.5C112 62.3284 111.642 63 111.2 63L104.8 63C104.358 63 104 62.3284 104 61.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 47.5C104 47.2239 104.358 47 104.8 47L111.2 47C111.642 47 112 47.2239 112 47.5C112 47.7761 111.642 48 111.2 48L104.8 48C104.358 48 104 47.7761 104 47.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 34.5C104 34.2239 104.358 34 104.8 34L111.2 34C111.642 34 112 34.2239 112 34.5C112 34.7761 111.642 35 111.2 35L104.8 35C104.358 35 104 34.7761 104 34.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 21.5C104 21.2239 104.358 21 104.8 21L111.2 21C111.642 21 112 21.2239 112 21.5C112 21.7761 111.642 22 111.2 22L104.8 22C104.358 22 104 21.7761 104 21.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 8C104 7.44772 104.358 7 104.8 7L111.2 7C111.642 7 112 7.44771 112 8C112 8.55228 111.642 9 111.2 9L104.8 9C104.358 9 104 8.55228 104 8Z" fill="white" /><path d="M4 58L4 52L104 52L104 58L4 58Z" fill="white" /><path d="M4 42L4 28L104 28L104 42L4 42Z" fill="white" /><path d="M4 18L4 11L104 11L104 18L4 18Z" fill="white" /></svg> },
@@ -16,26 +17,52 @@ const categories = [
     { name: "Pintura tradicional", icon: <svg width="30" viewBox="0 0 91 92" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="83" height="84" rx="9" stroke="white" strokeWidth="7" /><path d="M8 87L45.0742 55.6223C51.2361 50.4072 60.52 51.4699 65.344 57.9426L87 87" stroke="white" strokeWidth="7" /><mask id="path-3-inside-1_126_4192" fill="white"><rect x="29.123" y="13.334" width="23.1467" height="23.1467" rx="7" transform="rotate(45 29.123 13.334)" /></mask><rect x="29.123" y="13.334" width="23.1467" height="23.1467" rx="7" transform="rotate(45 29.123 13.334)" stroke="white" strokeWidth="16" mask="url(#path-3-inside-1_126_4192)" /></svg> }
 ];
 
+const productos = [ // Simulacion de lo que devolveria la API con todos los poductos de categoria textileria, deben implementar dicho filtro y la funcionalidad del buscador
+    {name: 'Tapiz Chumpi Andino III', price: 600, owner: 'Taller Awaq Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Porselani Cron III', price: 1600, owner: 'Taller Juan Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Barro Indio III', price: 100, owner: 'Taller Pepe Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Cuero de conejo III', price: 200, owner: 'Taller Camacho Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Pelaje de burro III', price: 500, owner: 'Taller Carlitos Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Cachos de toro III', price: 900, owner: 'Taller Postobon Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Pelaje de camello III', price: 3600, owner: 'Taller Esquinero Ayllu', img: '/img/Rectangle41.png'},
+    {name: 'Tapiz Pezuña de yegua III', price: 2600, owner: 'Taller Grundpet Ayllu', img: '/img/Rectangle41.png'}
+]
+
 export const Categories = () => {
+
+    const [category, setCategory] = useState(null);
+    const categoriesNav = useRef(null)
+
+    const handleCategory = (catClicked) => {
+        category.classList.remove('border-b-4', 'border-b-2E1108')
+        catClicked.classList.add('border-b-4', 'border-b-2E1108')
+        setCategory(catClicked)
+    }
+
+    useEffect(()=> {
+        categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
+        setCategory(categoriesNav.current.firstChild)
+        console.log();
+    }, [])
 
     return (
 
         <>
             <CategoryHeaders title='Categorías' />
             <Muesca />
-            <nav className=' flex gap-[30px] h-[100px] px-[20px] mt-5 overflow-x-auto border-b-2E1108 border-b-2 border-t-white'>
+            <nav ref={categoriesNav} className=' flex gap-[30px] h-[100px] px-[20px] mt-5 overflow-x-auto border-b-2E1108 border-b-2 border-t-white'>
                 {
                     categories.map((category, index) => (
-                        <CategoryIcons key={index} title={category.name} icon={category.icon} />
+                        <CategoryIcons key={index} title={category.name} icon={category.icon} changeCat={handleCategory} />
                     ))
                 }
             </nav>
 
 
-            <main>
-                <section className='flex w-full items-center justify-center gap-2'>
+            <main className='flex flex-col gap-[20px] my-[30px] px-[20px] h-[70vh] relative overflow-y-scroll'>
+                <section className='sticky p-[10px] backdrop-blur-sm bg-white/80 top-[-1px] flex w-full items-center justify-center gap-2'>
 
-                    <div className="flex my-[30px] w-[75%] items-center bg-703A31 h-[40px] rounded-md p-2">
+                    <div className="flex w-full items-center bg-703A31 h-[40px] rounded-md p-2">
                         <svg
                             className="w-6 h-6 mr-4"
                             viewBox="0 0 62 75"
@@ -75,6 +102,15 @@ export const Categories = () => {
                     </button>
 
                 </section>
+
+                <section className="grid grid-cols-2 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-y-[40px] min-h-max">
+
+                    {
+                        productos.map(({name, price, owner, img}, i) => <ProductCategoryCard key={i} name={name} price={price} owner={owner} img={img} />)
+                    }
+
+                </section>
+
             </main>
 
         </>
