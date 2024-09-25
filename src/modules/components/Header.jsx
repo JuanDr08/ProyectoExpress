@@ -6,14 +6,14 @@ export function Header() {
     const [menuchange, setMenuChange] = useState(false)
 
     const menuRef = useRef(null)
-
+    
     useEffect(()=> {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
                 setMenuChange(false)
+                // console.log(menuRef.current)
             }
         };
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
@@ -23,9 +23,14 @@ export function Header() {
     return(
         <header className="bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center">
             
-            {
-                menuchange&&(<div ref={menuRef}><LeftMenu /></div>)
-            }
+            <div
+                ref={menuRef}
+                className={`leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 absolute text-white p-5 gap-5 justify-around left-0 top-0 transition-transform duration-300 ease-in-out ${
+                    menuchange ? 'translate-x-0' : '-translate-x-full'
+                }`}
+            >
+                <LeftMenu />
+            </div>
 
             <svg onClick={()=> setMenuChange(!menuchange)} xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="#FFA800" className="transform: ;msFilter:;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg>
 
