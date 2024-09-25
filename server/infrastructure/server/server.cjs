@@ -19,9 +19,6 @@ const createServer = () => {
     
     app.use(jsonParseErrorHandler);    
     app.use(limiTotal);
-    app.use('/css', express.static(path.join(EXPRESS_STATIC, 'css')));
-    app.use('/js', express.static(path.join(EXPRESS_STATIC, 'js')));
-    app.use('/storage', express.static(path.join(currentDirectory, 'public/img')));
   
     app.use('/', indexRouter);
     // app.use('/login', sessionGoogleOAuth, passport.initialize(), passport.session(), loginRouter);

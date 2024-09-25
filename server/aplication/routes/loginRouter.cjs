@@ -10,13 +10,7 @@ const userController = new UserController();
 // configPassportGoogleOAuth(passport)
 
 
-const currentDirectory = process.cwd();
-let EXPRESS_STATIC = currentDirectory + '/src'
 
-router.get("/", (req, res)=>{
-    console.log()
-    res.sendFile(path.join(EXPRESS_STATIC, '/modules/pages/'));
-})
 
 // router.post('/auth/user', express.urlencoded({ extended: true }), (req, res) => userController.verifyUser(req, res))
 
