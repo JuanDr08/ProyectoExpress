@@ -42,7 +42,6 @@ export const Categories = () => {
     useEffect(()=> {
         categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
         setCategory(categoriesNav.current.firstChild)
-        console.log();
     }, [])
 
     return (
