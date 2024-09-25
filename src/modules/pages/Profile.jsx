@@ -1,15 +1,21 @@
 import { useState } from 'react';
+
+import DatePicker from 'react-datepicker';
+
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
-
-const items = [
-    { name: "Vasija pequeña con diseño de flor", price: "COP 1000", stats: "13x10 cm, 2KG", desc: "Asoc. de artesanos productores de Chazuta", img: "/img/Rectangle 44.png" },
-    { name: "Bolso negro con diseño de flores", price: "COP 1.000", stats: "13x10 cm, 2KG", desc: "Asoc. Pequeña Roma", img: "/img/Rectangle 45.png" }
-];
+import { LeftMenu } from '../components/Leftmenu';
 
 export function Profile() {
-    const [selectedCountry, setSelectedCountry] = useState('CO'); // Estado para el país seleccionado
+    const [selectedCountry, setSelectedCountry] = useState('CO');
+
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la visibilidad del menú
+
+    const [selectedGender, setSelectedGender] = useState('M'); // Estado para el género
+    const [isCountryOpen, setIsCountryOpen] = useState(false); // Estado para el menú de país
+    const [isGenderOpen, setIsGenderOpen] = useState(false); // Estado para el menú de género
+    const [isBirthdayOpen, setIsBirthdayOpen] = useState(false); // Estado para el selector de cumpleaños
+
 
     const countries = [
         { code: 'CO', name: 'Colombia', dialCode: '+57' },
@@ -17,12 +23,22 @@ export function Profile() {
         { code: 'MX', name: 'México', dialCode: '+52' },
     ];
 
+    const genders = [
+        { code: 'M', name: 'Masculino' },
+        { code: 'F', name: 'Femenino' },
+    ];
+
+
+    const toggleCountryDropdown = () => setIsCountryOpen(!isCountryOpen);
+    const toggleGenderDropdown = () => setIsGenderOpen(!isGenderOpen);
+    const toggleBirthdayDropdown = () => setIsBirthdayOpen(!isBirthdayOpen);
+
     const toggleDropdown = () => setIsOpen(!isOpen); // Función para alternar el menú desplegable
 
     return (
         <main>
+            <LeftMenu />
             <Header />
-
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
                 <div className="profileimg rounded-full outline w-[200px]">
@@ -90,6 +106,77 @@ export function Profile() {
                         <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
                     </svg>
                 </div>
+
+                <div className="genero fila w-[100vw] flex items-center justify-around">
+            <div className="genre">
+                <p className="text-[var(--color-9D1A1A)] text-xl">Género:</p>
+            </div>
+
+            <div className="relative">
+                <button
+                    onClick={toggleGenderDropdown}
+                    className="gender bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
+                >
+                    {genders.find(gender => gender.code === selectedGender).name}
+                </button>
+                {isGenderOpen && (
+                    <div className="absolute left-0 mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
+                        {genders.map(gender => (
+                            <button
+                                key={gender.code}
+                                onClick={() => {
+                                    setSelectedGender(gender.code);
+                                    setIsGenderOpen(false);
+                                }}
+                                className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                            >
+                                {gender.name}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            <div className="birthday w-[90px]">
+                <p className="text-[var(--color-9D1A1A)] text-l">Fecha de Nacimiento:</p>
+            </div>
+
+            <div className="relative">
+                <button
+                    onClick={toggleBirthdayDropdown}
+                    className="birthday bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
+                >
+                    Selecciona Fecha
+                </button>
+                {isBirthdayOpen && (
+                    <div className="absolute left-[-50px] mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
+                        {/* Aquí vamos a agregar un componente de selección de fecha */}
+                        <p className="p-4">Selecciona tu fecha de nacimiento</p>
+                        {/* Agregamos logica para seleccionar la fecha, esto es solo un ejemplo */}
+                    </div>
+                )}
+            </div>
+        </div>
+
+
+
+                <div className="fila w-[100vw] flex pl-5 gap-2 flex-col">
+                    <div className="PaymentMethods">
+                        <p className="text-[var(--color-9D1A1A)] text-xl">Metodos de pago</p>
+                    </div>
+                    <div className="cardplaceholder flex bg-[var(--color-703A31)] text-white w-[90%] h-10 rounded-lg p-2 items-center">
+                        <p>Visa Mastercard</p>
+                    </div>
+
+                    <div className='flex items-center bg-[var(--color-703A31)] h-[40px] w-[90%] rounded-md p-2'>
+                        <input
+                            type="text"
+                            placeholder="Añadir método de pago"
+                            className="flex-1 bg-transparent border-none outline-none text-white"
+                        />
+                    </div>
+                </div>
+
             </section>
 
             <Footer />
