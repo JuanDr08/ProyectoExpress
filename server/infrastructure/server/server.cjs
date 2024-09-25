@@ -8,6 +8,7 @@ const indexRouter = require('../../aplication/routes/indexRouter.cjs');
 // const createAccountRouter = require('../../application/routes/createAccountRouter');
 // const userRoutes = require('../../application/routes/userRoutes');
 const productRoutes = require('../../aplication/routes/productRouter.cjs');
+const cuponRoutes = require('../../aplication/routes/cuponRouter.cjs');
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
 
@@ -28,6 +29,7 @@ const createServer = () => {
     // app.use('/createAccount', createAccountRouter);
     // app.use('/users', userRoutes);
     app.use('/product', productRoutes);
+    app.use('/cupon', cuponRoutes);
     return app;
 };
 
