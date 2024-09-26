@@ -33,7 +33,8 @@ router.get("/", async (req, res) => {
 
 
 router.get('/:id', CuponValidator.validateCuponId(), (req, res) => CuponController.getCupon(req, res));
-router.get('/find/:idproduct', CuponValidator.validateCuponIdProduct(), (req, res) => CuponController.getCuponFecha(req, res));
+router.get('/find/:code', CuponValidator.validateCuponCode(), (req, res) => CuponController.getCuponIdCode(req, res));
+router.get('/find/:fecha', CuponValidator.validateCuponFecha(), (req, res) => CuponController.getCuponFecha(req, res));
 router.get('/fecha/:fecha', CuponValidator.validateCuponFecha(), (req, res) => CuponController.getAllCupon(req, res));
 // router.put('/:id', CuponValidator.validateCuponUpdateDataById(), (req, res) => CuponController.updateCupon(req, res));
 // router.delete('/:id', CuponValidator.validateCuponId(), (req, res) => CuponController.deleteCupon(req, res));

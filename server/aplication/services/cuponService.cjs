@@ -13,8 +13,8 @@ class CuponService {
         }
         return cupon;
     }
-    async getCuponByIdProduct(category) {
-        const cupon = await this.CuponRepository.getByIdProduct(category);
+    async getCuponByIdCode(code) {
+        const cupon = await this.CuponRepository.getByIdCode(code);
         if (!cupon) {
             throw new Error(JSON.stringify({status: 404, message: 'cupon not found'}));
         }

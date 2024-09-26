@@ -8,10 +8,10 @@ class Cupon{
         const [res] = await collection.find({_id: new ObjectId(id)}).toArray();
         return res;
     }
-    async findByIdProduct (id) {
+    async findByIdCode (code) {
         let obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection('cupon');
-        const [res] = await collection.find({idProductos: new ObjectId(id) }).toArray();
+        const [res] = await collection.find({codigo: code }).toArray();
         return res;
     }
     async findByFecha (fecha) {

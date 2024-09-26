@@ -16,9 +16,9 @@ class CuponController {
             res.status(errorObj.status).json({ message: errorObj.message });
         }
     }
-    async getCuponIdProduct(req, res) {
+    async getCuponIdCode(req, res) {
         try {
-            const cupon = await this.cuponService.getCuponByIdProduct(req.params.category);
+            const cupon = await this.cuponService.getCuponByIdCode(req.params.code);
             res.status(200).json(cupon);
         } catch (error) {
             const errorObj = JSON.parse(error.message);

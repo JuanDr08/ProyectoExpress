@@ -53,9 +53,9 @@ class CuponValidator {
     };
 
     
-    validateCuponIdProduct = () => {
+    validateCuponCode = () => {
         return [
-            param('idproduct').isString().withMessage('idproduct must be a string').trim().isLength({ min: 1 }).withMessage('idproduct cannot be empty'),
+            param('code').isString().withMessage('code must be a string').withMessage('code cannot be empty'),
 
             // Validar que no se envíen parámetros adicionales en la URL
             query().custom((value, { req }) => {

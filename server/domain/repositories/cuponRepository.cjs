@@ -10,10 +10,10 @@ class CuponRepository {
             throw new Error(JSON.stringify({status: 400, message: 'Error retrieving Cupon'}));
         }
     }
-    async getByIdProduct(id) {
+    async getByIdCode(code) {
         try {
             const Cupon = new cupon();
-            return await Cupon.findByIdProduct(id);
+            return await Cupon.findByIdCode(code);
         } catch (error) {
             throw new Error(JSON.stringify({status: 400, message: 'Error retrieving Cupon'}));
         }
