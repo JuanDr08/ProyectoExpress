@@ -1,12 +1,24 @@
 import { useState } from 'react';
 
-import DatePicker from 'react-datepicker';
+// import DatePicker from 'react-datepicker';
 
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { LeftMenu } from '../components/Leftmenu';
+import { PurchaseConfirmation } from '../components/PurchaseConfirmation';
 
 export function Profile() {
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const handleOpenDialog = () => {
+        setIsDialogOpen(true); // Abre el diálogo
+    };
+
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false); // Cierra el diálogo
+    };
+
     const [selectedCountry, setSelectedCountry] = useState('CO');
 
     const [isOpen, setIsOpen] = useState(false); // Estado para controlar la visibilidad del menú
@@ -177,6 +189,14 @@ export function Profile() {
                 </div>
 
             </section>
+
+            {/* <div>
+                <button onClick={handleOpenDialog}>Realizar compra</button>
+
+                {isDialogOpen && (
+                    <PurchaseConfirmation onClose={handleCloseDialog} />
+                )}
+            </div> */}
 
             <Footer />
         </main>
