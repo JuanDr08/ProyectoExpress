@@ -2,11 +2,11 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import { WorkshopPreview } from "./pages/WorkshopPreview";
+import { Settings } from "./pages/Settings";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <WorkshopPreview/>,
+        element: <Settings/>,
     }
 ]);
 
