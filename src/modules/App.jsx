@@ -2,11 +2,11 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import { AppOpinions } from "./pages/AppOpinions";
+import { CustomerSupport } from "./pages/CustomerSupport";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <AppOpinions/>,
+        element: <CustomerSupport/>,
     }
 ]);
 
