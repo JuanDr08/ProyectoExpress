@@ -23,7 +23,24 @@ exports.googleAuthCallback = (req, res, next) => {
     })(req, res, next);
 }; 
 
+exports.facebookAuthCallback = (req, res, next) => {
+
+    passport.authenticate('facebook', async (err, user, info) => {
+        if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
+        req.logIn(user, (err) => { 
+            if (err) {
+                console.log(err, 'Error al iniciar sesión ')
+                return next(err)
+            }
+            return res.redirect('/')
+        })
+    })(req, res, next);
+
+}
+
 exports.logOutController = (req, res) => {
+
+    if (!req.isAuthenticated()) return res.status(401).json({msg: 'No hay una sesion activa para desloguear'})
 
     req.logOut(err => { // Logout permite cerrra la session que habia previamente iniciada, borrando asi algunos datos de inicio de session como usuario etc... pero mantiene
         // algunos datos como preferencias

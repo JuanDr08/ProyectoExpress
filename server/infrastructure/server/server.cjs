@@ -24,7 +24,10 @@ const createServer = () => {
         passport.initialize() & passport.session() - Permiten a passport crear una session 'vacia', la cual se logra ver una cookie en el navegador web
         en la cual, posteriormente almacenará la informacion del usuario una vez es autenticado
     */
-    app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), indexRouter);
+    app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
+        console.log('Info desde raiz',req.isAuthenticated(), req.user)
+        next()
+    },indexRouter);
     app.use('/login', loginRouter);
     app.use('/logout', logOutController)
 
