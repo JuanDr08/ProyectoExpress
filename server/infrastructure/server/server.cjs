@@ -30,7 +30,7 @@ const createServer = () => {
         socket.on("sendMessage", (message) => {
             console.log("Mensaje recibido:", message);
             // Emitir el mensaje a todos los usuarios
-            io.emit("recievedMessage", { texto: message, transmitter: 'cliente' });
+            // io.emit("recievedMessage", { texto: message, transmitter: 'cliente' }); -- esta parte de acá es la que estaba causando el reflejo de los mensajes duplicados en la pagina para el cliente
         });
 
         socket.on("disconnect", () => {
