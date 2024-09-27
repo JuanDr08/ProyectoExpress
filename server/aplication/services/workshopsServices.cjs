@@ -15,6 +15,11 @@ class WorkshopService {
         
         return workshops;
     }
+
+    async getProductsByWorkshopId(id){
+        const products = await this.workshopRepository.getProductsByWorkshopId(id);
+        return products;
+    }
 }
 
 module.exports = WorkshopService;

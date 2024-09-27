@@ -13,6 +13,16 @@ class WorkshopRepository {
 
         
     }
+
+    async getProductsByWorkshopId(id){
+        try{
+            const workshop = new Workshop();
+            const result = await workshop.displayProductsByWorskshopId(id);
+            return result;
+        } catch(error){
+            throw new Error(`Error retrieving workshops: ${error.message}`);
+        }
+    }
 }
 
 module.exports = WorkshopRepository;

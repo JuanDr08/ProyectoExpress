@@ -34,6 +34,43 @@ class Workshop {
         
         return res;
     }
+
+    async displayProductsByWorskshopId(id){
+        const obj = ConnectToDatabase.instanceConnect;
+        const collection = obj.db.collection("taller");
+
+
+        const res = await collection.aggregate([
+            {
+            
+              $match: { _id: new ObjectId(id) }
+            },
+            {
+              $lookup: {
+                from: "productos",            
+                localField: "productos",       
+                foreignField: "_id",           
+                as: "productosDetalles"        
+              }
+            },
+            {
+              
+              $project: {
+                _id: 0,                        
+                nombre_taller: 1,               
+                imagen: 1,
+                productosDetalles: {
+                  img: 1,                   
+                  precio: 1,                   
+                  nombre: 1,
+                  descripcion: 1,                    
+                }
+              }
+            }
+          ]).toArray();
+
+          return res
+    }
     
 }
 
