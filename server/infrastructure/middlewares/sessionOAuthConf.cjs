@@ -1,7 +1,7 @@
 const session = require('express-session');
-const sessionGoogleOAuth = require('express').Router();
+const sessionConfigPassport = require('express').Router();
 
-module.exports = sessionGoogleOAuth.use(session({
+module.exports = sessionConfigPassport.use(session({
     secret: process.env.KEY_SECRET,
     resave: false,
     saveUninitialized: true

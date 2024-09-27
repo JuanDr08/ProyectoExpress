@@ -4,27 +4,37 @@ const passport = require('passport');
 
 exports.googleAuthCallback = (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
-        console.log('user', user,  'info', info, 'err',err)
-        return res.redirect('/login')
+
+        // Checkeo si la autenticacion fue cancelada o hubo algun error
+        if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
         
-        /* if (err) {
-            console.error('Error en la autenticación:', err);
-            if (err.code === 11000) {
-                // Maneja el error de clave duplicada
-                return res.redirect('/?error=El email ya está en uso');
-            }
-            return next(err);
-        }
-        if (!user) {
-            console.log('Autenticación fallida o cancelada:', info);
-            return res.redirect('/');
-        }
-        req.logIn(user, (err) => {
+        /*
+            Importante el metodo logIng que nos ofrece passport dentro del objeto 'Request' Ya que es el que nos permite que si la autenticacion sale bien, guardar la informacion
+            del usuario dentro de la session para en posteriores casos poder verificar si hay alguien autenticado y asi sucesivamente
+        */
+        
+        req.logIn(user, (err) => { 
             if (err) {
-                console.error('Error al iniciar sesión:', err);
-                return next(err);
+                console.log(err, 'Error al iniciar sesión ')
+                return next(err)
             }
-            return res.redirect('/home/v2.0.0'); 
-        }); */
+            return res.redirect('/')
+        })
     })(req, res, next);
 }; 
+
+exports.logOutController = (req, res) => {
+
+    req.logOut(err => { // Logout permite cerrra la session que habia previamente iniciada, borrando asi algunos datos de inicio de session como usuario etc... pero mantiene
+        // algunos datos como preferencias
+        if (err) return res.status(500).json({ message: 'Error cerrando la sesión' });
+
+        req.session.destroy(err => { // A diferencia de el logOut, este elimita totalmente los datos de inicio de session, no queda absolutamente nada de datos
+            if (err) return res.status(500).json({ message: 'Error eliminando la sesión' });
+            res.clearCookie('connect.sid'); // Se limipia la cookie aunque es de poca utilidad ya que al volver a la ruta raiz esta vuelve a generar una cookie
+            res.redirect('/') // Si todo sale bien redireccionamos a la raiz
+        })
+
+    })
+
+}

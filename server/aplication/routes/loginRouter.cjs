@@ -9,27 +9,12 @@ const { googleAuthCallback } = require('../controllers/loginController.cjs')
 
 configPassportGoogleOAuth(passport) // Configuramos la estrategia de autenticacion de google
 
+// req.isAuthenticated() -- Metodo habilitado por passport para verificar si hay un logIn activo
 
-router.get('/', (req, res, next) => {
-    console.log(req.session)
-    res.send('HOLA')
-})
 
 // router.post('/auth/user', express.urlencoded({ extended: true }), (req, res) => userController.verifyUser(req, res))
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
 router.get('/auth/google/callback', googleAuthCallback )
-router.get('/si', (req,res) => {
-    console.log(req.user)
-})
-
-router.get('/logout', (req, res)=>{
-    req.logOut((err) => {
-        if (err) {
-            console.error('error', err)
-        }
-        console.log(req.session)
-    })
-})
 
 module.exports = router;
