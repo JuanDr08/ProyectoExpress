@@ -18,9 +18,9 @@ const startApp = async () => {
         console.log(`Servidor escuchando en http://${process.env.EXPRESS_HOST}:${PORT}`);
 
         // Ejemplo de enviar un mensaje desde el servidor cada 5 segundos
-        setInterval(() => {
-            io.emit('recievedMessage', { texto: 'Este es un mensaje del servidor', transmitter: 'server' });
-        }, 5000);
+        // setInterval(() => {
+        //     io.emit('recievedMessage', { texto: 'mensaje del servidor', transmitter: 'server' });
+        // }, 5000);
     });
 };
 

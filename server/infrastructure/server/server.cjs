@@ -4,12 +4,13 @@ const { Server } = require('socket.io');
 const indexRouter = require('../../aplication/routes/indexRouter.cjs');
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
+const readline = require('readline'); // Importar readline
 
 const createServer = () => {
     const app = express();
     const server = http.createServer(app);
 
-    // Configurar Socket.io con CORS ( que hijuemadre dolorsito de cabeshita )
+    // Configurar Socket.io con CORS -- q dolorcito de cabeza
     const io = new Server(server, {
         cors: {
             origin: 'http://localhost:5173',
@@ -29,8 +30,6 @@ const createServer = () => {
         // Escuchar mensajes del cliente
         socket.on("sendMessage", (message) => {
             console.log("Mensaje recibido:", message);
-            // Emitir el mensaje a todos los usuarios
-            // io.emit("recievedMessage", { texto: message, transmitter: 'cliente' }); -- esta parte de acá es la que estaba causando el reflejo de los mensajes duplicados en la pagina para el cliente
         });
 
         socket.on("disconnect", () => {
@@ -38,7 +37,19 @@ const createServer = () => {
         });
     });
 
-    return { app, server, io }; // podemos regresar el objeto io en caso de que sea necesario usarlo más tarde
+    // Configuración de readline para enviar mensajes desde la terminal
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    rl.on('line', (input) => {
+        // Emitir el mensaje a todos los usuarios conectados
+        io.emit("recievedMessage", { texto: input, transmitter: 'server' });
+        console.log(`Mensaje enviado desde la terminal: ${input}`);
+    });
+
+    return { app, server, io }; // Regresamos el objeto io
 };
 
 module.exports = createServer;
