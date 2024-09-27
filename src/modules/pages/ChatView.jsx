@@ -1,11 +1,34 @@
 import { Muesca } from "../components/Muesca"
 import { MessageBox } from "../components/MessageBox"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { io } from "socket.io-client"
 
 // import 
 
 export const Chat = ({ nombre }) => {
     
+    useEffect(() => {
+        // const socket = io()
+
+        const socket = io('http://localhost:3000'); // Cambia esto si es necesario
+
+
+        socket.on("connect", ()=> {
+            console.log("Conectado al servidor Socket.io")
+        })
+
+        socket.on("disconnect", ()=> {
+            console.log("Desconectado al servidor Socket.io")
+        })
+
+        // Limpieza al desmontar el componente
+        return () => {
+            socket.disconnect();
+        };
+        
+    }, [])
+
+
     const [messages, setMessages] = useState([])
     const inputRef = useRef(null)
 
@@ -19,7 +42,6 @@ export const Chat = ({ nombre }) => {
     }
 
     return (
-
 
         <>
 

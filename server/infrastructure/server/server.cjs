@@ -1,34 +1,42 @@
-// Configuración y puesta en marcha del servidor Express.
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const indexRouter = require('../../aplication/routes/indexRouter.cjs');
-const http = require("http")
-
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
 
-//montando socket.io
-const { Server } = require("socket.io")
-
 const createServer = () => {
     const app = express();
-    
-    const server = http.createServer(app)
-    const io = new Server(server)
-    
-    app.use(jsonParseErrorHandler);    
+    const server = http.createServer(app);
+
+    // Configurar Socket.io con CORS ( Que hijuemadre dolor de cabeza )
+    const io = new Server(server, {
+        cors: {
+            origin: 'http://localhost:5173', 
+            methods: ['GET', 'POST'],
+            credentials: true
+        }
+    });
+
+    app.use(jsonParseErrorHandler);
     app.use(limiTotal);
-  
     app.use('/', indexRouter);
 
-    // Socket.io config
-
+    // Configuración de Socket.io
     io.on("connection", (socket) => {
-        console.log("un usuario se ha conectado")
-    })
+        console.log("Un usuario se ha conectado");
 
-    return app;
+        socket.on("sendMessage", (message) => {
+            console.log("Mensaje recibido:", message);
+            io.emit("recievedMessage", message); // Mostrar a todos los usuarios
+        });
+
+        socket.on("disconnect", () => {
+            console.log("Usuario desconectado");
+        });
+    });
+
+    return { app, server };
 };
-
-
 
 module.exports = createServer;
