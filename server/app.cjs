@@ -7,8 +7,8 @@ const ConnectToDatabase = require('../server/infrastructure/database/database.cj
 const createServer = require('./infrastructure/server/server.cjs');
 
 const startApp = async () => {
-    let connectToDatabase = new ConnectToDatabase();
-    await connectToDatabase.connectOpen();
+    // let connectToDatabase = new ConnectToDatabase();
+    // await connectToDatabase.connectOpen();
     const app = createServer();
     app.use(cors());
 
@@ -21,4 +21,3 @@ const startApp = async () => {
 };
 
 startApp();
-

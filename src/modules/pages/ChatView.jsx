@@ -2,6 +2,8 @@ import { Muesca } from "../components/Muesca"
 import { MessageBox } from "../components/MessageBox"
 import { useRef, useState } from "react"
 
+// import 
+
 export const Chat = ({ nombre }) => {
     
     const [messages, setMessages] = useState([])
@@ -42,9 +44,9 @@ export const Chat = ({ nombre }) => {
 
                 <footer className='flex justify-center sticky bottom-2 '>
 
-                    <div class="sticky bottom-0 w-[90%]">
-                        <input onKeyDown={handleMessageSend} ref={inputRef} type="text" class="w-full  py-3 pl-4 pr-20 bg-703A31 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm text-blanco font-bold" placeholder={`Mandar mensaje a ${nombre}`} />
-                        <button onClick={handleMessageSend} class="absolute right-3 top-0 bottom-0 flex items-center">
+                    <div className="sticky bottom-0 w-[90%]">
+                        <input onKeyDown={handleMessageSend} ref={inputRef} type="text" className="w-full  py-3 pl-4 pr-20 bg-703A31 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm text-blanco font-bold" placeholder={`Mandar mensaje a ${nombre}`} />
+                        <button onClick={handleMessageSend} className="absolute right-3 top-0 bottom-0 flex items-center">
                             <svg width="20" height="20" viewBox="0 0 87 87" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M13.4199 34.7562C8.97454 33.1438 9.04436 26.8326 13.5243 25.319L75.9286 4.23395C79.8499 2.90904 83.591 6.65008 82.2661 10.5714L61.181 72.9757C59.6674 77.4556 53.3562 77.5255 51.7438 73.0801L42.3402 47.1552C41.8349 45.7622 40.7378 44.6651 39.3448 44.1598L13.4199 34.7562Z" stroke="white" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
                                 <path d="M80.4177 6.67969L41.543 44.9567" stroke="white" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
