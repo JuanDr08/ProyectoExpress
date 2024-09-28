@@ -25,8 +25,14 @@ const createServer = () => {
         en la cual, posteriormente almacenará la informacion del usuario una vez es autenticado
     */
     app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
-        console.log('Info desde raiz',req.isAuthenticated(), req.user)
+
+        if (!req.isAuthenticated() && !req.originalUrl.startsWith('/login')) {
+            console.log(req.originalUrl)
+            return res.redirect('/login')
+        }
         next()
+
+        
     },indexRouter);
     app.use('/login', loginRouter);
     app.use('/logout', logOutController)

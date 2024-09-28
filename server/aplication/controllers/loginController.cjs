@@ -38,9 +38,9 @@ exports.facebookAuthCallback = (req, res, next) => {
 
 }
 
-exports.instagramAuthCallback = (req, res, next) => {
+exports.discordAuthCallback = (req, res, next) => {
 
-    passport.authenticate('instagram', async (err, user, info) => {
+    passport.authenticate('discord', async (err, user, info) => {
 
         if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
         req.logIn(user, (err) => { 
@@ -66,7 +66,7 @@ exports.logOutController = (req, res) => {
         req.session.destroy(err => { // A diferencia de el logOut, este elimita totalmente los datos de inicio de session, no queda absolutamente nada de datos
             if (err) return res.status(500).json({ message: 'Error eliminando la sesión' });
             res.clearCookie('connect.sid'); // Se limipia la cookie aunque es de poca utilidad ya que al volver a la ruta raiz esta vuelve a generar una cookie
-            res.redirect('/') // Si todo sale bien redireccionamos a la raiz
+            res.redirect('/login') // Si todo sale bien redireccionamos a la raiz
         })
 
     })

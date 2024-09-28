@@ -1,4 +1,4 @@
-const InstagramStrategy = require('passport-instagram').Strategy;
+const DiscordStrategy = require('passport-discord').Strategy;
 
 module.exports = (passport) => {
 
@@ -13,13 +13,13 @@ module.exports = (passport) => {
         }
     });
 
-    passport.use(new InstagramStrategy({
-        clientID: process.env.INSTAGRAM_CLIENT_ID,
-        clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-        callbackURL: "https://localhost:3000/login/auth/instagram/callback"
+    passport.use(new DiscordStrategy({
+        clientID: process.env.DISCORD_CLIENT_ID,
+        clientSecret: process.env.DISCORD_CLIENT_SECRET,
+        callbackURL: "https://localhost:3000/login/auth/discord/callback",
+        scope: ['identify', 'email']
         },
         (accessToken, refreshToken, profile, cb) => {
-            console.log(profile)
             return cb(null, profile)
         }
     ))
