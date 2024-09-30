@@ -1,7 +1,7 @@
 const DiscordStrategy = require('passport-discord').Strategy;
 const User = require('../../domain/models/userModel.cjs');
 
-module.exports = (passport) => {
+module.exports = (passport, path) => {
 
     passport.serializeUser((user, done) => {
         done(null, user);
@@ -17,7 +17,7 @@ module.exports = (passport) => {
     passport.use(new DiscordStrategy({
         clientID: process.env.DISCORD_CLIENT_ID,
         clientSecret: process.env.DISCORD_CLIENT_SECRET,
-        callbackURL: "https://localhost:3000/login/auth/discord/callback",
+        callbackURL: `http://localhost:3000/${path}/auth/discord/callback`,
         scope: ['identify', 'email']
         }, async (accessToken, refreshToken, profile, done) => {
 
@@ -31,10 +31,10 @@ module.exports = (passport) => {
                 }];
 
                 let resAgregate = await userInstance.userAggregate(dataUser) // Buscamos si existe algun usuario con el correo y proveedor recibido
-
+                console.log('Llega hasta aca', path)
                 // Si la longitud de lo que recibimos es diferente a cero quiere decir que ya hay un usuario de ese proveedor registrado, entonces simplemente creamos la sesion con esa data
-                if (resAgregate.length) return done(null, resAgregate);
-
+                if (resAgregate.length) return done(null, resAgregate, {exists: true, path: path});
+                console.log('a crear')
                 // Si el programa continua quiere decir que no hay un usuario registrado de ese proveedor con ese correo
 
                 let data = { // Preparamos la data de insercion
@@ -51,7 +51,7 @@ module.exports = (passport) => {
                 }
 
                 await userInstance.createUser(data) // Creamos el usuario en la Base de datos
-                done(null, data); // Creamos la sesion de passport con la data obtenida
+                done(null, data, {exists: false, path: path}); // Creamos la sesion de passport con la data obtenida
             } catch (error) {
                 console.error('Error saving/updating user:', error);
                 done(error, null);

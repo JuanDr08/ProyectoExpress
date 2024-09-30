@@ -1,7 +1,7 @@
 const FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('../../domain/models/userModel.cjs');
 
-module.exports = (passport) => {
+module.exports = (passport, path) => {
 
     passport.serializeUser((user, done) => {
         done(null, user);
@@ -17,7 +17,7 @@ module.exports = (passport) => {
     passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "https://localhost:3000/login/auth/facebook/callback",
+        callbackURL: `http://localhost:3000/${path}/auth/facebook/callback`,
         profileFields: ['id', 'emails', 'name', 'picture.type(large)']
     }, async (accessToken, refreshToken, profile, done) => {
             
@@ -37,7 +37,7 @@ module.exports = (passport) => {
                 let resAgregate = await userInstance.userAggregate(dataUser) // Buscamos si existe algun usuario con el correo y proveedor recibido
 
                 // Si la longitud de lo que recibimos es diferente a cero quiere decir que ya hay un usuario de ese proveedor registrado, entonces simplemente creamos la sesion con esa data
-                if (resAgregate.length) return done(null, resAgregate);
+                if (resAgregate.length) return done(null, resAgregate, {exists: true, path: path});
 
                 // Si el programa continua quiere decir que no hay un usuario registrado de ese proveedor con ese correo
 
@@ -54,7 +54,7 @@ module.exports = (passport) => {
                     password: "Not assigned"
                 }
 
-                await userInstance.createUser(data) // Creamos el usuario en la Base de datos
+                await userInstance.createUser(data, {exists: true, path: path}) // Creamos el usuario en la Base de datos
                 done(null, data); // Creamos la sesion de passport con la data obtenida
             } catch (error) {
                 console.error('Error saving/updating user:', error);
