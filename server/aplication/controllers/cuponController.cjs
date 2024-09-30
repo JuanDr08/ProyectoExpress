@@ -79,6 +79,14 @@ class CuponController {
             res.status(500).json({ message: error.message });
         }
     }
+    async productWithCupon(req, res) {
+        try {
+            const cupons = await this.cuponService.allProductWithCupon();
+            res.json(cupons);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = CuponController;

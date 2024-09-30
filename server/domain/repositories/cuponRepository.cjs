@@ -71,6 +71,14 @@ class CuponRepository {
             throw new Error('Error searching for Cupons');
         }
     }
+    async searchByProductCupon() {
+        try {
+            const Cupon = new cupon();
+            return await Cupon.findProducCupon();
+        } catch (error) {
+            throw new Error('Error searching for Cupons');
+        }
+    }
 }
 
 module.exports = CuponRepository;

@@ -47,6 +47,32 @@ class Cupon{
         const res = await collection.deleteMany({ _id: new ObjectId(id) });
         return res;
     }
+
+    async findProducCupon(){
+        let obj = ConnectToDatabase.instanceConnect;
+        const collection = obj.db.collection('cupon');
+        const res = await collection.aggregate([
+            {
+              $lookup: {
+                from: "productos",
+                localField: "idProductos",
+                foreignField: "_id", 
+                as: "productoInfo" // El nombre del nuevo campo que contendrá los datos del producto
+              }
+            },
+            {
+              $unwind: "$productoInfo" // Descompone el array 'productoInfo' en documentos individuales
+            },
+            {
+              $project: {
+                "productoInfo": 1,
+                "descuento": 1
+              }
+            }
+          ]).toArray();
+          
+        return res;
+    }
     
 }
 

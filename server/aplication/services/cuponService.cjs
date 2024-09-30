@@ -59,6 +59,9 @@ class CuponService {
     async searchCuponsByName(name) {
         return await this.CuponRepository.searchByName(name);
     }
+    async allProductWithCupon() {
+        return await this.CuponRepository.searchByProductCupon();
+    }
 }
 
 module.exports = CuponService;
