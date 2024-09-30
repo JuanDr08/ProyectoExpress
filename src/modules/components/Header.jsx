@@ -21,7 +21,7 @@ export function Header() {
     }, [])
 
     return(
-        <header className="bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center">
+        <header className="bg-[var(--color-2E1108)] w-full flex justify-around h-[70px] items-center">
             
             <div
                 ref={menuRef}

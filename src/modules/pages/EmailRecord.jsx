@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import "react-datepicker/dist/react-datepicker.css";
+//import "react-datepicker/dist/react-datepicker.css";
 import { Form } from 'react-router-dom';
 import { Input } from '../components/Inputs';
 import { Muesca } from '../components/Muesca';
