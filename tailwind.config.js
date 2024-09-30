@@ -18,7 +18,16 @@ export default {
         "9D1A1A80": "#9D1A1A80",
         "2E1108": "#2E1108",
         "000000": "#000000",
-      }
+      },
+      keyframes: {
+        fade: {
+          '0%, 100%': { opacity: 0 },
+          '50%': { opacity: 1 },     
+        },
+      },
+      animation: {
+        'fade-in-out': 'fade 4s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
