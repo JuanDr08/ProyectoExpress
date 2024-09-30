@@ -39,9 +39,9 @@ router.get('/auth/discord', (req, res, next) => {
 },passport.authenticate('discord'))
 router.get('/auth/discord/callback', loginDiscordAuthCallback)
 
-router.post('/auth/ruraqmaki', express.json(), (req, res, next) => {    
-    configPassportLocalOAuth(passport, 'login')
-    next()
-}, loginLocalAuthCallback )
+router.post('/auth/ruraqmaki', express.json(), (req, res, next) => {
+    configPassportLocalOAuth(passport);
+    next();
+}, passport.authenticate('local'), loginLocalAuthCallback);
 
 module.exports = router;

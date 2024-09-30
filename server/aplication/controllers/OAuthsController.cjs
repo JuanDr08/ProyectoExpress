@@ -62,14 +62,27 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
 
 }
 
-exports.loginLocalAuthCallback = (req, res, next) => {
+exports.loginLocalAuthCallback = (req, res) => {
+    
+    console.log(req.notLoggued)
 
-    passport.authenticate('local', async (err, user) => {
-        console.log(err, user)
+    console.log('aca',req.chi);
+    if (req.isAuthenticated()) {
+      res.status(200).json({ message: 'Autenticación exitosa', user: req.user });
+    } else {
+      res.status(401).json({ message: 'Fallo en la autenticación' });
+    }
+  };
+
+// exports.loginLocalAuthCallback = (req, res, next) => {
+//     console.log('Login header', JSON.stringify(req.body))
+//     passport.authenticate('local', (err, user) => {
+//         console.log('Passport authenticate cb');
+//         console.log(err, user)
         
-    })(req, res, next)
+//     })(req, res, next)
 
-}
+// }
 
 exports.logOutController = (req, res) => {
 
