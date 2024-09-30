@@ -5,13 +5,26 @@ const ConnectToDatabase = require('../server/infrastructure/database/database.cj
 const createServer = require('./infrastructure/server/server.cjs');
 
 const startApp = async () => {
-    const { app: expressApp, server, io } = createServer();
 
+    
+    const { app: expressApp, server, io } = createServer();
+    
     expressApp.use((req, res, next) => {
         res.status(404).json({ message: "No tiene autorización" });
         next();
     });
 
+    const DBConnection = async() => {
+        const dbInstance = new ConnectToDatabase()
+        try {
+            await dbInstance.connectOpen()
+            console.log("Conexion a la db exitosa")
+        }catch(error) {
+            console.log("Conexión a la base de datos fallida: ", error.message)
+        }
+    }
+    DBConnection()
+    
     const PORT = process.env.EXPRESS_PORT || 3000;
 
     server.listen(PORT, () => {

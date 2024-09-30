@@ -6,11 +6,13 @@ const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
 const readline = require('readline'); // Importar readline
 
+const ChatController = require("../../aplication/controllers/chatController.cjs")
+
 const createServer = () => {
     const app = express();
     const server = http.createServer(app);
 
-    // Configurar Socket.io con CORS -- q dolorcito de cabeza
+    // Configurar Socket.io con CORS
     const io = new Server(server, {
         cors: {
             origin: 'http://localhost:5173',
@@ -28,8 +30,14 @@ const createServer = () => {
         console.log("Un usuario se ha conectado");
 
         // Escuchar mensajes del cliente
-        socket.on("sendMessage", (message) => {
+        socket.on("sendMessage", async(message) => {
             console.log("Mensaje recibido:", message);
+
+            const userId = socket.id;
+
+            await ChatController.handleMessage(userId, message);
+
+            io.emit("recievedMessage", {texto: message.texto, transmitter: "server"})
         });
 
         socket.on("disconnect", () => {

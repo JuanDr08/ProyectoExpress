@@ -1,8 +1,8 @@
-const ChatService = require('../services/ChatService')
+const ChatService = require('../services/ChatService.cjs')
 
 class ChatController {
-    static handleMessage(message) {
-        ChatService.saveMessage(message);
+    static async handleMessage(userId, message) {
+        await ChatService.saveMessage(userId, message);
     }
 }
 
