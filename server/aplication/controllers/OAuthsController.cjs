@@ -44,7 +44,7 @@ exports.loginFacebookAuthCallback = (req, res, next) => {
 }
 
 exports.loginDiscordAuthCallback = (req, res, next) => {
-    console.log('tes')
+    
     passport.authenticate('discord', async (err, user, info) => {
         console.log(info)
         if (info.exists && info.path == 'register') return res.status(400).json({errorCode: 400, msg: 'Intento de registro de usuario que ya existe en base de datos'}) // Checkeo de error por si se intenta registrar con una cuenta que ya existe
@@ -59,6 +59,15 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
         })
 
     })(req, res, next);
+
+}
+
+exports.loginLocalAuthCallback = (req, res, next) => {
+
+    passport.authenticate('local', async (err, user) => {
+        console.log(err, user)
+        
+    })(req, res, next)
 
 }
 

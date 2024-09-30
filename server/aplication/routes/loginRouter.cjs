@@ -6,7 +6,8 @@ const router = express.Router();
 const configPassportGoogleOAuth = require('../middlewares/GoogleOAuth.cjs');
 const configPassportFacebookOAuth = require('../middlewares/FacebookOAuthStrategy.cjs')
 const configPassportDiscordOAuth = require('../middlewares/DiscordOAuthStrategy.cjs')
-const {loginGoogleAuthCallback, loginFacebookAuthCallback, loginDiscordAuthCallback } = require('../controllers/OAuthsController.cjs')
+const configPassportLocalOAuth = require('../middlewares/LocalOAuthStrategy.cjs')
+const {loginGoogleAuthCallback, loginFacebookAuthCallback, loginDiscordAuthCallback, loginLocalAuthCallback } = require('../controllers/OAuthsController.cjs')
 
 
 //configPassportGoogleOAuth(passport, 'login'); // Configuramos la estrategia de autenticacion de google
@@ -37,5 +38,10 @@ router.get('/auth/discord', (req, res, next) => {
     next()
 },passport.authenticate('discord'))
 router.get('/auth/discord/callback', loginDiscordAuthCallback)
+
+router.post('/auth/ruraqmaki', express.json(), (req, res, next) => {    
+    configPassportLocalOAuth(passport, 'login')
+    next()
+}, loginLocalAuthCallback )
 
 module.exports = router;

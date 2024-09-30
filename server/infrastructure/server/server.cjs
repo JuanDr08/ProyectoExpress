@@ -29,17 +29,16 @@ const createServer = () => {
         passport.initialize() & passport.session() - Permiten a passport crear una session 'vacia', la cual se logra ver una cookie en el navegador web
         en la cual, posteriormente almacenará la informacion del usuario una vez es autenticado
     */
-        app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
-            let validRoutesUnProtected = ['/login', '/register', '/auth/check'];
-            let isProtectedRoute = validRoutesUnProtected.some(route => req.originalUrl.startsWith(route));
-            
-            if (!req.isAuthenticated() && !isProtectedRoute) {
-                console.log('Usuario no autenticado, redirigiendo.');
-                return res.status(401).json({ authenticated: false, user: null, details: 'No hay usuario logueado' });
-            }
-            
-            next();
-        }, indexRouter);
+    app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
+        let validRoutesUnProtected = ['/login', '/register', '/auth/check'];
+        let isProtectedRoute = validRoutesUnProtected.some(route => req.originalUrl.startsWith(route));
+        
+        if (!req.isAuthenticated() && !isProtectedRoute) {
+            return res.status(401).json({ authenticated: false, user: null, details: 'No hay usuario logueado', redirect: '/' });
+        }
+        
+        next();
+    }, indexRouter);
     app.use('/register', (req, res, next) => {
         if (req.isAuthenticated()) return res.status(400).json({authenticated: true, user: req.user, details: 'Hay un usuario logueado, cierre sesion para registrarse'})
         next()
