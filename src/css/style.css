@@ -1,4 +1,4 @@
-@import url(variables.css);
+@import url('https://fonts.googleapis.com/css2?family=Bellota:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,6 +9,7 @@
 }
 
 body, html {
-    min-height: 100dvh;
-    min-width: 100dvw;
+    font-family: var(--font-letra);
+    min-height: 100vh;
+    min-width: 100vw;
 }

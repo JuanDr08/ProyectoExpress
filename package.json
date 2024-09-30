@@ -20,12 +20,15 @@
     "express-validator": "7.2.0",
     "jsonwebtoken": "9.0.2",
     "mongodb": "6.9.0",
+    "papaparse": "^5.4.1",
     "passport": "0.7.0",
     "passport-facebook": "3.0.0",
     "passport-google-oauth20": "2.0.0",
     "passport-instagram": "1.0.0",
     "react": "^18.3.1",
+    "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
+    "react-phone-input-2": "^2.15.1",
     "react-router-dom": "6.26.2"
   },
   "devDependencies": {
