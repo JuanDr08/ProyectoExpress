@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         path: '/register/email',
         element: <EmailRecord/>
     },
-    // { -- VISTA CORRUPTA, EL CSS DE LA VISTA DAÑA ALGUNAS MAS COMO LA DE /REGISTER/EMAIL
+    // {
     //     path: '/register/phone',
     //     element: <Pantalla6/>
     // },
@@ -113,7 +113,7 @@ const router = createBrowserRouter([
         element: <WorkshopPreview/>,
         loader: loader
     },
-    // { -- VISTA CORRUPTA, PRESENTA INCONGRUENCIAS, REVISAR LOS ESTILOS YA QUE GENERAN ERRORES
+    // {
     //     path: '/product/:id',
     //     element: <Pantalla17/>,
     //    loader: loader
@@ -128,7 +128,7 @@ const router = createBrowserRouter([
     //     element: <Pantalla20/>,
     //     loader: loader
     // },
-    // { // PRESENTA ERRORES POR EL CSS
+    // {
     //     path: '/workshops/educational',
     //     element: <Pantalla21/>,
     //     loader: loader
