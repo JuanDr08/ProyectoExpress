@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Papa from 'papaparse';
-import '../../css/pantalla6.css';
+import  styles from '../../css/pantalla6.module.css'
 
 export function Pantalla6() {
   const [formData, setFormData] = useState({
@@ -20,6 +20,9 @@ export function Pantalla6() {
   const [countries, setCountries] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+
+  const inputRef = useRef(null);
+  const codigo =useRef(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -53,23 +56,9 @@ export function Pantalla6() {
     fetchCountries();
   }, []);
 
-  const handleCountryChange = (e) => {
-    const selectedPhoneCode = e.target.value;
-    console.log(selectedPhoneCode)
-    const selectedCountry = countries.find(country => country.code[' phone_code'] === selectedPhoneCode);
-      console.log(selectedCountry)
-    setFormData((prevData) => ({
-      ...prevData,
-      countryCode: selectedCountry || {}, // Guarda el objeto completo del país o un objeto vacío
-      numCelular: prevData.numCelular, // Mantén el número de celular actual
-    }));
-  
-    console.log("Código de país:", selectedPhoneCode);
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const numeroCelularCompleto = `+${formData.countryCode[' phone_code']}${formData.phone}`;
+    const numeroCelularCompleto = `+${inputRef.current.value}${formData.phone}`;
     
     // Validación de campos vacíos
     if (
@@ -113,19 +102,21 @@ export function Pantalla6() {
   };
 
   return (
-    <div className="body">
-      <header>
-        <div className="box-atras">
-          <img src=".././../../../public/img/Group 53.png" alt="triangulo" />
-          <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
+    <div className={styles.body}>
+      <header className={styles.header}>
+        <div className={styles.boxAtras}>
+          <img className={styles.img} src=".././../../../public/img/Group 53.png" alt="triangulo" />
+          <Link to={-1}>
+            <i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i>
+          </Link>
         </div>
-        <div className="box-texto">
-          <h2>Nombre de usuario*</h2>
-          <p>*Crea un nombre de usuario de mínimo 5 y máximo de 12 carácteres</p>
+        <div className={styles.boxTexto}>
+          <h2 className={styles.h2}>Nombre de usuario*</h2>
+          <p className={styles.p}>*Crea un nombre de usuario de mínimo 5 y máximo de 12 carácteres</p>
         </div>
       </header>
-      <form>
-        <div className="box-nombre">
+      <form className={styles.form}>
+        <div className={styles.boxNombre}>
           <input
             type="text"
             name="username"
@@ -134,25 +125,25 @@ export function Pantalla6() {
             onChange={handleChange}
           />
         </div>
-        <div className="box-numCelu">
-          <h2>Número de celular*</h2>
-          <div className="box-numeros">
-            <div className="codigo">
+        <div className={styles.boxNumCelu}>
+          <h2 className={styles.h2}>Número de celular*</h2>
+          <div className={styles.boxNumeros}>
+            <div className={styles.codigo}>
               <select
                 id="select-number"
-                className="clase-numero"
+                className={styles.claseNumero}
                 name="countryCode"
-                onChange={handleCountryChange}
+                ref={inputRef}
               >
-                <option value="">Codigo</option>
+                <option value="">Código</option>
                 {countries.map((country, index) => (
-                  <option key={index} value={country.code}>
+                  <option key={index} value={country.code[' phone_code']}>
                     +{country.code[' phone_code']}
                   </option>
                 ))}
               </select>
             </div>
-            <div className="num-celular">
+            <div className={styles.numCelular}>
               <input
                 type="text"
                 name="phone"
@@ -163,25 +154,25 @@ export function Pantalla6() {
             </div>
           </div>
         </div>
-        <div className="box-numCelu">
-          <h2>Confirma tu celular*</h2>
-          <div className="box-numeros">
-            <div className="codigo">
+        <div className={styles.boxNumCelu}>
+          <h2 className={styles.h2}>Confirma tu celular*</h2>
+          <div className={styles.boxNumeros}>
+            <div className={styles.codigo}>
               <select
                 id="select-number"
-                className="clase-numero"
+                className={styles.claseNumero}
                 name="countryCodeConfirm"
-                onChange={handleCountryChange}
+                ref={codigo}
               >
-                <option value="">Codigo</option>
+                <option value="">Código</option>
                 {countries.map((country, index) => (
-                  <option key={index} value={country.code}>
+                  <option key={index} value={country.code[' phone_code']}>
                     +{country.code[' phone_code']}
                   </option>
                 ))}
               </select>
             </div>
-            <div className="num-celular">
+            <div className={styles.numCelular}>
               <input
                 type="text"
                 name="confirmPhone"
@@ -192,10 +183,10 @@ export function Pantalla6() {
             </div>
           </div>
         </div>
-        <div className="box-contraseña">
-          <h2>Contraseña*</h2>
-          <p>Recuerda crear una contraseña difícil de adivinar</p>
-          <div className="container-contraseña">
+        <div className={styles.boxContraseña}>
+          <h2 className={styles.h2}>Contraseña*</h2>
+          <p className={styles.p}>Recuerda crear una contraseña difícil de adivinar</p>
+          <div className={styles.containerContraseña}>
             <input
               type="password"
               name="password"
@@ -205,10 +196,10 @@ export function Pantalla6() {
             />
           </div>
         </div>
-        <div className="box-contraseña">
-          <h2>Confirma tu contraseña*</h2>
-          <p>Recuerda crear una contraseña difícil de adivinar</p>
-          <div className="container-contraseña">
+        <div className={styles.boxContraseña}>
+          <h2 className={styles.h2}>Confirma tu contraseña*</h2>
+          <p className={styles.p}>Recuerda crear una contraseña difícil de adivinar</p>
+          <div className={styles.containerContraseña}>
             <input
               type="password"
               name="confirmPassword"
@@ -218,28 +209,28 @@ export function Pantalla6() {
             />
           </div>
         </div>
-        <div className="box-sexo">
-          <h2>Sexo</h2>
+        <div className={styles.boxSexo}>
+          <h2 className={styles.h2}>Sexo</h2>
           <select
-            className="opciones-sexo"
+            className={styles.opcionesSexo}
             name="sex"
             value={formData.sex}
             onChange={handleChange}
           >
             <option value=""></option>
-            <option value="femenino">femenino</option>
-            <option value="masculino">masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="masculino">Masculino</option>
             <option value="indefinido">Otro</option>
           </select>
         </div>
-        <div className="box-fecha-nacimiento">
-          <h2>Fecha de nacimiento</h2>
-          <div className="container-fechas">
+        <div className={styles.boxFechaNacimiento}>
+          <h2 className={styles.h2}>Fecha de nacimiento</h2>
+          <div className={styles.containerFechas}>
             <select
               value={formData.day}
               name="day"
               onChange={handleChange}
-              className="box-dia"
+              className={styles.boxDia}
             >
               <option value="">DD</option>
               {Array.from({ length: 31 }, (_, i) => (
@@ -252,7 +243,7 @@ export function Pantalla6() {
               value={formData.month}
               name="month"
               onChange={handleChange}
-              className="box-dia"
+              className={styles.boxDia}
             >
               <option value="">MM</option>
               {Array.from({ length: 12 }, (_, i) => (
@@ -265,7 +256,7 @@ export function Pantalla6() {
               value={formData.year}
               name="year"
               onChange={handleChange}
-              className="box-dia"
+              className={styles.boxDia}
             >
               <option value="">YY</option>
               {Array.from({ length: 100 }, (_, i) => (
@@ -277,9 +268,9 @@ export function Pantalla6() {
           </div>
         </div>
       </form>
-      <footer>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <div className="box-adelante" onClick={handleSubmit}>
+      <footer className={styles.footer}>
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        <div className={styles.boxAdelante} onClick={handleSubmit}>
           <i className='bx bx-chevron-right'></i>
           <a href="/register/TermsAndConditions">Continuar</a>
         </div>

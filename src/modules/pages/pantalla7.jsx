@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../../css/pantalla7.css';
+import { useLocation, Link } from 'react-router-dom';
+import  styles from '../../css/pantalla7.module.css'
 
 export default function Pantalla7() {
   const location = useLocation();
@@ -13,19 +13,19 @@ export default function Pantalla7() {
   const isSubrayado = checkbox1 && checkbox2; // Verificar si ambas condiciones se cumplen
 
   return (
-    <div>
-      <header>
-        <div className="box-atras">
+    <div className={styles.body}>
+      <header className={styles.header}>
+        <div className={styles.boxAtras}>
           <img src=".././../../../public/img/Group 53.png" alt="triangulo" />
-          <a href="#"><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></a>
+          <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
         </div>
-        <div className="box-img">
+        <div className={styles.boxImg}>
           <img src="../../../../public/img/triangulo_2.png" alt="triangulo_2" />
         </div>
       </header>
       <main>
-        <article>
-          <div className="box_1">
+        <article className={styles.article}>
+          <div className={styles.box1}>
             <input 
               type="checkbox" 
               checked={checkbox1} 
@@ -33,11 +33,11 @@ export default function Pantalla7() {
               id="checkbox_1" 
             />
             <label htmlFor="checkbox_1"></label>
-            <p>
-              He leído y acepto la <span><a href="#">Política de privacidad*</a></span>
+            <p className={styles.p}>
+              He leído y acepto la <span className={styles.span}><a href="#">Política de privacidad*</a></span>
             </p>
           </div>
-          <div className="box_2">
+          <div className={styles.box2}>
             <input 
               type="checkbox" 
               checked={checkbox2} 
@@ -45,24 +45,24 @@ export default function Pantalla7() {
               id="checkbox_2" 
             />
             <label htmlFor="checkbox_2"></label>
-            <p>
+            <p className={styles.p}>
               He leído y acepto los <span><a href="#">Términos y condiciones*</a></span>
             </p>
           </div>
-          <div className="box_3">
+          <div className={styles.box3}>
             <input type="checkbox" id="checkbox_3" />
             <label htmlFor="checkbox_3"></label>
             <p>Acepto que me envíen promociones y eventos a mi número de celular</p>
           </div>
         </article>
       </main>
-      <footer>
-        <div className="box-adelante">
+      <footer className={styles.footer}>
+        <div className={styles.boxAdelante}>
           <i className='bx bx-chevron-right'></i>
           <a 
             href={isRegisterButtonDisabled ? undefined : "/home"} 
             id="registerButton" 
-            className={`${isRegisterButtonDisabled ? "disabled" : ""} ${isSubrayado ? "subrayado" : ""}`} 
+            className={`${isRegisterButtonDisabled ? styles.disabled : ''} ${isSubrayado ? styles.subrayado : ''}`} 
           >
             Registrarse
           </a>
