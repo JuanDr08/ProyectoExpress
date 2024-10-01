@@ -1,5 +1,4 @@
 // Configuración y puesta en marcha del servidor Express.
-const express = require('express');
 const passport = require('passport');
 const sessionGoogleOAuth = require('../middlewares/sessionOAuth.cjs');
 const path = require('path');
@@ -11,6 +10,8 @@ const productRoutes = require('../../aplication/routes/productRouter.cjs');
 const cuponRoutes = require('../../aplication/routes/cuponRouter.cjs');
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
+const express = require('express');
+const workshopRoutes = require("../../aplication/routes/workshopRouter.cjs")
 
 const currentDirectory = process.cwd();
 let EXPRESS_STATIC = currentDirectory + '/src'
@@ -21,7 +22,7 @@ const createServer = () => {
     app.use(jsonParseErrorHandler);    
     app.use(limiTotal);
   
-    app.use('/', indexRouter);
+    app.use('/', workshopRoutes);
     // app.use('/login', sessionGoogleOAuth, passport.initialize(), passport.session(), loginRouter);
     // app.use('/createAccount', createAccountRouter);
     // app.use('/users', userRoutes);
