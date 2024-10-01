@@ -6,15 +6,10 @@ class ChatController {
         this.chatService = new ChatService();
     }
 
-    async handleMessage(req, res) {
+    async handleMessage(userId, texto) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-            const userId = req.userId; // tinanis el userID para poder subirlo a la db
-            const message = req.body; // tomamos el mensaje que se ubica en el body 
-
-            const chat = await this.chatService.LogMessage(userId, message);
+            const chat = await this.chatService.LogMessage(userId, texto);
             res.status(200).json(chat);
         } catch (error) {
             const errorObj = JSON.parse(error.message);

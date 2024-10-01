@@ -85,13 +85,11 @@ const createServer = () => {
         console.log("Un usuario se ha conectado");
 
         // Escuchar mensajes del cliente
-        socket.on("sendMessage", async(message) => {
-            console.log("Mensaje recibido:", message);
-
-            const userId = message.transmitter // Obtenemos el userID del mensaje
+        socket.on("sendMessage", async({texto, transmitter, clientid}) => {
+            console.log("Mensaje recibido:", texto);
 
             try {
-                await chatController.handleMessage({ body: message, userId }, { status: (code) => ({ json: (response) => console.log(response) }) });
+                await chatController.handleMessage(clientid, texto);
     
                 io.emit("recievedMessage", {texto: message.texto, transmitter: "server"})
 

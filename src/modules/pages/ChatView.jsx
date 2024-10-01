@@ -49,7 +49,7 @@ export const Chat = ({ nombre }) => {
         if (mensaje === '') return;
 
         // Emitir el mensaje al servidor
-        socket.current.emit('sendMessage', { texto: mensaje, transmitter: user._id });
+        socket.current.emit('sendMessage', { texto: mensaje, transmitter: "cliente", clientid: user._id });
         console.log(user)
 
         // Agregar solo el mensaje del cliente (sin duplicar)
