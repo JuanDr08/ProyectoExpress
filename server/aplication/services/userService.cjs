@@ -8,6 +8,12 @@ module.exports = class UserService {
 
     }
 
+    async agregate(aggData) {
+
+        return await this.UserRepository.getUserByAgregate(aggData)
+
+    }
+
     async createUser(userData) {
 
         return await this.UserRepository.insertUser(userData)
