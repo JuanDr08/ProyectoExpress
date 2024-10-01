@@ -101,7 +101,7 @@ article div label:before {
 /* Estilo cuando el checkbox está marcado */
 article div input[type="checkbox"]:checked + label:before {
     border-color: var(--color-FFA800);
-    background-image: url('../../public/img/Vector.png');
+    background-image: url('../../public/img/VectoChulo.png');
     background-size: 16px;
     background-position: center;
     background-repeat: no-repeat;

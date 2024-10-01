@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../../css/pantalla7.css';
 
 export default function Pantalla7() {
+  const location = useLocation();
+  const { username, numeroCelular, sex, day, month, year } = location.state;
+  console.log(location.state, numeroCelular)
   const [checkbox1, setCheckbox1] = useState(false);
   const [checkbox2, setCheckbox2] = useState(false);
 
@@ -56,7 +60,7 @@ export default function Pantalla7() {
         <div className="box-adelante">
           <i className='bx bx-chevron-right'></i>
           <a 
-            href={isRegisterButtonDisabled ? undefined : "#"} 
+            href={isRegisterButtonDisabled ? undefined : "/home"} 
             id="registerButton" 
             className={`${isRegisterButtonDisabled ? "disabled" : ""} ${isSubrayado ? "subrayado" : ""}`} 
           >
