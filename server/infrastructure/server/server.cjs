@@ -7,7 +7,8 @@ const indexRouter = require('../../aplication/routes/indexRouter.cjs');
 // const loginRouter = require('../../application/routes/loginRouter');
 // const createAccountRouter = require('../../application/routes/createAccountRouter');
 // const userRoutes = require('../../application/routes/userRoutes');
-// const productRoutes = require('../../application/routes/productRoutes');
+const productRoutes = require('../../aplication/routes/productRouter.cjs');
+const cuponRoutes = require('../../aplication/routes/cuponRouter.cjs');
 const { jsonParseErrorHandler } = require('../middlewares/errorHandling.cjs');
 const { limiTotal } = require('../middlewares/rateLimit.cjs');
 
@@ -24,7 +25,8 @@ const createServer = () => {
     // app.use('/login', sessionGoogleOAuth, passport.initialize(), passport.session(), loginRouter);
     // app.use('/createAccount', createAccountRouter);
     // app.use('/users', userRoutes);
-    // app.use('/home', productRoutes);
+    app.use('/product', productRoutes);
+    app.use('/cupon', cuponRoutes);
     return app;
 };
 

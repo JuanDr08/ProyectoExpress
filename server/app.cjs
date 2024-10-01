@@ -14,7 +14,7 @@ const startApp = async () => {
 
     app.use((req, res) => res.status(404).json({message: "No tiene autorizacion"}))
 
-    const PORT = process.env.EXPRESS_PORT || 3000
+    const PORT = process.env.EXPRESS_PORT || 5000
 
     app.listen(3000, () => console.log(`http://${process.env.EXPRESS_HOST}:${PORT}`))
     
