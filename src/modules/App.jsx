@@ -20,8 +20,15 @@ import { EmailRecord } from "./pages/EmailRecord";
 import { TermsAndConditions } from "./pages/Terms&Conditions";
 import { Categories } from "./pages/Categories";
 import { WorkshopPreview } from "./pages/WorkshopPreview";
-import { Pantalla20 } from "./pages/pantalla20";
-import { Pantalla21 } from "./pages/pantalla21";
+//import { Pantalla20 } from "./pages/pantalla20";
+//import { Pantalla21 } from "./pages/pantalla21";
+import { Settings } from "./pages/Settings";
+import { AppOpinions } from "./pages/AppOpinions";
+import { CustomerSupport } from "./pages/CustomerSupport";
+import { Chat } from "./pages/ChatView";
+import InfoCraft from "./pages/InfoCraft";
+import TallerCeramica from "./pages/CraftInscription";
+import InicioSesionRuraq from "./pages/InicioSesionRuraq";
 //import Pantalla17 from "./pages/pantalla17";// -- VISTA CORRUPTA, LA IMPORTACION DE LA VISTA Y SU CSS CORROMPE EL ESTILO DE LAS DEMAS VISTAS, REVISAR
 // import { Pantalla20 } from "./pages/pantalla20";
 // import { Pantalla21 } from "./pages/pantalla21";
@@ -33,7 +40,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/register",
-        element: <InicioSesion/>,
+        element: <Entrada/>,
     },
     {
         path: '/register/email',
@@ -49,7 +56,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/login',
-        element: <Entrada/>
+        element: <InicioSesion/>
+    },
+    {
+        path: '/login/credentials',
+        element: <InicioSesionRuraq/>
     },
     {
         path: '/home',
@@ -76,24 +87,48 @@ const router = createBrowserRouter([
         element: <Categories/>
     },
     {
-        path: '/workshop/details/:id',
+        path: '/workshop/related/:id',
         element: <WorkshopPreview/>,
     },
     // { -- VISTA CORRUPTA, PRESENTA INCONGRUENCIAS, REVISAR LOS ESTILOS YA QUE GENERAN ERRORES
     //     path: '/product/:id',
     //     element: <Pantalla17/>,
     // }
+    // {
+    //     path: '/crafts/favorites',
+    //     element: <Pantalla19/>,
+    // },
+    // {
+    //     path: '/purchases/success',
+    //     element: <Pantalla20/>,
+    // },
+    // { // PRESENTA ERRORES POR EL CSS
+    //     path: '/workshops/educational',
+    //     element: <Pantalla21/>,
+    // }
     {
-        path: '/crafts/favorites',
-        element: <Pantalla19/>,
+        path: '/settings',
+        element: <Settings/>
     },
     {
-        path: '/purchases/success',
-        element: <Pantalla20/>,
+        path: '/opinions',
+        element: <AppOpinions/>
     },
-    { // PRESENTA ERRORES POR EL CSS
-        path: '/workshops/educational',
-        element: <Pantalla21/>,
+    {
+        path: '/faq',
+        element: <CustomerSupport/>
+    },
+    {
+        path: '/chat/:name',
+        element: <Chat/>
+    },
+    {
+        path: '/workshop/info/:id',
+        element: <InfoCraft/>
+    },
+    {
+        path: '/workshop/details/:id',
+        element: <TallerCeramica/>
     }
 ]);
 

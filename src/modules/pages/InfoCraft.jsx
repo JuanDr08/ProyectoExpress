@@ -18,8 +18,8 @@ function InfoCraft() {
       </div>
 
       <div className="flex items-center justify-center bg-[#703A31] px-4 relative  w-full h-[16em]">
-        <img src="img/VideoPhoto.png" className="w-full h-auto" alt="Video Preview" />
-        <img src="img/ButtonPlay.png" className="absolute w-[5em] h-auto" alt="Play Button" />
+        <img src="/img/VideoPhoto.png" className="w-full h-auto" alt="Video Preview" />
+        <img src="/img/ButtonPlay.png" className="absolute w-[5em] h-auto" alt="Play Button" />
       </div>
 
       {/* Información interactiva */}

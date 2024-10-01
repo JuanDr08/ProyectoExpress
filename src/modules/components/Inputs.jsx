@@ -7,7 +7,7 @@ export const Input = ({title=false, desc=false, type='text', name, min=false, ma
         <div className='flex flex-col gap-[10px]' >
 
             {
-                title && <label for={name}><big><strong>{title}</strong></big></label>
+                title && <label htmlFor={name}><big><strong>{title}</strong></big></label>
             }
             {
                 desc && <small className='text-gray-400 leading-none text-[13px]'>{desc}</small>

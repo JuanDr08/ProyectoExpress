@@ -1,9 +1,11 @@
 import React from 'react';
+import { Muesca } from '../components/Muesca';
 
 function InicioSesionRuraq() {
   return (
     <>
       {/* Imagen en la esquina superior derecha */}
+      <Muesca/>
       <img 
         src="/img/EsquinaSuperiorInicioSesionRuraq.png" 
         className="absolute top-0 right-0 w-48 h-auto" // Cambiado a la esquina superior derecha y tamaño ajustado

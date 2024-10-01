@@ -27,7 +27,7 @@ export const EmailRecord = () => {
                     <Input title='Confirma tu contraseña*' type='password' name='authPassword' />
                     <div className='flex flex-col gap-[10px]' >
 
-                        <label for="authPassword"><big><strong>Sexo</strong></big></label>
+                        <label htmlFor="authPassword"><big><strong>Sexo</strong></big></label>
                         <select className='w-[65%] text-yellow-500 rounded-md p-2 outline-none bg-703A31' name="sex" id="sex">
                             <option value="male">Masculino</option>
                             <option value="female">Femenino</option>
@@ -35,7 +35,7 @@ export const EmailRecord = () => {
                     </div>
                     <div className='flex flex-col gap-[10px]' >
 
-                        <label for="day"><big><strong>Fecha de nacimiento</strong></big></label>
+                        <label htmlFor="day"><big><strong>Fecha de nacimiento</strong></big></label>
                         <div className='flex gap-[20px]'>
                             <select required name='day' id='day' value={day} onChange={handleDayChange} className='rounded-md min-w-max py-1 px-1 outline-none bg-703A31 text-FFA800'>
                                 <option value="" disabled selected>DD</option>
