@@ -25,11 +25,21 @@ module.exports = class UserController {
         if (isUserResgistered.length) res.status(409).json({status: 409, message: 'El usuario ya existe'})
 
         let data = {
-            
+            cedula: 'Not assigned',
+            names: 'Not assigned',
+            surnames:'Not assigned',
+            email: email ? email : 'Not assigned',
+            photo: 'https://unavatar.io/microlink/microlink.io',
+            provider: 'ruraqmaki',
+            nick: nick,
+            phone: phone ? phone : 'Not assigned',
+            role: 'Usuario Estandar',
+            password: passwordHash
         }
 
-        console.log(isUserResgistered.length)
-        console.log(req.body)
+        console.log(data);
+        res.status(200).json({msg: 'todo bn'})
+        //res.redirect('http://localhost:5173/login/credentials')
 
     }
 

@@ -2,7 +2,7 @@ import { Muesca } from "../components/Muesca"
 import { MessageBox } from "../components/MessageBox"
 import { useEffect, useRef, useState } from "react"
 import { io } from "socket.io-client"
-import { useLoaderData, useNavigate } from "react-router-dom"
+import { useLoaderData, useNavigate, useParams } from "react-router-dom"
 
 // import 
 
