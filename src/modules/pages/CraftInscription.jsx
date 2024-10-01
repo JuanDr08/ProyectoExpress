@@ -1,8 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Muesca } from '../components/Muesca';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 function TallerCeramica() {
+
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null)
+  const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+      if (!data) navigate('/register')
+      console.log(data.user)
+      setUser([data.user])
+
+    },[])
+
   return (
     <div className="relative w-full h-full">
       {/* Muesca en la esquina superior izquierda */}

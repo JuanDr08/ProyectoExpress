@@ -1,6 +1,7 @@
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 const articles = [
     { name: "Chalina Beige con flecos", price: "COP 50.000", description: "Una hermosa chalina con flecos.", img: "/img/Rectangle 41.png" },
@@ -26,6 +27,19 @@ const categories = [
 
 export function DiscountsPromotions() {
     const [activeIndex, setActiveIndex] = useState(0);
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+    },[])
 
     const handleButtonClick = (index) => {
         setActiveIndex(index);

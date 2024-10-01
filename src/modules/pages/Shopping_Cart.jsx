@@ -1,5 +1,7 @@
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { useState, useEffect } from "react";
 
 const items = [
     { name: "Vasija pequeña con diseño de flor", price: "COP 1000", stats: "13x10 cm, 2KG", desc:"Asoc. de artesanos productores de Chazuta", img: "/img/Rectangle 44.png" },
@@ -7,6 +9,19 @@ const items = [
 ]
 
 export function ShoppingCart() {
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+    },[])
 
     return (
         <main>

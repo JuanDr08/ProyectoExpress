@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom"
+import { Link, useLoaderData, useNavigate } from "react-router-dom"
 import { Muesca } from "../components/Muesca"
 import { CategoryHeaders } from "../components/CategoryHeaders"
 import { ProductCategoryCard } from "../components/ProductCategoryCard"
+import { useState, useEffect } from "react"
 
 
 const tallerInfo = {
@@ -20,6 +21,19 @@ const tallerInfo = {
 }
 
 export const WorkshopPreview = () => {
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+    },[])
 
     return (
 

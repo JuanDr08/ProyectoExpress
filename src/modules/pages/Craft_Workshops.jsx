@@ -1,5 +1,7 @@
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const wshops = [
     { name: "Arte Abedali Escalante", city: "Cusco", img: "/img/Rectangle 14.png" },
@@ -11,6 +13,20 @@ const wshops = [
 ];
 
 export function CraftWorkshops() {
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+    },[])
+
     return (
         <main>
             <Header />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // import DatePicker from 'react-datepicker';
 
@@ -6,10 +6,24 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { LeftMenu } from '../components/Leftmenu';
 import { PurchaseConfirmation } from '../components/PurchaseConfirmation';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 export function Profile() {
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+    },[])
 
     const handleOpenDialog = () => {
         setIsDialogOpen(true); // Abre el diálogo

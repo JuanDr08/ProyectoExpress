@@ -33,6 +33,22 @@ import InicioSesionRuraq from "./pages/InicioSesionRuraq";
 // import { Pantalla20 } from "./pages/pantalla20";
 // import { Pantalla21 } from "./pages/pantalla21";
 
+async function loader() {
+
+    let res = await fetch('http://localhost:3000/auth/check', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    let data = await res.json()
+    if (res.ok) {
+        if (!data.authenticated) return false
+        return data
+    } else {
+        return false
+    }
+
+}
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -65,70 +81,87 @@ const router = createBrowserRouter([
     {
         path: '/home',
         element: <Home/>,
+        loader: loader
     },
     {
         path: '/workshops',
         element: <CraftWorkshops/>,
+        loader: loader
     },
     {
         path: '/discounts',
         element: <DiscountsPromotions/>,
+        loader: loader
     },
     {
         path: '/cart',
         element: <ShoppingCart/>,
+        loader: loader
     },
     {
         path: '/profile',
-        element: <Profile/>
+        element: <Profile/>,
+        loader: loader
     },
     {
         path: '/products',
-        element: <Categories/>
+        element: <Categories/>,
+        loader: loader
     },
     {
         path: '/workshop/related/:id',
         element: <WorkshopPreview/>,
+        loader: loader
     },
     // { -- VISTA CORRUPTA, PRESENTA INCONGRUENCIAS, REVISAR LOS ESTILOS YA QUE GENERAN ERRORES
     //     path: '/product/:id',
     //     element: <Pantalla17/>,
+    //    loader: loader
     // }
     // {
     //     path: '/crafts/favorites',
     //     element: <Pantalla19/>,
+    //    loader: loader
     // },
     // {
     //     path: '/purchases/success',
     //     element: <Pantalla20/>,
+    //     loader: loader
     // },
     // { // PRESENTA ERRORES POR EL CSS
     //     path: '/workshops/educational',
     //     element: <Pantalla21/>,
+    //     loader: loader
     // }
     {
         path: '/settings',
-        element: <Settings/>
+        element: <Settings/>,
+        loader: loader
     },
     {
         path: '/opinions',
-        element: <AppOpinions/>
+        element: <AppOpinions/>,
+        loader: loader
     },
     {
         path: '/faq',
-        element: <CustomerSupport/>
+        element: <CustomerSupport/>,
+        loader: loader
     },
     {
         path: '/chat/:name',
-        element: <Chat/>
+        element: <Chat/>,
+        loader: loader
     },
     {
         path: '/workshop/info/:id',
-        element: <InfoCraft/>
+        element: <InfoCraft/>,
+        loader: loader
     },
     {
         path: '/workshop/details/:id',
-        element: <TallerCeramica/>
+        element: <TallerCeramica/>,
+        loader: loader
     }
 ]);
 

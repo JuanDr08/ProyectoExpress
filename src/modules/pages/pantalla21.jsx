@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/pantalla21.css';
 
 export const Pantalla21 = () => {

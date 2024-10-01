@@ -1,9 +1,24 @@
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { CategoryHeaders } from "../components/CategoryHeaders"
 import { Muesca } from "../components/Muesca"
+import { useState, useEffect } from "react";
 
 
 
 export const Settings = () => {
+
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+    },[])
 
     return (
 
