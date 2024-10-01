@@ -2,16 +2,35 @@ import { Muesca } from "../components/Muesca"
 import { MessageBox } from "../components/MessageBox"
 import { useEffect, useRef, useState } from "react"
 import { io } from "socket.io-client"
+import { useLoaderData, useNavigate } from "react-router-dom"
 
 // import 
 
 export const Chat = ({ nombre }) => {
     
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+
+        if (!data) navigate('/')
+            console.log(data.user)
+        setUser([data.user])
+
+    },[])
+
     const [messages, setMessages] = useState([]);
     const inputRef = useRef(null);
     const socket = useRef(null);
 
     useEffect(() => {
+
+        if (!data) return navigate('/')
+        console.log(data.user)
+        setUser(data.user[0])
+
         socket.current = io('http://localhost:3000');
 
         socket.current.on("connect", () => {

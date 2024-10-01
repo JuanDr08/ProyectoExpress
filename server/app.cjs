@@ -1,8 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const ConnectToDatabase = require('../server/infrastructure/database/database.cjs');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+const ConnectToDatabase = require('./infrastructure/database/database.cjs');
 const createServer = require('./infrastructure/server/server.cjs');
+
 
 const startApp = async () => {
 

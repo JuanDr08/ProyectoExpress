@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const { auth, authCookie } = require('../middlewares/authenticationToken.cjs');
 const sessionAuth = require('../middlewares/sessionLogin.cjs');
-const sessionGoogleOAuth = require('../../infrastructure/middlewares/sessionOAuth.cjs');
+const sessionGoogleOAuth = require('../../infrastructure/middlewares/sessionOAuthConf.cjs');
 const { versionMiddleware } = require('../middlewares/version.cjs');
 
 const cuponController = require('../controllers/cuponController.cjs');
