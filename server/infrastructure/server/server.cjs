@@ -24,6 +24,8 @@ const readline = require('readline'); // Importar readline
 
 const ChatController = require("../../aplication/controllers/chatController.cjs")
 
+const chatController = new ChatController()
+
 const createServer = () => {
     const app = express();
     app.use(cors({
@@ -86,11 +88,17 @@ const createServer = () => {
         socket.on("sendMessage", async(message) => {
             console.log("Mensaje recibido:", message);
 
-            const userId = socket.id;
+            const userId = message.transmitter // Obtenemos el userID del mensaje
 
-            await ChatController.handleMessage(userId, message);
+            try {
+                await chatController.handleMessage({ body: message, userId }, { status: (code) => ({ json: (response) => console.log(response) }) });
+    
+                io.emit("recievedMessage", {texto: message.texto, transmitter: "server"})
 
-            io.emit("recievedMessage", {texto: message.texto, transmitter: "server"})
+            }catch(error) {
+                console.log("Error al recibir el mensaje", error);
+            }
+
         });
 
         socket.on("disconnect", () => {
