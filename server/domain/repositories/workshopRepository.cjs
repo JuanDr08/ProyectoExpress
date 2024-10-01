@@ -23,6 +23,16 @@ class WorkshopRepository {
             throw new Error(`Error retrieving workshops: ${error.message}`);
         }
     }
+
+    async getWorkshopById(id){
+        try{
+            const workshop = new Workshop();
+            const result = await workshop.findWorkshopByID(id);
+            return result;
+        } catch(error){
+            throw new Error(`Error retrieving workshop: ${error.message}`);
+        }
+    }
 }
 
 module.exports = WorkshopRepository;

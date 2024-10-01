@@ -3,6 +3,7 @@ import { Muesca } from "../components/Muesca"
 import { CategoryHeaders } from "../components/CategoryHeaders"
 import { ProductCategoryCard } from "../components/ProductCategoryCard"
 import { useState, useEffect } from "react"
+import axios from "axios"
 
 
 const tallerInfo = {
@@ -21,8 +22,9 @@ const tallerInfo = {
 }
 
 export const WorkshopPreview = () => {
+
     const { id } = useParams();
-    const [tallerData, setTallerData] = useState(null)
+    const [tallerData, setTallerData] = useState()
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const data = useLoaderData()
@@ -36,9 +38,11 @@ export const WorkshopPreview = () => {
 
         const fetchTallerData = async () => {
             try {
-              const response = await fetch(`/api/workshops/${id}`); // API para obtener datos del taller
-              const data = await response.json();
-              console.log(data)
+              const response = await axios.get(`http://localhost:3000/workshops/${id}`, {
+                withCredentials: true,
+              }); // API para obtener datos del taller
+              console.log(response)
+              setTallerData([response.data])
               //setTallerData(data);
             } catch (error) {
               console.error("Error fetching workshop data", error);
@@ -47,8 +51,8 @@ export const WorkshopPreview = () => {
           };
       
           fetchTallerData();
-    },[id])
-
+    },[id, data, navigate])
+    console.log(tallerData)
     return (
 
         <>
@@ -56,13 +60,13 @@ export const WorkshopPreview = () => {
             <Muesca />
             <div className="fixed z-[10] flex items-center justify-center top-0 left-0 right-0 m-auto w-[200px] h-[35px] bg-703A31 text-center text-blanco font-semibold">
 
-                {tallerInfo.name}
+                {tallerData.nombre_taller}
 
             </div>
             <section className="w-full h-[300px] bg-2E1108">
 
                 <div className="h-[80%] object-cover">
-                    <img className="w-full h-full" src={tallerInfo.img} alt={tallerInfo.name} />
+                    <img className="w-full h-full" src={tallerData.imagen} alt={tallerData.nombre_taller} />
                 </div>
 
                 <div className="flex justify-center items-center relative text-center text-blanco underline h-[20%]">

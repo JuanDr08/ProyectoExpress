@@ -109,7 +109,7 @@ const router = createBrowserRouter([
         loader: loader
     },
     {
-        path: '/workshop/related/:id',
+        path: '/workshops/related/:id',
         element: <WorkshopPreview/>,
         loader: loader
     },

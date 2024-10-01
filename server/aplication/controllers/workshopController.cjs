@@ -43,6 +43,24 @@ class WorkshopController {
             });
         }
     }
+
+    async getWorkshopById(req, res){
+        try {
+            const { workshopId } = req.params; // Obtener el ID del taller y el parámetro de búsqueda desde la URL
+
+            const workshop = await this.workshopService.getWorkshopById(workshopId);
+
+            // Devolver la información del taller y sus productos (filtrados o no)
+            return res.status(200).json({
+                data: workshop,
+            });
+        } catch (error) {
+            return res.status(404).json({
+                status: 404,
+                message: error.message || 'Error fetching workshop',
+            });
+        }
+    }
 }
 
 module.exports = WorkshopController;

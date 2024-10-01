@@ -42,7 +42,7 @@ export function CraftWorkshops() {
     };
 
     const handleWorkshopClick = (id) => {
-        navigate(`/workshop/related/${id}`); // Redirige a una página con el ID del taller
+        navigate(`/workshops/related/${id}`); // Redirige a una página con el ID del taller
     };
 
     return (
