@@ -2,6 +2,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const wshops = [
     { name: "Arte Abedali Escalante", city: "Cusco", img: "/img/Rectangle 14.png" },
@@ -15,8 +16,9 @@ const wshops = [
 export function CraftWorkshops() {
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null)
-    const data = useLoaderData()
+    const [user, setUser] = useState(null);
+    const [workshops, setWorkshops] = useState([]);
+    const data = useLoaderData();
 
 
     useEffect(()=> {
@@ -24,8 +26,20 @@ export function CraftWorkshops() {
         if (!data) navigate('/register')
         console.log(data.user)
         setUser([data.user])
+        fetchWorkshops();
+    },[data, navigate])
 
-    },[])
+    const fetchWorkshops = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/workshops',{
+                withCredentials: true,
+            });
+            //console.log(response)
+            setWorkshops(response.data);
+        } catch (error) {
+            console.error('Error fetching workshops:', error);
+        }
+    };
 
     return (
         <main>
@@ -37,14 +51,14 @@ export function CraftWorkshops() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 p-5">
-                {wshops.map((shop, index) => (
+                {workshops.map((shop, index) => (
                     <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[190px]">
                         <div className="p-2">
-                            <h3 className="text-white text-sm">{shop.name}</h3>
-                            <p className="text-gray-300">{shop.city}</p>
+                            <h3 className="text-white text-sm">{shop.nombre_taller}</h3>
+                            <p className="text-gray-300">{shop.lugar.ciudad}</p>
                         </div>
                         <img
-                            src={shop.img}
+                            src={shop.imagen}
                             className="w-full h-40 object-cover"
                             style={{ borderRadius: '10px' }}
                         />
