@@ -1,16 +1,17 @@
 const {body, query, param} = require('express-validator')
 const bcrypt = require('bcryptjs')
 
-class UserValidator {
+module.exports = class UserValidator {
 
     validateUserRegistration = () => {
         return [
             body('nick').notEmpty().isString().isLength({min: 5, max: 12}).withMessage('Cadena de minimo 5 caracteres y maximo 12'),
-            body('email').notEmpty().isEmail().withMessage('Formato de email invalido'),
             body('password').notEmpty().isString().withMessage('Contraseña invalida').custom( async(value, { req }) => {
                 req.body.passwordHash = await bcrypt.hash(value, 10);
                 return true;
             }),
+            body('email').optional().notEmpty().isEmail().withMessage('Formato de email invalido'),
+            body('phone').optional().notEmpty().isString().withMessage('Formato invalido'),
             body('sex').optional().notEmpty().isString().custom(value => {
                 if (value && !['Masculino', 'Femenino'].includes(value)) throw new Error('Solo existen dos sexos: Masculino, Femenino')
                 return true
