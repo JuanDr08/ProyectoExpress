@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigate } from "react-router-dom"
+import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom"
 import { Muesca } from "../components/Muesca"
 import { CategoryHeaders } from "../components/CategoryHeaders"
 import { ProductCategoryCard } from "../components/ProductCategoryCard"
@@ -21,7 +21,8 @@ const tallerInfo = {
 }
 
 export const WorkshopPreview = () => {
-
+    const { id } = useParams();
+    const [tallerData, setTallerData] = useState(null)
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const data = useLoaderData()
@@ -33,7 +34,20 @@ export const WorkshopPreview = () => {
         console.log(data.user)
         setUser([data.user])
 
-    },[])
+        const fetchTallerData = async () => {
+            try {
+              const response = await fetch(`/api/workshops/${id}`); // API para obtener datos del taller
+              const data = await response.json();
+              console.log(data)
+              //setTallerData(data);
+            } catch (error) {
+              console.error("Error fetching workshop data", error);
+              navigate('/404'); // Redirigir si ocurre un error o no se encuentra el taller
+            }
+          };
+      
+          fetchTallerData();
+    },[id])
 
     return (
 

@@ -41,6 +41,10 @@ export function CraftWorkshops() {
         }
     };
 
+    const handleWorkshopClick = (id) => {
+        navigate(`/workshop/related/${id}`); // Redirige a una página con el ID del taller
+    };
+
     return (
         <main>
             <Header />
@@ -51,8 +55,13 @@ export function CraftWorkshops() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 p-5">
-                {workshops.map((shop, index) => (
-                    <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[190px]">
+                {workshops.map((shop) => (
+                    <div 
+                        key={shop._id} 
+                        className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[190px]"
+                        onClick={() => handleWorkshopClick(shop._id)}
+                        style={{cursor: "ponter"}}
+                    >
                         <div className="p-2">
                             <h3 className="text-white text-sm">{shop.nombre_taller}</h3>
                             <p className="text-gray-300">{shop.lugar.ciudad}</p>
