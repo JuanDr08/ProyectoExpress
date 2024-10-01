@@ -39,4 +39,6 @@ router.get('/auth/discord', (req, res, next) => {
 },passport.authenticate('discord'))
 router.get('/auth/discord/callback', loginDiscordAuthCallback)
 
+router.post('/auth/ruraqMaki', express.json())
+
 module.exports = router;
