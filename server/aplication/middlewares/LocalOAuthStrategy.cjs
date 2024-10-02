@@ -2,7 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../../domain/models/userModel.cjs');
 
 module.exports = (passport) => {
-    passport.serializeUser((user, done) => {
+  passport.serializeUser((user, done) => {
         done(null, user);
       });
     passport.deserializeUser(async (user, done) => {
@@ -13,10 +13,10 @@ module.exports = (passport) => {
     }
     });
 
-    passport.use('local', new LocalStrategy({passReqToCallback: true},
-        async (req, username, password, done) => {
+    passport.use('local', new LocalStrategy(
+        async (username, password, done) => {
             //return done(null, {username, password})
-
+            
             try {
                 let userInstance = new User();
                 let dataUser = [
@@ -26,16 +26,22 @@ module.exports = (passport) => {
                         {nick: username},
                         {phone: username},
                         {email: username}
-                      ]
+                      ],
+                      provider: 'ruraqmaki'
                     }
                   }
                   ];
           
                 let resAgregate = await userInstance.userAggregate(dataUser)
-          
-                if(resAgregate.length) return done(null, resAgregate, true);
-                req.notLoggued = true
-                done(null, 'si', false);
+                
+                if(!resAgregate.length) return done(null, false);
+
+                const isValidaPassword = await userInstance.validatePassword(password, resAgregate[0].password);
+
+                if (isValidaPassword) return done(null, resAgregate);
+              
+                return done(null, false);
+                
               } catch (error) {
                 console.error('Error saving/updating user:', error);
                 done(error, null);

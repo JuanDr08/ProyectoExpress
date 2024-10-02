@@ -54,7 +54,7 @@ const createServer = () => {
     */
 
     app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
-        let validRoutesUnProtected = ['/login', '/register', '/auth/check'];
+        let validRoutesUnProtected = ['/login', '/register', '/auth'];
         let isProtectedRoute = validRoutesUnProtected.some(route => req.originalUrl.startsWith(route));
         
         if (!req.isAuthenticated() && !isProtectedRoute) {
@@ -65,11 +65,11 @@ const createServer = () => {
     }, indexRouter);
 
     app.use('/register', (req, res, next) => {
-        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, user: req.user, details: 'Hay un usuario logueado, cierre sesion para registrarse'})
+        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, details: 'Hay un usuario logueado, cierre sesion para registrarse'})
         next()
     }, registerRouter);
     app.use('/login', (req, res, next) => {
-        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, user: req.user, details: 'Hay un usuario logueado, cierre sesion para loguearse de nuevo'})
+        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, details: 'Hay un usuario logueado, cierre sesion para loguearse de nuevo'})
         next()
     }, loginRouter);
     app.use('/logout', logOutController)
