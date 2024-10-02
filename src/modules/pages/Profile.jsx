@@ -15,16 +15,54 @@ export function Profile() {
     const navigate = useNavigate();
     const data = useLoaderData()
     const [user, setUser] = useState(null)
+
+    const [isEditing, setIsEditing] = useState({}); 
+    const [updatedData, setUpdatedData] = useState({})
     
     useEffect(()=> {
 
         if (!data || !data.user) {
             navigate('/register'); // Redirige si no hay datos de usuario
         } else {
+            setUser(data.user[0]); // Almacena el objeto user en un array
             console.log(data.user[0]);
-            setUser([data.user[0]]); // Almacena el objeto user en un array
         }
     },[])
+
+    console.log(Object.keys(data.user).length)
+
+    // edicion de propiedades
+
+    const handleEdit = (field) => {
+        setIsEditing((prev) => ({ ...prev, [field]: true }));
+    };
+
+    const handleChange = (field, value) => {
+        setUpdatedData((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleUpdate = async (field) => {
+        const userId = userData._id; // Assuming you have userId in userData
+        try {
+            const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ [field]: updatedData[field] }), 
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                setUserData(updatedUser);
+                setIsEditing((prev) => ({ ...prev, [field]: false })); 
+            } else {
+                console.error('Error al actualizar el campo');
+            }
+        } catch (error) {
+            console.error('Error en la solicitud de actualización:', error);
+        }
+    };
 
     const handleOpenDialog = () => {
         setIsDialogOpen(true); // Abre el diálogo
@@ -69,7 +107,7 @@ export function Profile() {
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
                 <div className="profileimg rounded-full outline w-[200px] h-[200px] overflow-hidden">
                     {user ? (
-                        <img className='w-full h-full object-cover' src={user[0].photo} alt="Perfil" />
+                        <img className='w-full h-full object-cover' src={user.photo} alt="Perfil" />
                     ) : (
                         <p>Cargando...</p> // Mensaje mientras se carga
                     )}
@@ -80,10 +118,20 @@ export function Profile() {
                 <div className="fila w-[100vw] flex items-center justify-around">
                     <div className="user">
                         <p className="text-[var(--color-9D1A1A)] text-xl">Usuario:</p>
+                        {isEditing.nombre ? (
+                                <input 
+                                    type="text" 
+                                    value={updatedData.nombre || userData.nombre} 
+                                    onChange={(e) => handleChange('nombre', e.target.value)}
+                                    className="border rounded p-1"
+                                />
+                            ) : (
+                                <span className="inline-flex items-center justify-center w-3/5 h-10 px-3 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">{userData.nombre}</span>
+                            )}
                     </div>
                     <div className="userplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
-                            {user && user.length > 0 ? (
-                            <p>{user[0].names}</p> 
+                            {user && user ? ( 
+                                <p>{user.names}</p>
                         ) : (
                             <p>Cargando...</p>
                         )}
@@ -98,8 +146,8 @@ export function Profile() {
                         <p className="text-[var(--color-9D1A1A)] text-xl">Correo:</p>
                     </div>
                     <div className="correoplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
-                        {user && user.length > 0 ? (
-                                <p>{user[0].email}</p> 
+                        {user ? (
+                                <p>{user.email}</p> 
                             ) : (
                                 <p>Cargando...</p>
                             )}
@@ -138,8 +186,8 @@ export function Profile() {
                         )}
                     </div>
                     <div className="phoneplaceholder flex bg-[var(--color-703A31)] text-white w-[50%] h-10 rounded-lg justify-center items-center">
-                        {user && user.length > 0 ? (
-                                <p>{user[0].phone}</p> // Asegúrate de que user[0] existe
+                        {user ? (
+                                <p>{user.phone}</p>
                             ) : (
                                 <p>Cargando...</p> // Mensaje mientras se carga
                             )}
