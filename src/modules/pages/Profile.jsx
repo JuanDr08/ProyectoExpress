@@ -13,16 +13,17 @@ export function Profile() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null)
     const data = useLoaderData()
-
-
+    const [user, setUser] = useState(null)
+    
     useEffect(()=> {
 
-        if (!data) navigate('/register')
-        console.log(data.user)
-        setUser([data.user])
-
+        if (!data || !data.user) {
+            navigate('/register'); // Redirige si no hay datos de usuario
+        } else {
+            console.log(data.user[0]);
+            setUser([data.user[0]]); // Almacena el objeto user en un array
+        }
     },[])
 
     const handleOpenDialog = () => {
@@ -67,7 +68,11 @@ export function Profile() {
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
                 <div className="profileimg rounded-full outline w-[200px] h-[200px] overflow-hidden">
-                    <img className='w-full h-full object-cover' src="https://unavatar.io/microlink/microlink.io" alt="Perfil" />
+                    {user ? (
+                        <img className='w-full h-full object-cover' src={user[0].photo} alt="Perfil" />
+                    ) : (
+                        <p>Cargando...</p> // Mensaje mientras se carga
+                    )}
                 </div>
             </div>
 
@@ -77,7 +82,11 @@ export function Profile() {
                         <p className="text-[var(--color-9D1A1A)] text-xl">Usuario:</p>
                     </div>
                     <div className="userplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
-                        <p>SaraMartin9</p>
+                            {user && user.length > 0 ? (
+                            <p>{user[0].names}</p> 
+                        ) : (
+                            <p>Cargando...</p>
+                        )}
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
                         <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
@@ -89,7 +98,11 @@ export function Profile() {
                         <p className="text-[var(--color-9D1A1A)] text-xl">Correo:</p>
                     </div>
                     <div className="correoplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
-                        <p>Vapalcarajo2011@gmail.com</p>
+                        {user && user.length > 0 ? (
+                                <p>{user[0].email}</p> 
+                            ) : (
+                                <p>Cargando...</p>
+                            )}
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
                         <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
@@ -125,7 +138,11 @@ export function Profile() {
                         )}
                     </div>
                     <div className="phoneplaceholder flex bg-[var(--color-703A31)] text-white w-[50%] h-10 rounded-lg justify-center items-center">
-                        <p>3188469257</p>
+                        {user && user.length > 0 ? (
+                                <p>{user[0].phone}</p> // Asegúrate de que user[0] existe
+                            ) : (
+                                <p>Cargando...</p> // Mensaje mientras se carga
+                            )}
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
                         <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>

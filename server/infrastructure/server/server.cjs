@@ -137,12 +137,6 @@ const createServer = () => {
         } catch (error) {
             console.error("Error al manejar el mensaje del servver:", error);
         }
-
-        // socket.current.emit('sendMessage', { 
-        //     texto: mensaje, 
-        //     transmitter: "server", 
-        //     clientid: user._id 
-        // });
         
         console.log(`Mensaje enviado desde la terminal: ${input}`);
     });
