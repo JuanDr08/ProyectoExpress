@@ -22,7 +22,6 @@ module.exports = class UserController {
             }
         ]
         let isUserResgistered = await userService.agregate(query)
-        console.log(isUserResgistered.length);
         
         if (isUserResgistered.length) return res.status(409).json({status: 409, message: 'El usuario ya existe'})
 
@@ -41,7 +40,7 @@ module.exports = class UserController {
 
         await userService.createUser(data)
 
-        res.redirect('http://localhost:5173/login/credentials')
+        return res.status(201).json({code:201, message: 'Usuario creado satisfactoriamente'})
 
     }
 

@@ -19,13 +19,6 @@ const userValidator = new UserValidator()
 const UserController = require('../controllers/userController.cjs')
 const userController = new UserController()
 
-//configPassportGoogleOAuth(passport, 'login'); // Configuramos la estrategia de autenticacion de google
-//configPassportFacebookOAuth(passport, 'login') // Configuramos la estrategia de autenticacion de facebook
-//configPassportDiscordOAuth(passport, 'login') // Configuramos la estrategia de autenticacion de discord
-
-// req.isAuthenticated() -- Metodo habilitado por passport para verificar si hay un logIn activo
-
-
 // router.post('/auth/user', express.urlencoded({ extended: true }), (req, res) => userController.verifyUser(req, res))
 
 router.get('/', (req,res) => res.status(400).json({msg: 'iniciar sesion'}))
@@ -51,6 +44,6 @@ router.get('/auth/discord/callback', loginDiscordAuthCallback)
 router.post('/auth/ruraqmaki', express.json(), userValidator.validateUserLogIn(), (req, res, next) => {
     configPassportLocalOAuth(passport)
     next()
-}, passport.authenticate('local'), loginLocalAuthCallback);
+}, passport.authenticate('local'), (req, res) => res.status(200).json({code: 200, msg: 'login exitoso'}));
 
 module.exports = router;

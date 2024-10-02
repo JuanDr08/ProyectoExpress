@@ -62,24 +62,6 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
 
 }
 
-exports.loginLocalAuthCallback = (req, res) => {
-    console.log('Usuario autenticado:', req.user);
-    console.log('¿Está autenticado?', req.isAuthenticated());
-
-    return res.status(200).json({ msg: req.user });
-
-  };
-
-// exports.loginLocalAuthCallback = (req, res, next) => {
-//     console.log('Login header', JSON.stringify(req.body))
-//     passport.authenticate('local', (err, user) => {
-//         console.log('Passport authenticate cb');
-//         console.log(err, user)
-        
-//     })(req, res, next)
-
-// }
-
 exports.logOutController = (req, res, next, ret=false) => {
     
     if (!req.isAuthenticated()) return res.status(400).json({msg: 'No hay una sesion activa para desloguear'})

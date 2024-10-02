@@ -13,7 +13,7 @@ module.exports = (passport) => {
     }
     });
 
-    passport.use('local', new LocalStrategy({failureMessage: 'Usuario no existe' },
+    passport.use('local', new LocalStrategy(
         async (username, password, done) => {
             //return done(null, {username, password})
             
@@ -26,7 +26,8 @@ module.exports = (passport) => {
                         {nick: username},
                         {phone: username},
                         {email: username}
-                      ]
+                      ],
+                      provider: 'ruraqmaki'
                     }
                   }
                   ];
@@ -36,7 +37,8 @@ module.exports = (passport) => {
                 if(!resAgregate.length) return done(null, false);
 
                 const isValidaPassword = await userInstance.validatePassword(password, resAgregate[0].password);
-                if (isValidPassword) return done(null, resAgregate); // Devuelve el usuario si la contraseña es correcta
+
+                if (isValidaPassword) return done(null, resAgregate);
               
                 return done(null, false);
                 
