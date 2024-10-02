@@ -15,10 +15,6 @@ const {loginGoogleAuthCallback, loginFacebookAuthCallback, loginDiscordAuthCallb
 const UserValidator = require('../validator/userValidator.cjs')
 const userValidator = new UserValidator()
 
-// Controladores
-const UserController = require('../controllers/userController.cjs')
-const userController = new UserController()
-
 // router.post('/auth/user', express.urlencoded({ extended: true }), (req, res) => userController.verifyUser(req, res))
 
 router.get('/', (req,res) => res.status(400).json({msg: 'iniciar sesion'}))
