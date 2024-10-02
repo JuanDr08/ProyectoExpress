@@ -69,9 +69,7 @@ const Header =({ img, idProducto }) => {
   <header className={styles.header}>
     <div className={styles.boxAtras}>
       <img src="/img/Group 53.png" alt="triangulo" />
-      <Link to="#">
-        <i className="bx bx-arrow-back" style={{ color: '#ffa800' }}></i>
-      </Link>
+      <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
     </div>
     <div className={styles.boxImg}>
       <img src={img} alt="imagen del producto" />

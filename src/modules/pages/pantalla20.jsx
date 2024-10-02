@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import  styles from '../../css/pantalla20.module.css'
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
 export const Pantalla20 = () => {
@@ -22,8 +22,8 @@ export const Pantalla20 = () => {
     // Función para hacer la solicitud a la API
     const fetchProductos = async () => {
       try {
-        const response = await axios.get('URL_DE_TU_API/productos'); // Reemplaza con la URL correcta
-        setProductos(response.data); // Almacena los productos en el estado
+        const response = await axios.get(`http://localhost:3000/product`); // Reemplaza con la URL correcta
+        setProductos(response.data); // Almacena los productos en el estado}
       } catch (error) {
         console.error('Error al obtener los productos', error);
       }
@@ -37,9 +37,7 @@ export const Pantalla20 = () => {
       <header className={styles.header}>
         <div className={styles.boxAtras}>
           <img src="/img/Group 53.png" alt="triangulo" />
-          <a href="#">
-            <i className="bx bx-arrow-back" style={{ color: '#ffa800' }}></i>
-          </a>
+          <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
         </div>
         <div className={styles.boxImg}>
           <img src="/img/Rectangle 86.png" alt="rombo" />
@@ -77,12 +75,12 @@ export const Pantalla20 = () => {
           {productos.map((producto) => (
             <div key={producto._id} className={styles.box}>
               <div className={styles.boxImg}>
-                <img src={producto.img} alt={producto.nombre} />
+                <img src={producto.img} alt='' />
               </div>
               <div className={styles.info}>
                 <p className={styles.titulo}>{producto.nombre}</p>
                 <p className={styles.precio}>S/.{producto.precio}</p>
-                <p className={styles.taller}>{producto.taller.nombre}</p>
+                {/* <p className={styles.taller}>{producto.taller.nombre}</p> */}
               </div>
             </div>
           ))}
