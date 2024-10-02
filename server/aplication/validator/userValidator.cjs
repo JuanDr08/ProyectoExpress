@@ -1,4 +1,4 @@
-const {body, query, param} = require('express-validator')
+const { body, query, param } = require('express-validator')
 const bcrypt = require('bcryptjs')
 
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
@@ -9,21 +9,21 @@ module.exports = class UserValidator {
     validateUserRegistration = () => {
         return [
             body().notEmpty().withMessage('No ha enviado ningun dato a guardar').custom((value, { req }) => {
-                    if (!req.body.email && !req.body.phone) {
-                        throw new Error('Debe proporcionar al menos un teléfono o un email.');
-                    }
-                    return true;
-                }),
+                if (!req.body.email && !req.body.phone) {
+                    throw new Error('Debe proporcionar al menos un teléfono o un email.');
+                }
+                return true;
+            }),
 
             body('nick')
                 .notEmpty().withMessage('Campo vacio')
                 .isString().withMessage('Tipo de dato invalido')
-                .isLength({min: 5, max: 12}).withMessage('Cadena de minimo 5 caracteres y maximo 12'),
+                .isLength({ min: 5, max: 12 }).withMessage('Cadena de minimo 5 caracteres y maximo 12'),
 
             body('password')
                 .notEmpty().withMessage('Campo no puede estar vacio')
                 .isString().withMessage('Tipo de dato invalido')
-                .custom( async(value, { req }) => {
+                .custom(async (value, { req }) => {
                     req.body.passwordHash = await bcrypt.hash(value, 10);
                     return true;
                 }),
@@ -83,6 +83,24 @@ module.exports = class UserValidator {
             body('password')
                 .notEmpty().withMessage('Campo no puede estar vacio')
                 .isString().withMessage('Tipo de dato invalido')
+
+        ]
+    }
+
+    validateFavoriteProductParam = () => {
+        return [
+
+            param('id')
+                .isMongoId()
+                .withMessage('El id proporcionado no es un ObjectId válido'),
+
+            body().custom((value, { req }) => {
+                return Object.keys(req.body).length === 0;
+            }).withMessage('No se debe enviar ningún dato en el cuerpo (body)'),
+
+            query().custom((value, { req }) => {
+                return Object.keys(req.query).length === 0;
+            }).withMessage('No se debe enviar ningún dato en la query')
 
         ]
     }

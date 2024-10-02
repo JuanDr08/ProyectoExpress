@@ -8,6 +8,10 @@ module.exports = class UserService {
 
     }
 
+    async getUserById(id) {
+        return await this.UserRepository.getUserById(id)
+    }
+
     async agregate(aggData) {
 
         return await this.UserRepository.getUserByAgregate(aggData)
@@ -20,6 +24,22 @@ module.exports = class UserService {
 
     }
 
-    
+    async updateFieldFromUser(userId, field, values) {
+
+        return await this.UserRepository.updateUserCustomField(userId, field, values)
+
+    }
+
+    async removeMultipleElementsFromField(userId, field, values) {
+
+        return await this.UserRepository.removeElements(userId, field, values)
+
+    }
+
+    async getAllFromFIeld(userId, field) {
+
+        return await this.UserRepository.getAllFromFIeld(userId, field)
+
+    }
 
 }

@@ -14,6 +14,7 @@ const indexRouter = require('../../aplication/routes/indexRouter.cjs'); // Rutas
 const registerRouter = require('../../aplication/routes/registerRouter.cjs')
 const loginRouter = require('../../aplication/routes/loginRouter.cjs'); // Rutas
 const workshopRoutes = require("../../aplication/routes/workshopRouter.cjs")
+const userRoutes = require('../../aplication/routes/userRouter.cjs')
 
 const { logOutController } = require('../../aplication/controllers/OAuthsController.cjs')
 
@@ -74,6 +75,7 @@ const createServer = () => {
     }, loginRouter);
     app.use('/logout', logOutController)
 
+    app.use('/user', userRoutes)
     app.use('/workshops', workshopRoutes);
     app.use('/product', productRoutes);
     app.use('/cupon', cuponRoutes);
