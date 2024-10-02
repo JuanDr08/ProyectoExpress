@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 
 
-import Pantalla7 from "./pages/pantalla7";
+import {Pantalla7} from "./pages/pantalla7";
 import Pantalla17 from "./pages/pantalla17";
 import { Pantalla19 } from "./pages/pantalla19";
 import Carga from "./pages/Carga";

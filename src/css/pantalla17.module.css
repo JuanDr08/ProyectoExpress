@@ -92,7 +92,7 @@
     font-size: 4.4vw;
     color: var(--color-2E1108);
 }
-.body .span{
+.main span{
     color: var(--color-9D1A1A);
     font-weight: bold;
 }

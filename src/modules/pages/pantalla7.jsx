@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import  styles from '../../css/pantalla7.module.css'
+import axios from 'axios';
 
-export default function Pantalla7() {
+export function Pantalla7() {
   const location = useLocation();
-  const { username, numeroCelular, sex, day, month, year } = location.state;
-  console.log(location.state, numeroCelular)
+  const { nick, phone, fecha, sex,  password} = location.state;
+
   const [checkbox1, setCheckbox1] = useState(false);
   const [checkbox2, setCheckbox2] = useState(false);
 
   const isRegisterButtonDisabled = !checkbox1 || !checkbox2;
   const isSubrayado = checkbox1 && checkbox2; // Verificar si ambas condiciones se cumplen
 
+  const handleRegisterClick = async (e) => {
+    e.preventDefault();
+    console.log(isRegisterButtonDisabled)
+    if (!isRegisterButtonDisabled) {
+      const data= {nick: nick, phone: phone, fecha: fecha, sex: sex, password: password}
+      const direccion = await axios.post('http://localhost:3000/register/auth/ruraqMaki', data, {
+        withCredentials: true,
+      })
+      console.log(direccion)
+      window.location.href = "/home";
+    } else {
+      window.location.href = "/register/TermsAndConditions"; 
+    }
+  };
   return (
     <div className={styles.body}>
       <header className={styles.header}>
@@ -60,8 +75,9 @@ export default function Pantalla7() {
         <div className={styles.boxAdelante}>
           <i className='bx bx-chevron-right'></i>
           <a 
-            href={isRegisterButtonDisabled ? undefined : "/home"} 
+            href="#" 
             id="registerButton" 
+            onClick={handleRegisterClick}
             className={`${isRegisterButtonDisabled ? styles.disabled : ''} ${isSubrayado ? styles.subrayado : ''}`} 
           >
             Registrarse

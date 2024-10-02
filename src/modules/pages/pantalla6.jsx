@@ -5,8 +5,8 @@ import  styles from '../../css/pantalla6.module.css'
 
 export function Pantalla6() {
   const [formData, setFormData] = useState({
-    username: '',
-    phone: '',
+    nick: '',
+    celu: '',
     confirmPhone: '',
     password: '',
     confirmPassword: '',
@@ -58,12 +58,13 @@ export function Pantalla6() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const numeroCelularCompleto = `+${inputRef.current.value}${formData.phone}`;
-    
+    const numeroCelularCompleto = `+${inputRef.current.value}${formData.celu}`;
+    const fecha =`${formData.year }/${formData.month}/${formData.day}`;
+
     // Validación de campos vacíos
     if (
-      !formData.username ||
-      !formData.phone ||
+      !formData.nick ||
+      !formData.celu ||
       !formData.confirmPhone ||
       !formData.password ||
       !formData.confirmPassword ||
@@ -71,14 +72,15 @@ export function Pantalla6() {
       !formData.day ||
       !formData.month ||
       !formData.year ||
-      !formData.countryCode
+      !inputRef.current.value ||
+      !codigo.current.value
     ) {
       setErrorMessage('Todos los campos deben estar llenos.');
       return;
     }
 
     // Validar que los números de teléfono coincidan
-    if (numeroCelularCompleto !== `+${formData.countryCode[' phone_code']}${formData.confirmPhone}`) {
+    if (numeroCelularCompleto !== `+${codigo.current.value}${formData.confirmPhone}`) {
       setErrorMessage('El número de teléfono y la confirmación deben ser iguales.');
       return;
     }
@@ -97,7 +99,7 @@ export function Pantalla6() {
 
     // Redirigir a la siguiente página
     navigate('/register/TermsAndConditions', {
-      state: { ...formData, numeroCelular: numeroCelularCompleto },
+      state: { ...formData, phone: numeroCelularCompleto, fecha: fecha },
     });
   };
 
@@ -119,9 +121,9 @@ export function Pantalla6() {
         <div className={styles.boxNombre}>
           <input
             type="text"
-            name="username"
+            name="nick"
             placeholder="Nombre de usuario"
-            value={formData.username}
+            value={formData.nick}
             onChange={handleChange}
           />
         </div>
@@ -146,9 +148,9 @@ export function Pantalla6() {
             <div className={styles.numCelular}>
               <input
                 type="text"
-                name="phone"
+                name="celu"
                 placeholder="Número de celular"
-                value={formData.phone}
+                value={formData.celu}
                 onChange={handleChange}
               />
             </div>
