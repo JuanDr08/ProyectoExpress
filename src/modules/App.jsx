@@ -26,7 +26,7 @@ import { Settings } from "./pages/Settings";
 import { AppOpinions } from "./pages/AppOpinions";
 import { CustomerSupport } from "./pages/CustomerSupport";
 import { Chat } from "./pages/ChatView";
-import InfoCraft from "./pages/InfoCraft";
+import {InfoCraft} from "./pages/InfoCraft";
 import TallerCeramica from "./pages/CraftInscription";
 import InicioSesionRuraq from "./pages/InicioSesionRuraq";
 //import Pantalla17 from "./pages/pantalla17";// -- VISTA CORRUPTA, LA IMPORTACION DE LA VISTA Y SU CSS CORROMPE EL ESTILO DE LAS DEMAS VISTAS, REVISAR

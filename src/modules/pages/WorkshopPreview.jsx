@@ -79,7 +79,7 @@ export const WorkshopPreview = () => {
                     <img className="w-full h-full" src={tallerData.imagen} alt={tallerData.nombre_taller} />
                 </div>
                 <div className="flex justify-center items-center relative text-center text-blanco underline h-[20%]">
-                    <Link to={'/'}>Conoce la historia detrás de este taller artesanal y conoce como producen sus textiles</Link>
+                    <Link to={`/workshop/info/${id}`}>Conoce la historia detrás de este taller artesanal y conoce como producen sus textiles</Link>
                 </div>
             </section>
 

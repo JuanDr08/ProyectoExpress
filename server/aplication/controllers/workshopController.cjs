@@ -74,7 +74,7 @@ class WorkshopController {
     async getWorkshopById(req, res){
         try {
             const { workshopId } = req.params; // Obtener el ID del taller y el parámetro de búsqueda desde la URL
-
+            
             const workshop = await this.workshopService.getWorkshopById(workshopId);
 
             // Devolver la información del taller y sus productos (filtrados o no)

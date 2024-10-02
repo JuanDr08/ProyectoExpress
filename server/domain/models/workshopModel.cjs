@@ -16,7 +16,9 @@ class Workshop {
     async findWorkshopByID (id) {
         const obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection("taller");
+        console.log(id)
         const res = await collection.find({_id: new ObjectId(id)}).toArray()
+        
         return res
     }
 
@@ -38,7 +40,6 @@ class Workshop {
     async displayProductsByWorskshopId(id){
         const obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection("taller");
-
 
         const res = await collection.aggregate([
             {

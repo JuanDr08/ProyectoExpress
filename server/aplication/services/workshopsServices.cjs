@@ -22,6 +22,7 @@ class WorkshopService {
     }
 
     async getWorkshopById(id){
+        console.log(id)
         const workshop = await this.workshopRepository.getWorkshopById(id);
         return workshop;
     }

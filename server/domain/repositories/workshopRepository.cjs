@@ -16,6 +16,7 @@ class WorkshopRepository {
 
     async getProductsByWorkshopId(id){
         try{
+            console.log(id)
             const workshop = new Workshop();
             const result = await workshop.displayProductsByWorskshopId(id);
             return result;
@@ -27,7 +28,9 @@ class WorkshopRepository {
     async getWorkshopById(id){
         try{
             const workshop = new Workshop();
+            console.log(id)
             const result = await workshop.findWorkshopByID(id);
+            console.log(result);
             return result;
         } catch(error){
             throw new Error(`Error retrieving workshop: ${error.message}`);
