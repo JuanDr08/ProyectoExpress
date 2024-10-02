@@ -76,7 +76,7 @@ export function LeftMenu(){
 
                 <div className="credits flex flex-col">
                     <p>Aplicacion potenciada por:</p>
-                    <div className="campusimg w-[8rem] pt-5">
+                    <div className="campusimg w-[100px] pt-5">
                         <img src="/img/campuslands.png" />
                     </div>
                 </div>

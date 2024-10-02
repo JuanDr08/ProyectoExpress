@@ -104,7 +104,7 @@ const router = createBrowserRouter([
         loader: loader
     },
     {
-        path: '/products',
+        path: '/products/:categoryName',
         element: <Categories/>,
         loader: loader
     },
