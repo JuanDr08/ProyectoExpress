@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import  styles from '../../css/pantalla21.module.css'
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
 export const Pantalla21 = () => {
@@ -12,26 +12,13 @@ export const Pantalla21 = () => {
 
     const [searchTerm, setSearchTerm] = useState(''); // Estado para almacenar el término de búsqueda
     const [filteredData, setFilteredData] = useState(talleres); // Estado para almacenar los datos filtrados
-  
-     // Función para hacer la solicitud a la API
-     const fetchTaller = async () => {
-        try {
-          const response = await axios.get(`http://localhost:3000/workshops/`); 
-          setTalleres(response.data); // Almacena los productos en el estado}
-        } catch (error) {
-          console.error('Error al obtener los productos', error);
-        }
-      };
-  
-      fetchTaller();
-
-    // Función que se ejecuta cuando el input de búsqueda cambia
-    const handleSearch = (event) => {
+     // Función que se ejecuta cuando el input de búsqueda cambia
+     const handleSearch = (event) => {
       const term = event.target.value.toLowerCase(); // Convierte el texto a minúsculas
       setSearchTerm(term);
   
       // Filtra los datos según el término de búsqueda
-      const filtered = data.filter((item) => {
+      const filtered = talleres.filter((item) => {
         return (
           item.nombre_taller.toLowerCase().includes(term) || // Filtra por nombre del taller
           item.categoria.toLowerCase().includes(term) || // Filtra por categoría
@@ -41,23 +28,27 @@ export const Pantalla21 = () => {
       
       setFilteredData(filtered); // Actualiza el estado con los datos filtrados
     }
-
+    useEffect(() => {
+     // Función para hacer la solicitud a la API
+     const fetchTaller = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/workshops/`); 
+          setTalleres(response.data); // Almacena los productos en el estado
+          setFilteredData(response.data)
+        } catch (error) {
+          console.error('Error al obtener los productos', error);
+        }
+      };
+  
+    fetchTaller();
     
-    useEffect(()=> {
-
-        if (!data) navigate('/register')
-        console.log(data.user)
-        setUser([data.user])
-
-    },[])
+  }, [data, navigate]);
     return (
         <div className={styles.body}>
             <header className={styles.header}>
             <div className={styles.boxAtras}>
                 <img src="/img/Group 53.png" alt="triangulo" />
-                <a href="#">
-                <i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i>
-                </a>
+                <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
             </div>
             <div className={styles.boxImg}>
                 <img src="/img/Rectangle 86.png" alt="rombo" />
@@ -84,7 +75,7 @@ export const Pantalla21 = () => {
                     <div className={styles.texto}>
                     <h4>Taller {item.nombre_taller}</h4>
                     <a href="#" className={styles.publico}>Para el público en general</a>
-                    <p className={styles.dadoPor}>Taller dado por {item.encargado} los artesanos de</p>
+                    <p className={styles.dadoPor}>Taller dado por {item.encargado} los artesanos de {item.categoria}</p>
                     <p className={styles.nombreArtesano}>{item.nombre_taller}</p>
                     </div>
                     <button>

@@ -96,6 +96,7 @@
     overflow: hidden;
     display: flex;
     font-size: 3.5vw;
+    border-radius: 1vh;
     gap: 2vw;
     color: var(--color-blanco);
 }
@@ -103,6 +104,9 @@
     width: 40%;
     height: 100%;
     overflow: hidden;
+}
+.publico{
+    text-decoration: underline;
 }
 
 .box .boxImg img {
