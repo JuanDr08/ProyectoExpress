@@ -61,6 +61,14 @@ export function Pantalla6() {
     const numeroCelularCompleto = `+${inputRef.current.value}${formData.celu}`;
     const fecha =`${formData.year }/${formData.month}/${formData.day}`;
 
+    // Validación del campo 'nick'
+    if (!formData.nick) {
+      setErrorMessage('Campo vacio: nick es obligatorio');
+      return
+    } else if (typeof formData.nick !== 'string' || formData.nick.length < 5 || formData.nick.length > 12) {
+      setErrorMessage('nick debe ser una cadena de entre 5 y 12 caracteres');
+      return
+    }
     // Validación de campos vacíos
     if (
       !formData.nick ||
@@ -220,9 +228,8 @@ export function Pantalla6() {
             onChange={handleChange}
           >
             <option value=""></option>
-            <option value="femenino">Femenino</option>
-            <option value="masculino">Masculino</option>
-            <option value="indefinido">Otro</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Masculino">Masculino</option>
           </select>
         </div>
         <div className={styles.boxFechaNacimiento}>

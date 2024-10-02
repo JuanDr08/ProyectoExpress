@@ -17,10 +17,12 @@ export function Pantalla7() {
     e.preventDefault();
     console.log(isRegisterButtonDisabled)
     if (!isRegisterButtonDisabled) {
-      const data= {nick: nick, phone: phone, fecha: fecha, sex: sex, password: password}
-      const direccion = await axios.post('http://localhost:3000/register/auth/ruraqMaki', data, {
-        withCredentials: true,
-      })
+      const data= {"nick": nick, "phone": phone, "birth_day": fecha, "sex": sex, "password": password}
+      const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', JSON.stringify(data), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
       console.log(direccion)
       window.location.href = "/home";
     } else {
