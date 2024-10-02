@@ -1,12 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Footer() {
-    const [activeButton, setActiveButton] = useState(0); // Estado para el botón activo
+    const navigate = useNavigate();
+    const location = useLocation()
+    const [activeButton, setActiveButton] = useState(2); // Estado para el botón activo
 
-    const handleButtonClick = (index) => {
-        setActiveButton(index); // Cambiamos el botón activo al clic
-    };
 
+    useEffect(() => {
+        // Actualiza el botón activo según la ruta actual
+        switch (location.pathname) {
+            case '/workshops':
+                setActiveButton(0);
+                break;
+            case '/discounts':
+                setActiveButton(1);
+                break;
+            case '/home':
+                setActiveButton(2);
+                break;
+            case '/cart':
+                setActiveButton(3);
+                break;
+            case '/profile':
+                setActiveButton(4);
+                break;
+            default:
+                setActiveButton(2); // ruta default
+                break;
+        }
+    }, [location.pathname]); // Se ejecuta cada vez que cambia la ubicación
+
+        const handleButtonClick = (index) => {
+            setActiveButton(index);
+            // Redirigir según el botón clicado
+            switch (index) {
+                case 0:
+                    navigate('/workshops');
+                    break;
+                case 1:
+                    navigate('/discounts');
+                    break;
+                case 2:
+                    navigate('/home');
+                    break;
+                case 3:
+                    navigate('/cart');
+                    break;
+                case 4:
+                    navigate('/profile');
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     return (
         <footer className="fixed bottom-0 left-0 right-0 bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center">
             <button
