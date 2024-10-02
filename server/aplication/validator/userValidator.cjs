@@ -1,4 +1,4 @@
-const { body, query, param } = require('express-validator')
+const { body, query, param, files } = require('express-validator')
 const bcrypt = require('bcryptjs')
 
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
@@ -97,6 +97,55 @@ module.exports = class UserValidator {
             body().custom((value, { req }) => {
                 return Object.keys(req.body).length === 0;
             }).withMessage('No se debe enviar ningún dato en el cuerpo (body)'),
+
+            query().custom((value, { req }) => {
+                return Object.keys(req.query).length === 0;
+            }).withMessage('No se debe enviar ningún dato en la query')
+
+        ]
+    }
+
+    validateUserInfoEdit = () => {
+        return [
+
+            body().notEmpty().withMessage('No ha enviado ningun dato a guardar').custom((value, { req }) => {
+                if (!req.body.email && !req.body.phone && !req.body.username && !req.body.sex && !req.body.birth_day && !req.body.payment_method && !req.files) {
+                    throw new Error('Debe proporcionar al menos nombre de usuario o un email o telefono, o sexo, o fecha de nacimiento, o metodo de pago para actualizar.');
+                }
+                return true;
+            }),
+            body('username')
+                .optional()
+                .notEmpty().withMessage('Campo no puede estar vacio')
+                .isString().withMessage('Tipo de dato invalido')
+                .isLength({min: 5, max: 12}).withMessage('Cadena de minimo 5 caracteres y maximo 12'),
+            
+            body('email')
+                .optional()
+                .notEmpty().withMessage('Campo no puede estar vacio')
+                .isEmail().withMessage('Formato de email invalido'),
+
+            body('phone')
+                .optional()
+                .notEmpty().withMessage('No puede registrar el telefono vacio')
+                .isString().withMessage('Tipo de dato invalido'),
+
+            body('sex')
+                .optional()
+                .notEmpty().withMessage('Campo no puede estar vacio')
+                .isString().withMessage('Tipo de dato invalido')
+                .custom(value => {
+                    if (value && !['Masculino', 'Femenino'].includes(value)) throw new Error('Solo existen dos sexos: Masculino, Femenino')
+                    return true
+                }),
+                
+            body('birth_day')
+                .optional()
+                .isDate().withMessage('Formato de fecha invalido'),
+
+            body('payment_method')
+                .optional()
+                .notEmpty().withMessage('No puede estar vacio'),
 
             query().custom((value, { req }) => {
                 return Object.keys(req.query).length === 0;

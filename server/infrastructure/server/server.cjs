@@ -55,7 +55,7 @@ const createServer = () => {
     */
 
     app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
-        let validRoutesUnProtected = ['/login', '/register', '/auth'];
+        let validRoutesUnProtected = ['/login', '/register', '/auth', '/user'];
         let isProtectedRoute = validRoutesUnProtected.some(route => req.originalUrl.startsWith(route));
         
         if (!req.isAuthenticated() && !isProtectedRoute) {

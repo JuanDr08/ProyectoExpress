@@ -47,6 +47,25 @@ module.exports = class UserController {
 
     }
 
+    async editUserData(req, res) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
+        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+        const fields = Object.keys(req.body)
+
+        for (let field of fields) {
+            console.log(field)
+            let query = await userService.updateFieldsWithSet(userId, field, req.body[field])
+            console.log(query)
+        }
+
+        console.log(Object.keys(req.body))
+
+    }
+
     async createFieldOfArraysAndPushObjectIdItems(req, res, fieldName) {
 
         const errors = validationResult(req);

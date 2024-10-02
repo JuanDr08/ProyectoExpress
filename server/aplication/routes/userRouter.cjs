@@ -44,6 +44,8 @@ router.delete('/favorites/workshops/:id', express.json(), userValidator.validate
 router.delete('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'talleres_inscritos'))
 router.delete('/coupons/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'cupones'))
 
+router.put('/edit', express.json(), userValidator.validateUserInfoEdit(), userController.editUserData)
+
 // router.get('/:id', auth, userValidator.validateUserId(), (req, res) => userController.getUser(req, res));
 // router.get('/search', auth, (req, res) => userController.searchUsers(req, res));
 
