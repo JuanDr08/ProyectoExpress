@@ -7,7 +7,7 @@ class ChatService {
     
     async LogMessage(userId, message) {
         try {
-            console.log("Parametros de LogMessage: ", {userId, message})
+            // console.log("Parametros de LogMessage: ", {userId, message})
             const chat = await this.chatRepo.save(userId, message); // Aquí el mensaje es el objeto completo
             return chat;
         } catch (error) {
