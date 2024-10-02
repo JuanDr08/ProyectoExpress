@@ -66,7 +66,7 @@ class Cupon{
             {
               $project: {
                 "productoInfo": 1,
-                "decuento": 1
+                "descuento": 1
               }
             }
           ]).toArray();

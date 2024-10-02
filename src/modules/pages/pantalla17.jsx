@@ -74,7 +74,7 @@ const Header =({ img, idProducto }) => {
         );
         if (productoConDescuento) {
           setTieneDescuento(true);
-          setValorDescuento(productoConDescuento.decuento);
+          setValorDescuento(productoConDescuento.descuento);
         } else {
           setTieneDescuento(false);
         }
@@ -110,7 +110,7 @@ const MainContent = ({ idProducto, cupon, nombre, precio, descripcion, dimension
     const cuponEncontrado = cupon.find(c => c.productoInfo._id === idProducto);
     
     if (cuponEncontrado) {
-      const descuentoPorcentaje = parseFloat(cuponEncontrado.decuento);
+      const descuentoPorcentaje = parseFloat(cuponEncontrado.descuento);
       setDescuento(descuentoPorcentaje);
 
       // Calcular el precio con descuento
