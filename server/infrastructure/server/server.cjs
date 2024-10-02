@@ -81,26 +81,21 @@ const createServer = () => {
     app.use('/cupon', cuponRoutes);
     
     // Configuración de Socket.io
-    io.on("connection", (socket) => {
-        console.log("Un usuario se ha conectado");
-
-        // Escuchar mensajes del cliente
-        socket.on("sendMessage", async({texto, transmitter, clientid}) => {
-            console.log("Mensaje recibido:", texto);
-
-            try {
-                await chatController.handleMessage(clientid, texto);
+    io.on('connection', (socket) => {
+        console.log("Usuario conectado");
     
-                io.emit("recievedMessage", {texto: message.texto, transmitter: "server"})
+        socket.on('sendMessage', async (message) => {
 
-            }catch(error) {
-                console.log("Error al recibir el mensaje", error);
+            // Aquí "message" es el objeto que enviamos desde el cliente
+            console.log("Mensaje recibido:", message);
+    
+            const userId = message.clientid;
+    
+            try {
+                await chatController.handleMessage(userId, message); // enviamos el objeto al controlador que maneja la lógica del chat
+            } catch (error) {
+                console.error("Error al manejar el mensaje:", error);
             }
-
-        });
-
-        socket.on("disconnect", () => {
-            console.log("Usuario desconectado");
         });
     });
 

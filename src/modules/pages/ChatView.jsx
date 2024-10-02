@@ -47,15 +47,19 @@ export const Chat = ({ nombre }) => {
         if (e.key !== 'Enter' && e.key !== undefined) return;
         let mensaje = inputRef.current.value.trim();
         if (mensaje === '') return;
-
+    
         // Emitir el mensaje al servidor
-        socket.current.emit('sendMessage', { texto: mensaje, transmitter: "cliente", clientid: user._id });
-        console.log(user)
-
-        // Agregar solo el mensaje del cliente (sin duplicar)
+        socket.current.emit('sendMessage', { 
+            texto: mensaje, 
+            transmitter: "cliente", 
+            clientid: user._id 
+        });
+    
+        // Agregar solo el mensaje del cliente
         setMessages(prevMessages => [...prevMessages, { texto: mensaje, transmitter: 'cliente' }]);
         inputRef.current.value = '';
     };
+    
 
     return (
 

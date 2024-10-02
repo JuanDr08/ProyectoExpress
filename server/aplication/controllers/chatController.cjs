@@ -6,14 +6,14 @@ class ChatController {
         this.chatService = new ChatService();
     }
 
-    async handleMessage(userId, texto) {
+    async handleMessage(userId, message) {
         try {
 
-            const chat = await this.chatService.LogMessage(userId, texto);
-            res.status(200).json(chat);
+            const chat = await this.chatService.LogMessage(userId, message);
+            return chat
+            // res.status(200).json(chat);
         } catch (error) {
-            const errorObj = JSON.parse(error.message);
-            res.status(errorObj.status || 500).json({ message: errorObj.message || 'Internal Server Error' });
+            console.log("Error en envio del mensaje")
         }
     }
 }
