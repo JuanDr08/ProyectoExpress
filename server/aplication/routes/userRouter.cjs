@@ -29,7 +29,7 @@ router.get('/cart/details', (req, res) => userController.getAllProductDetailseFr
 router.get('/purchases/details', userController.getAllProductDetailseFromFieldWithWorkshops)
 router.get('/favorites/workshops/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'taller', 'talleres_favoritos'))
 router.get('/subscribed/workshops/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'taller', 'talleres_inscritos'))
-router.get('/coupons/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'cupon', 'cupones'))
+router.get('/coupons/details', userController.getAllCuponDetailseFromFieldWithWorkshop)
 
 router.post('/favorites/products/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'favoritos'))
 router.post('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'carrito'))

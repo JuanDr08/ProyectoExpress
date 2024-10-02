@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import  styles from '../../css/pantalla22.module.css'
 import { useLoaderData, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const Pantalla22 = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null)
   const data = useLoaderData()
+  const [cupones, setCupones] = useState(null)
+  const [cuponDetalles, setCupon] = useState(null)
 
 
   useEffect(()=> {
+    const fetchCupon = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/user/coupons/details`); 
+        setCupon(response.data.data[0]); // Almacena los productos en el estado
+        setCupones(response.data.data[0].cupones)
+        console.log(response.data.data[0])
+      } catch (error) {
+        console.error('Error al obtener los productos', error);
+      }
+    };
 
-      if (!data) navigate('/register')
-      console.log(data.user)
-      setUser([data.user])
+    fetchCupon();
+  //     if (!data) navigate('/register')
+  //     console.log(data.user)
+  //     setUser([data.user])
 
-  },[])
+  },[data, navigate])
   return (
     <div className={styles.body}>
       <header className={styles.header}>
@@ -47,23 +61,29 @@ export const Pantalla22 = () => {
             <h4>Cupones Vigentes</h4>
             <p>Usar antes de la fecha de vencimiento</p>
           </article>
-          <div className={styles.box}>
-            <div className={styles.boxImg}>
-              <img src='../../../../public/img/y.jpg' alt="" />
+          { cuponDetalles && [cuponDetalles].map((c) => (
+            <div key={c._id}>
+              {[cupones].map((cupon) => ( 
+                <div key={cupon._id} className={styles.box}>
+                  <div className={styles.boxImg}>
+                    <img src={c.img} alt="" />
+                  </div>
+                  <div className={styles.info}>
+                    <div className={styles.texto}>
+                      <p>
+                        <span className={styles.porcentaje}>{cupon.descuento}%</span> de descuento en cartucheras del taller <br />
+                        <span className={styles.taller}>{c.nombre_taller}</span>
+                      </p>
+                    </div>
+                    <p className={styles.fechaVencimiento}>
+                      Fecha de vencimiento <span className={styles.fecha}> {cupon.fechaVencimiento} </span>
+                    </p>
+                    <button>Usar cupón</button>
+                  </div>
+                </div>
+                ))}
             </div>
-            <div className={styles.info}>
-              <div className={styles.texto}>
-                <p>
-                  <span className={styles.porcentaje}>50%</span> de descuento en cartucheras del taller <br />
-                  <span className={styles.taller}>Awaq Ayllus</span>
-                </p>
-              </div>
-              <p className={styles.fechaVencimiento}>
-                Fecha de vencimiento <span className={styles.fecha}> 4/9/23 </span>
-              </p>
-              <button>Usar cupón</button>
-            </div>
-          </div>
+            ))}
         </section>
       </main>
     </div>

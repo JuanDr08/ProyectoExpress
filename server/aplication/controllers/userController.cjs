@@ -219,5 +219,75 @@ module.exports = class UserController {
         }
 
     }
+    async getAllCuponDetailseFromFieldWithWorkshop(req, res) {
+        try {
+            
+            const userService = new UserService()
+            
+            // 66fcd36332175b17183a6acb
+            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+            let userExists = await userService.getUserById(userId)
+            if (!userExists) return res.status(404).json({ status: 400, message: 'Usuario no econtrado' })
+
+            let agg = [
+                {
+                    $match: {
+                        _id: ObjectId.createFromHexString(`${userId}`)
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "cupon",
+                        localField: "cupones",
+                        foreignField: "_id",
+                        as: "cupones"
+                    }
+                },
+                {
+                    $unwind: "$cupones"
+                },
+                {
+                    $lookup: {
+                      from: "productos",                 
+                      localField: "cupones.idProductos", 
+                      foreignField: "_id",     
+                      as: "productos"   
+                    }
+                },
+                {
+                    $unwind: "$productos"         // Descomponer para que haya un documento por taller
+                },
+                {
+                    $lookup: {
+                      from: "taller",                   // Colección a unir
+                      localField: "productos._id",                // Campo en 'productos'
+                      foreignField: "productos",      // Campo en 'taller'
+                      as: "tallerDetalles"              // Nombre del array resultante
+                    }
+                  },
+                  {
+                    $unwind: "$tallerDetalles"          // Descomponer el array para obtener un taller por producto
+                  },
+                {
+                    $project: {
+                        cupones: 1,
+                        nombre_taller: "$tallerDetalles.nombre_taller",
+                        img: "$productos.img"
+
+                    }
+                },
+            ]
+
+            let aggDetails = await userService.agregate(agg)
+            
+            if (!aggDetails.length) return res.status(404).json({ status: 404, message: `El usuario no presenta contenido en compras` })
+
+            return res.status(200).json({ status: 200, data: aggDetails })
+
+        } catch (err) {
+            return res.status(500).json({ status: 500, message: err })
+        }
+
+    }
 
 }
