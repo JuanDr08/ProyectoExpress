@@ -63,15 +63,11 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
 }
 
 exports.loginLocalAuthCallback = (req, res) => {
-    
-    console.log(req.notLoggued)
+    console.log('Usuario autenticado:', req.user);
+    console.log('¿Está autenticado?', req.isAuthenticated());
 
-    console.log('aca',req.chi);
-    if (req.isAuthenticated()) {
-      res.status(200).json({ message: 'Autenticación exitosa', user: req.user });
-    } else {
-      res.status(401).json({ message: 'Fallo en la autenticación' });
-    }
+    return res.status(200).json({ msg: req.user });
+
   };
 
 // exports.loginLocalAuthCallback = (req, res, next) => {
@@ -84,18 +80,18 @@ exports.loginLocalAuthCallback = (req, res) => {
 
 // }
 
-exports.logOutController = (req, res) => {
-
+exports.logOutController = (req, res, next, ret=false) => {
+    
     if (!req.isAuthenticated()) return res.status(400).json({msg: 'No hay una sesion activa para desloguear'})
-
+    
     req.logOut(err => { // Logout permite cerrra la session que habia previamente iniciada, borrando asi algunos datos de inicio de session como usuario etc... pero mantiene
         // algunos datos como preferencias
         if (err) return res.status(500).json({ message: 'Error cerrando la sesión' });
-
+        
         req.session.destroy(err => { // A diferencia de el logOut, este elimita totalmente los datos de inicio de session, no queda absolutamente nada de datos
             if (err) return res.status(500).json({ message: 'Error eliminando la sesión' });
             res.clearCookie('connect.sid'); // Se limipia la cookie aunque es de poca utilidad ya que al volver a la ruta raiz esta vuelve a generar una cookie
-            res.redirect('http://localhost:5173/login') // Si todo sale bien redireccionamos a la raiz
+            return res.redirect('http://localhost:5173/login') // Si todo sale bien redireccionamos a la raiz
         })
 
     })

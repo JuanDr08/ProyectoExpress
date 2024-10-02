@@ -1,6 +1,9 @@
 const {body, query, param} = require('express-validator')
 const bcrypt = require('bcryptjs')
 
+const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+const isValidPhone = (phone) => /^\d+$/.test(phone);
+
 module.exports = class UserValidator {
 
     validateUserRegistration = () => {
@@ -68,6 +71,19 @@ module.exports = class UserValidator {
                     }
                     return true;
                 })
+        ]
+    }
+
+    validateUserLogIn = () => {
+        return [
+
+            body('identifier')
+                .notEmpty().withMessage('El campo no puede estar vacio')
+                .isString().withMessage('Tipo de dato invalido'),
+            body('password')
+                .notEmpty().withMessage('Campo no puede estar vacio')
+                .isString().withMessage('Tipo de dato invalido')
+
         ]
     }
 

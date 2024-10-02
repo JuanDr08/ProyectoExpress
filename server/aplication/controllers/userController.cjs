@@ -22,7 +22,9 @@ module.exports = class UserController {
             }
         ]
         let isUserResgistered = await userService.agregate(query)
-        if (isUserResgistered.length) res.status(409).json({status: 409, message: 'El usuario ya existe'})
+        console.log(isUserResgistered.length);
+        
+        if (isUserResgistered.length) return res.status(409).json({status: 409, message: 'El usuario ya existe'})
 
         let data = {
             cedula: 'Not assigned',
@@ -37,9 +39,9 @@ module.exports = class UserController {
             password: passwordHash
         }
 
-        console.log(data);
-        res.status(200).json({msg: 'todo bn'})
-        //res.redirect('http://localhost:5173/login/credentials')
+        await userService.createUser(data)
+
+        res.redirect('http://localhost:5173/login/credentials')
 
     }
 
