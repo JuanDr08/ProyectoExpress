@@ -6,20 +6,39 @@ import axios from 'axios';
 // Componente para el ícono del corazón con funcionalidad de toggle
 const Corazon = ({idProducto}) => {
   const [liked, setLiked] = useState(false);
+  useEffect(() => {
+    const fetchFavorito= async () => {
+      try{
+        const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`);
+        if (favorito.data) setLiked(true);
+      } catch (error) {
+        console.error("El producto no se encuentra e favoritos:", error);
+        setLiked(false)
+      }
+    };
+
+    fetchFavorito();
+  }, [idProducto]);
 
   const toggleHeart = async () => {
-    setLiked(!liked);
-    const favorito = await axios.get(`http://localhost:3000/favorites/${id}`);
-    if (favorito.data) setLiked(true);
+    try{
+      const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`);
+      if (favorito.data) setLiked(true);
+    } catch (error) {
+      console.error("El producto no se encuentra e favoritos:", error);
+      setLiked(false)
+    }   
     try {
       if (!liked) {
         // Si no está en favoritos, hacemos una petición POST para agregarlo
-        await axios.post(`http://localhost:3000/favorites`, { id: idProducto });
-        console.log("Producto añadido a favoritos");
+        const addFavoritos = await axios.post(`http://localhost:3000/user/favorites/products/${idProducto}`);
+        console.log("Producto añadido a favoritos", addFavoritos);
+        setLiked(true)
       } else {
         // Si está en favoritos, hacemos una petición DELETE para eliminarlo
-        await axios.delete(`http://localhost:3000/favorites/${idProducto}`);
+        await axios.delete(`http://localhost:3000/user/favorites/products/${idProducto}`);
         console.log("Producto eliminado de favoritos");
+        setLiked(false)
       }
     } catch (error) {
       console.error("Error al actualizar los favoritos:", error);
@@ -108,8 +127,8 @@ const MainContent = ({ idProducto, cupon, nombre, precio, descripcion, dimension
   }, [idProducto, precio, cupon]);
 
   const addCarrito = async () => {
-      await axios.post(`http://localhost:3000/carrito${{idProducto}}`,);
-      console.log("Producto añadido a carrito");
+      const addCarrito= await axios.post(`http://localhost:3000/user/cart/${idProducto}`,);
+      console.log("Producto añadido a carrito", addCarrito);
   };
 
 return (

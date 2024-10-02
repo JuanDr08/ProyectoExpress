@@ -24,7 +24,7 @@ export function Pantalla7() {
         }
     })
       console.log(direccion)
-      window.location.href = "/home";
+      window.location.href = "/login/credentials";
     } else {
       window.location.href = "/register/TermsAndConditions"; 
     }
