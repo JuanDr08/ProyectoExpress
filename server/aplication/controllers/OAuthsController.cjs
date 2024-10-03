@@ -16,13 +16,19 @@ exports.loginGoogleAuthCallback = (req, res, next) => {
             Importante el metodo logIng que nos ofrece passport dentro del objeto 'Request' Ya que es el que nos permite que si la autenticacion sale bien, guardar la informacion
             del usuario dentro de la session para en posteriores casos poder verificar si hay alguien autenticado y asi sucesivamente
         */
-        if (user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
+        if (info.path == 'login' && user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
+        
         req.logIn(user, (err) => { 
             if (err) {
                 console.log(err, 'Error al iniciar sesión ')
                 return next(err)
             }
-            return res.redirect('http://localhost:5173/home')
+            return res.send(`
+            <script>
+              window.opener.postMessage({ success: true }, 'http://localhost:5173');
+              window.close();
+            </script>
+          `)
         })
     })(req, res, next);
 }; 
@@ -35,14 +41,19 @@ exports.loginFacebookAuthCallback = (req, res, next) => {
 
         if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
 
-        if (user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
+        if (info.path == 'login' && user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
 
         req.logIn(user, (err) => { 
             if (err) {
                 console.log(err, 'Error al iniciar sesión ')
                 return next(err)
             }
-            return res.redirect('http://localhost:5173/home')
+            return res.send(`
+            <script>
+              window.opener.postMessage({ success: true }, 'http://localhost:5173');
+              window.close();
+            </script>
+          `)
         })
     })(req, res, next);
 
@@ -55,14 +66,19 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
 
         if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
 
-        if (user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
+        if (info.path == 'login' && user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
 
         req.logIn(user, (err) => { 
             if (err) {
                 console.log(err, 'Error al iniciar sesión ')
                 return next(err)
             }
-            return res.redirect('http://localhost:5173/home')
+            return res.send(`
+            <script>
+              window.opener.postMessage({ success: true }, 'http://localhost:5173');
+              window.close();
+            </script>
+          `)
         })
 
     })(req, res, next);
@@ -72,18 +88,23 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
 exports.loginGitHubAuthCallback = (req, res, next) => {
     
     passport.authenticate('github', async (err, user, info) => {
-        //if (info.exists && info.path == 'register') return res.status(400).json({errorCode: 400, msg: 'Intento de registro de usuario que ya existe en base de datos'}) // Checkeo de error por si se intenta registrar con una cuenta que ya existe
-        console.log('holaa')
+        if (info.exists && info.path == 'register') return res.status(400).json({errorCode: 400, msg: 'Intento de registro de usuario que ya existe en base de datos'}) // Checkeo de error por si se intenta registrar con una cuenta que ya existe
+        
         if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
-
-        //if (user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
+        
+        if (info.path == 'login' && user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
 
         req.logIn(user, (err) => { 
             if (err) {
                 console.log(err, 'Error al iniciar sesión ')
                 return next(err)
             }
-            return res.redirect('http://localhost:5173/home')
+            return res.send(`
+            <script>
+              window.opener.postMessage({ success: true }, 'http://localhost:5173');
+              window.close();
+            </script>
+          `)
         })
 
     })(req, res, next);

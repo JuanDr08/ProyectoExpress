@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 //import "react-datepicker/dist/react-datepicker.css";
-import { Form } from 'react-router-dom';
+import { Form, useLoaderData, useNavigate } from 'react-router-dom';
 import { Input } from '../components/Inputs';
 import { Muesca } from '../components/Muesca';
 
@@ -13,6 +13,14 @@ export const EmailRecord = () => {
     const handleDayChange = (e) => setDay(e.target.value);
     const handleMonthChange = (e) => setMonth(e.target.value);
     const handleYearChange = (e) => setYear(e.target.value);
+
+    const navigate = useNavigate();
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+        if (data) navigate('/home')
+    },[])
 
     return (
 

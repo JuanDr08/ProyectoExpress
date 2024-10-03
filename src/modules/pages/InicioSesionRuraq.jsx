@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Muesca } from '../components/Muesca';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 function InicioSesionRuraq() {
+
+  const navigate = useNavigate();
+    const data = useLoaderData()
+
+
+    useEffect(()=> {
+        if (data) navigate('/home')
+    },[])
+
   return (
     <>
       {/* Imagen en la esquina superior derecha */}

@@ -54,8 +54,8 @@ module.exports = (passport, path) => {
                     password: "Not assigned"
                 }
 
-                await userInstance.createUser(data, {exists: true, path: path}) // Creamos el usuario en la Base de datos
-                done(null, data); // Creamos la sesion de passport con la data obtenida
+                await userInstance.createUser(data) // Creamos el usuario en la Base de datos
+                done(null, data, {exists: false, path: path}); // Creamos la sesion de passport con la data obtenida
             } catch (error) {
                 console.error('Error saving/updating user:', error);
                 done(error, null);
