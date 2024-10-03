@@ -34,6 +34,16 @@ module.exports = class UserRepository {
 
     }
 
+    async updateFieldsWithSet(userId, field, values) {
+
+        try {
+            return await this.userModel.updateFieldsWithSet(userId, field, values)
+        } catch (err) {
+            throw new Error(JSON.stringify({status: 500, message: 'Error during the user insertion'}))
+        }
+
+    }
+
     async updateUserCustomField(userId, field, values) {
 
         try {

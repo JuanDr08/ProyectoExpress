@@ -24,6 +24,12 @@ module.exports = class UserService {
 
     }
 
+    async updateFieldsWithSet(userId, field, value) {
+
+        return await this.UserRepository.updateFieldsWithSet(userId, field, value)
+
+    }
+
     async updateFieldFromUser(userId, field, values) {
 
         return await this.UserRepository.updateUserCustomField(userId, field, values)

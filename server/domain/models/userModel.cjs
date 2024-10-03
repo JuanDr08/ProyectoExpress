@@ -35,6 +35,15 @@ module.exports = class User {
 
     }
 
+    async updateFieldsWithSet(userId, field, value) {
+
+        let db = ConnectToDatabase.instanceConnect;
+        const collection = db.db.collection('usuario');
+        let res = await collection.updateOne({_id: ObjectId.createFromHexString(userId)}, {$set: {[field] : value}})
+        return res
+
+    }
+
     async updateCustomField(userId, field, values) {
 
         let db = ConnectToDatabase.instanceConnect;

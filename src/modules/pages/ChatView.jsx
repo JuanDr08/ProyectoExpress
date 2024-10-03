@@ -20,9 +20,14 @@ export const Chat = ({ nombre }) => {
 
         if (!data) return navigate('/')
         console.log(data.user)
-        setUser(data.user[0])
+    
+        const currentUser = data.user[0];
+        setUser(currentUser);
 
         socket.current = io('http://localhost:3000');
+
+        // Registrar el usuario al conectarse
+        socket.current.emit('registerUser', currentUser._id); // Emitir el ID del usuario
 
         socket.current.on("connect", () => {
             console.log("Conectado al servidor Socket.io");
@@ -47,14 +52,20 @@ export const Chat = ({ nombre }) => {
         if (e.key !== 'Enter' && e.key !== undefined) return;
         let mensaje = inputRef.current.value.trim();
         if (mensaje === '') return;
-
+    
         // Emitir el mensaje al servidor
-        socket.current.emit('sendMessage', mensaje);
-
-        // Agregar solo el mensaje del cliente (sin duplicar)
+        socket.current.emit('sendMessage', { 
+            texto: mensaje, 
+            transmitter: "cliente", 
+            clientid: user._id 
+        });
+        console.log(user)
+    
+        // Agregar solo el mensaje del cliente
         setMessages(prevMessages => [...prevMessages, { texto: mensaje, transmitter: 'cliente' }]);
         inputRef.current.value = '';
     };
+    
 
     return (
 

@@ -103,7 +103,7 @@ const router = createBrowserRouter([
         loader: loader
     },
     {
-        path: '/products',
+        path: '/products/:categoryName',
         element: <Categories/>,
         loader: loader
     },
@@ -166,7 +166,7 @@ const router = createBrowserRouter([
         path: '/workshop/details/:id',
         element: <TallerCeramica/>,
         loader: loader
-    }
+    },
 ]);
 
 export const App = () => {
