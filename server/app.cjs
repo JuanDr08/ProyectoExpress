@@ -13,9 +13,12 @@ const startApp = async () => {
     
     const { app: expressApp, server, io } = createServer();
     
-    expressApp.use((req, res, next) => {
+    expressApp.use((err,req, res, next) => {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(413).json({status: 413, message: 'El archivo es demasiado grande. Límite máximo: 0.5 MB'});
+        }
         res.status(404).json({ message: "No tiene autorización" });
-        next();
+        next(err);
     });
 
     const DBConnection = async() => {
