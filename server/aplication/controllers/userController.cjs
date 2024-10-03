@@ -248,35 +248,43 @@ module.exports = class UserController {
                 },
                 {
                     $lookup: {
-                      from: "productos",                 
-                      localField: "cupones.idProductos", 
-                      foreignField: "_id",     
-                      as: "productos"   
+                        from: "productos",
+                        localField: "cupones.idProductos",
+                        foreignField: "_id",
+                        as: "productos"
                     }
                 },
                 {
-                    $unwind: "$productos"         // Descomponer para que haya un documento por taller
+                    $unwind: "$productos"
                 },
                 {
                     $lookup: {
-                      from: "taller",                   // Colección a unir
-                      localField: "productos._id",                // Campo en 'productos'
-                      foreignField: "productos",      // Campo en 'taller'
-                      as: "tallerDetalles"              // Nombre del array resultante
+                        from: "taller",
+                        localField: "productos._id",
+                        foreignField: "productos",
+                        as: "tallerDetalles"
                     }
-                  },
-                  {
-                    $unwind: "$tallerDetalles"          // Descomponer el array para obtener un taller por producto
-                  },
+                },
+                {
+                    $unwind: "$tallerDetalles"
+                },
+                {
+                    $group: {
+                        _id: "$cupones._id", // Agrupar por ID del cupón
+                        cupones: { $first: "$cupones" }, // Conservar el primer documento del cupón
+                        nombre_taller: { $first: "$tallerDetalles.nombre_taller" }, // Conservar el nombre del taller
+                        img: { $first: "$productos.img" } // Conservar la imagen del producto
+                    }
+                },
                 {
                     $project: {
                         cupones: 1,
-                        nombre_taller: "$tallerDetalles.nombre_taller",
-                        img: "$productos.img"
-
+                        nombre_taller: 1,
+                        img: 1
                     }
-                },
+                }
             ]
+            
 
             let aggDetails = await userService.agregate(agg)
             
