@@ -51,7 +51,7 @@ async function loader() {
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Pantalla6/>,
+        element: <Carga/>,
     },
     {
         path: "/register",

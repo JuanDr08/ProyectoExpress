@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import  styles from '../../css/pantalla17.module.css'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Muesca } from '../components/Muesca';
 
 // Componente para el ícono del corazón con funcionalidad de toggle
 const Corazon = ({idProducto}) => {
@@ -87,8 +88,7 @@ const Header =({ img, idProducto }) => {
   return (
   <header className={styles.header}>
     <div className={styles.boxAtras}>
-      <img src="/img/Group 53.png" alt="triangulo" />
-      <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
+      <Muesca></Muesca>
     </div>
     <div className={styles.boxImg}>
       <img src={img} alt="imagen del producto" />

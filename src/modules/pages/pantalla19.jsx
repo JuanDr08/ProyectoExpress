@@ -4,6 +4,8 @@ import { CategoryIcons } from '../components/CategoryIcons';
 import  styles from '../../css/pantalla19.module.css'
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Muesca } from '../components/Muesca';
+import { CategoryHeaders } from '../components/CategoryHeaders';
 
 const categories = [
   { name: "Textilería", icon: <svg width="40" viewBox="0 0 112 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.999997 5.0596L1 64.9404C1 67.1851 2.82396 69 5.06809 69L101.932 69C104.176 69 106 67.1851 106 64.9404L106 5.0596C106 2.81493 104.176 0.999996 101.932 0.999996L5.06808 1C2.82395 1 0.999997 2.81494 0.999997 5.0596ZM5.06809 65.4702C4.77053 65.4702 4.53404 65.2304 4.53404 64.9404L4.53404 5.0596C4.53404 4.76961 4.77053 4.5298 5.06808 4.5298L101.932 4.5298C102.229 4.5298 102.466 4.7696 102.466 5.0596L102.466 64.9404C102.466 65.2304 102.229 65.4702 101.932 65.4702L5.06809 65.4702Z" fill="white" stroke="white" strokeWidth="2" /><path fillRule="evenodd" clipRule="evenodd" d="M104 61.5C104 60.6716 104.358 60 104.8 60L111.2 60C111.642 60 112 60.6716 112 61.5C112 62.3284 111.642 63 111.2 63L104.8 63C104.358 63 104 62.3284 104 61.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 47.5C104 47.2239 104.358 47 104.8 47L111.2 47C111.642 47 112 47.2239 112 47.5C112 47.7761 111.642 48 111.2 48L104.8 48C104.358 48 104 47.7761 104 47.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 34.5C104 34.2239 104.358 34 104.8 34L111.2 34C111.642 34 112 34.2239 112 34.5C112 34.7761 111.642 35 111.2 35L104.8 35C104.358 35 104 34.7761 104 34.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 21.5C104 21.2239 104.358 21 104.8 21L111.2 21C111.642 21 112 21.2239 112 21.5C112 21.7761 111.642 22 111.2 22L104.8 22C104.358 22 104 21.7761 104 21.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 8C104 7.44772 104.358 7 104.8 7L111.2 7C111.642 7 112 7.44771 112 8C112 8.55228 111.642 9 111.2 9L104.8 9C104.358 9 104 8.55228 104 8Z" fill="white" /><path d="M4 58L4 52L104 52L104 58L4 58Z" fill="white" /><path d="M4 42L4 28L104 28L104 42L4 42Z" fill="white" /><path d="M4 18L4 11L104 11L104 18L4 18Z" fill="white" /></svg> },
@@ -76,16 +78,10 @@ export const Pantalla19 = () => {
     <div className={styles.body}>
       <header className={styles.header}>
         <div className={styles.boxAtras}>
-          <img src="/img/Group 53.png" alt="triangulo" />
-          <Link to={-1}>
-            <i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i>
-          </Link>
+          <Muesca></Muesca>
         </div>
         <div className={styles.boxImg}>
-          <img src="/img/Rectangle 86.png" alt="rombo" />
-          <h5>
-            Tus artesanías <br /> favoritas
-          </h5>
+        <CategoryHeaders title ='artesanias favoritas'/>
         </div>
       </header>
       <main className={styles.main}>

@@ -3,6 +3,7 @@ import  styles from '../../css/pantalla20.module.css'
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { CategoryHeaders } from '../components/CategoryHeaders';
+import { Muesca } from '../components/Muesca';
 
 export const Pantalla20 = () => {
   const navigate = useNavigate();
@@ -50,8 +51,7 @@ export const Pantalla20 = () => {
     <div className={styles.body}>
       <header className={styles.header}>
         <div className={styles.boxAtras}>
-          <img src="/img/Group 53.png" alt="triangulo" />
-          <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
+          <Muesca></Muesca>
         </div>
         <div className={styles.boxImg}>        
           <CategoryHeaders title ='Compras realizadas'/>

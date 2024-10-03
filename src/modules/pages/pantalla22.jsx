@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import  styles from '../../css/pantalla22.module.css'
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { Muesca } from '../components/Muesca';
+import { CategoryHeaders } from '../components/CategoryHeaders';
 
 export const Pantalla22 = () => {
   const navigate = useNavigate();
@@ -49,14 +51,10 @@ export const Pantalla22 = () => {
     <div className={styles.body}>
       <header className={styles.header}>
         <div className={styles.boxAtras}>
-          <img src='../../../../public/img/Group 53.png' alt="triangulo" />
-          <Link to={-1}>
-            <i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i>
-          </Link>
+          <Muesca></Muesca>
         </div>
         <div className={styles.boxImg}>
-          <img src='../../../../public/img/Rectangle 86.png' alt="rombo" />
-          <h5>Canjear <br /> cupón</h5>
+        <CategoryHeaders title ='Canjear cupón'/>
         </div>
       </header>
 

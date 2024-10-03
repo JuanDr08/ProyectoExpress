@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import  styles from '../../css/pantalla7.module.css'
 import axios from 'axios';
+import { Muesca } from '../components/Muesca';
 
 export function Pantalla7() {
   const location = useLocation();
@@ -33,8 +34,7 @@ export function Pantalla7() {
     <div className={styles.body}>
       <header className={styles.header}>
         <div className={styles.boxAtras}>
-          <img src=".././../../../public/img/Group 53.png" alt="triangulo" />
-          <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
+          <Muesca></Muesca>
         </div>
         <div className={styles.boxImg}>
           <img src="../../../../public/img/triangulo_2.png" alt="triangulo_2" />

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import  styles from '../../css/pantalla21.module.css'
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { Muesca } from '../components/Muesca';
+import { CategoryHeaders } from '../components/CategoryHeaders';
 
 export const Pantalla21 = () => {
     const navigate = useNavigate();
@@ -47,12 +49,10 @@ export const Pantalla21 = () => {
         <div className={styles.body}>
             <header className={styles.header}>
             <div className={styles.boxAtras}>
-                <img src="/img/Group 53.png" alt="triangulo" />
-                <Link to={-1}><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></Link>
+                <Muesca></Muesca>
             </div>
             <div className={styles.boxImg}>
-                <img src="/img/Rectangle 86.png" alt="rombo" />
-                <h5>Talleres <br /> educativos</h5>
+            <CategoryHeaders title ='Talleres educativo'/>
             </div>
             </header>
             <main className={styles.main}>
@@ -79,7 +79,7 @@ export const Pantalla21 = () => {
                     <p className={styles.nombreArtesano}>{item.nombre_taller}</p>
                     </div>
                     <button>
-                    <a href="#">Entérate más sobre el taller aquí</a>
+                    <Link to={`/workshop/info/${item._id}`}>Entérate más sobre el taller aquí</Link>
                     </button>
                 </div>
                 </section>

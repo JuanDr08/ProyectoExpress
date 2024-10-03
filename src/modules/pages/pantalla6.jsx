@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Papa from 'papaparse';
 import  styles from '../../css/pantalla6.module.css'
+import { Muesca } from '../components/Muesca';
 
 export function Pantalla6() {
   const [formData, setFormData] = useState({
@@ -115,10 +116,7 @@ export function Pantalla6() {
     <div className={styles.body}>
       <header className={styles.header}>
         <div className={styles.boxAtras}>
-          <img className={styles.img} src=".././../../../public/img/Group 53.png" alt="triangulo" />
-          <Link to={-1}>
-            <i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i>
-          </Link>
+        <Muesca/>
         </div>
         <div className={styles.boxTexto}>
           <h2 className={styles.h2}>Nombre de usuario*</h2>
