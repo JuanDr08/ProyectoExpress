@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import  styles from '../../css/pantalla22.module.css'
 import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -8,15 +8,32 @@ export const Pantalla22 = () => {
   const [user, setUser] = useState(null)
   const data = useLoaderData()
   const [cupones, setCupones] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('');
+  const cuponInputRef = useRef(null);
 
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const cupon = cuponInputRef.current.value; // Captura el valor del input
+    validarCupon(cupon); // Llama a la función validarCupon con el valor ingresado
+  };
+  const validarCupon = async (code) => {
+    try {
+      const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`); 
+      const id = cuponCode.data._id
+      const agregarCupon = await axios.post(`http://localhost:3000/user/coupons/${id}`); 
+      console.log(agregarCupon)
+      window.location.reload();
+    } catch (error) {
+      setErrorMessage('El codigo de cupon ingresado no es valido');
+      return;
+    }
+  }
 
   useEffect(()=> {
     const fetchCupon = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/user/coupons/details`); 
         setCupones(response.data.data)
-        console.log(response.data.data)
       } catch (error) {
         console.error('Error al obtener los productos', error);
       }
@@ -48,11 +65,22 @@ export const Pantalla22 = () => {
           <h4>¿Cuentas con algún cupón de descuento? <br /> Canjealo aquí</h4>
           <div className={styles.boxCanjear}>
             <i className='bx bxs-discount' style={{ color: '#ffffff' }}></i>
-            <form id="canjear-codigo" className={styles.form}>
-              <input className={styles.input1} type="text" placeholder="Ingresa tu cupón" />
-              <input className={styles.validar} type="submit" data-action="validar-cupon" value="Validar" />
+            <form id="canjear-codigo" className={styles.form} onSubmit={handleSubmit}>
+              <input
+                className={styles.input1}
+                type="text"
+                placeholder="Ingresa tu cupón"
+                ref={cuponInputRef} // Usamos useRef para capturar el valor del input
+              />
+              <input
+                className={styles.validar}
+                type="submit"
+                data-action="validar-cupon"
+                value="Validar"
+              />
             </form>
           </div>
+          {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
         </article>
 
         <section className={styles.sectionCupones}>
