@@ -57,8 +57,8 @@ module.exports = class UserController {
 
         try {
             let imageDataUrl = undefined
-            
-            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+            // console.log(req.user)
+            let userId = req.user ? req.user[0]._id : '66fc4e1ecea28adf2f935a77'
             let user = await userService.getUserById(userId)
             for (let field of Object.keys(req.body)) {
                 if (user[field] == req.body[field]) continue

@@ -7,38 +7,25 @@ import { Header } from "../components/Header";
 import { useLoaderData, useNavigate, Form } from 'react-router-dom';
 
 export function Profile() {
-
     const navigate = useNavigate();
     const data = useLoaderData();
     const [user, setUser] = useState(null);
-
-    // Edicion de datos de usuario
     const [isEditing, setIsEditing] = useState({ nick: false, email: false }); 
-    const [updatedData, setUpdatedData] = useState({});
-    
-    // Inicializar el estado del formulario
-    const [formData, setFormData] = useState({
-        nick: "", // Cambiado de names a nick
-        email: "",
-    });
-    
-    // UseEffect para cargar los datos del usuario
+    const [formData, setFormData] = useState({ nick: '',  email: ''});
+
     useEffect(() => {
         if (!data || !data.user) {
             navigate('/register');
         } else {
-            setUser(data.user[0]); // Almacenamos el objeto user en un array
+            setUser(data.user[0]);
             setFormData({
-                nick: data.user[0].nick, // Cambiado de names a nick
+                nick: data.user[0].nick,
                 email: data.user[0].email,
             });
-            console.log(data.user[0]);
         }
+        console.log(data)
     }, [data, navigate]);
-    
-    const [imageDataUrl, setImageDataUrl] = useState('');
-    
-    // Handles para subir la parte editada del usuario a la api
+
     const handleEdit = (field) => {
         setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
     };
@@ -47,22 +34,30 @@ export function Profile() {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formDataToSend = new FormData();
-        formDataToSend.append('nick', formData.nick); // Cambiado de names a nick
+        formDataToSend.append('nick', formData.nick);
         formDataToSend.append('email', formData.email);
-
+    
         try {
             const response = await fetch('http://localhost:3000/user/edit', {
                 method: 'PUT',
                 body: formDataToSend,
             });
-            console.log('Resultado fetch: ', response);
             const data = await response.json();
+            console.log(data)
+            console.log('Resultado fetch: ', response);
             console.log('Respuesta del servidor:', data);
-            setImageDataUrl(data.imageDataUrl);
+    
+            // Actualizar el estado de user y formData para reflejar el cambio
+            setUser((prev) => ({ ...prev, nick: formData.nick, email: formData.email }));
+            setFormData({
+                nick: data.name.nick,
+                email: data.name.email,
+            });
+    
         } catch (error) {
             console.error('Error al enviar datos:', error);
         }
@@ -117,18 +112,24 @@ export function Profile() {
                     </div>
                     <div className="userplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
                         {isEditing.nick ? (
-                            <input
-                                name="nick"
-                                value={formData.nick}
-                                onChange={handleChange}
-                                className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg"
-                            />
-                        ) : (
-                            <p>{user ? user.nick : 'Cargando...'}</p> // Cambia `user.names` a `user.nick`
-                        )}
-                        <svg onClick={() => handleEdit('nick')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
-                            <path fill="#fff" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
-                        </svg>
+                                <>
+                                    <input
+                                        type='text'
+                                        name='nick'
+                                        value={formData.nick}
+                                        onChange={handleChange}
+                                        className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg"
+                                    />
+                                    <button type="submit" className="ml-2 bg-blue-500 text-white rounded-lg px-2">Submit</button>
+                                </>
+                            ) : (
+                                <>
+                                    <p>{user ? formData.nick : 'Cargando...'}</p>
+                                    <svg onClick={() => handleEdit('nick')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
+                                        <path fill="#fff" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
+                                    </svg>
+                                </>
+                            )}
                     </div>
                 </div>
 

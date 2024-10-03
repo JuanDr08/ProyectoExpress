@@ -11,7 +11,7 @@ exports.loginGoogleAuthCallback = (req, res, next) => {
 
         // Checkeo si la autenticacion fue cancelada o hubo algun error
         if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
-        
+        console.log(user, info);        
         /*
             Importante el metodo logIng que nos ofrece passport dentro del objeto 'Request' Ya que es el que nos permite que si la autenticacion sale bien, guardar la informacion
             del usuario dentro de la session para en posteriores casos poder verificar si hay alguien autenticado y asi sucesivamente
