@@ -33,8 +33,6 @@ import InicioSesionRuraq from "./pages/InicioSesionRuraq";
 // import { Pantalla20 } from "./pages/pantalla20";
 // import { Pantalla21 } from "./pages/pantalla21";
 
-import Test from "./pages/test";
-
 async function loader() {
 
     let res = await fetch('http://localhost:3000/auth/check', {

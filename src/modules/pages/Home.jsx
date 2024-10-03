@@ -129,7 +129,7 @@ export const Home = () => {
         <>
             <Form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="nick">Nombre:</label>
+                    <label for="nick">Nombre:</label>
                     <input
                         type="text"
                         id="nick"

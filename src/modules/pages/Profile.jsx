@@ -16,8 +16,8 @@ export function Profile() {
     const data = useLoaderData()
     const [user, setUser] = useState(null)
 
-    const [isEditing, setIsEditing] = useState({}); 
-    const [updatedData, setUpdatedData] = useState({})
+    // const [isEditing, setIsEditing] = useState({}); 
+    // const [updatedData, setUpdatedData] = useState({})
     
     useEffect(()=> {
 
@@ -28,41 +28,13 @@ export function Profile() {
             console.log(data.user[0]);
         }
     },[])
+    console.log(data.user)
 
-    console.log(Object.keys(data.user).length)
+    //console.log(Object.keys(data.user).length)
 
     // edicion de propiedades
 
-    const handleEdit = (field) => {
-        setIsEditing((prev) => ({ ...prev, [field]: true }));
-    };
 
-    const handleChange = (field, value) => {
-        setUpdatedData((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const handleUpdate = async (field) => {
-        const userId = userData._id; // Assuming you have userId in userData
-        try {
-            const response = await fetch(`http://localhost:3000/users/${userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ [field]: updatedData[field] }), 
-            });
-
-            if (response.ok) {
-                const updatedUser = await response.json();
-                setUserData(updatedUser);
-                setIsEditing((prev) => ({ ...prev, [field]: false })); 
-            } else {
-                console.error('Error al actualizar el campo');
-            }
-        } catch (error) {
-            console.error('Error en la solicitud de actualización:', error);
-        }
-    };
 
     const handleOpenDialog = () => {
         setIsDialogOpen(true); // Abre el diálogo
@@ -118,16 +90,6 @@ export function Profile() {
                 <div className="fila w-[100vw] flex items-center justify-around">
                     <div className="user">
                         <p className="text-[var(--color-9D1A1A)] text-xl">Usuario:</p>
-                        {isEditing.nombre ? (
-                                <input 
-                                    type="text" 
-                                    value={updatedData.nombre || userData.nombre} 
-                                    onChange={(e) => handleChange('nombre', e.target.value)}
-                                    className="border rounded p-1"
-                                />
-                            ) : (
-                                <span className="inline-flex items-center justify-center w-3/5 h-10 px-3 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">{userData.nombre}</span>
-                            )}
                     </div>
                     <div className="userplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
                             {user && user ? ( 
