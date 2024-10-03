@@ -27,7 +27,7 @@ router.get('/favorites/workshops', (req, res) => userController.getAllItemsFromA
 router.get('/subscribed/workshops', (req, res) => userController.getAllItemsFromAField(req, res, 'talleres_inscritos'))
 // Agregates
 router.get('/favorites/products/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'productos', 'favoritos'))
-router.get('/cart/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'productos', 'carrito'))
+router.get('/cart/details', (req, res) => userController.getAllProductDetailsShopeFromFieldWithWorkshops(req, res, 'productos', 'carrito'))
 router.get('/purchases/details', userController.getAllProductDetailseFromFieldWithWorkshops)
 router.get('/favorites/workshops/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'taller', 'talleres_favoritos'))
 router.get('/subscribed/workshops/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'taller', 'talleres_inscritos'))
