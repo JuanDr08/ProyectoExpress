@@ -9,19 +9,27 @@ const items = [
 ]
 
 export function ShoppingCart() {
-
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const data = useLoaderData()
-
-
+    
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    
     useEffect(()=> {
-
+        
         if (!data) navigate('/register')
         console.log(data.user)
         setUser([data.user])
-
+        
     },[])
+
+    const handleOpenDialog = () => {
+        setIsDialogOpen(true); // Abre el diálogo
+    };
+
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false); // Cierra el diálogo
+    };
 
     return (
         <main>
@@ -95,6 +103,14 @@ export function ShoppingCart() {
                     Realizar Compra
                 </button>
             </div>
+
+            {/* <div>
+                <button onClick={handleOpenDialog}>Realizar compra</button>
+
+                {isDialogOpen && (
+                    <PurchaseConfirmation onClose={handleCloseDialog} />
+                )}
+            </div> */}
 
             <Footer />
         </main>

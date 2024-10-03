@@ -48,7 +48,7 @@ module.exports = class UserController {
     }
 
     async editUserData(req, res) {
-        
+        console.log('usuario editado desde controller');
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
         const userService = new UserService()

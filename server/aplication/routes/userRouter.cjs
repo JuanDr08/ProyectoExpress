@@ -64,7 +64,7 @@ router.delete('/coupons/:id', express.json(), userValidator.validateFavoriteProd
 const upload = multer({
     limits: {fileSize: 524288}
 });
-router.post('/edit', upload.single('file'), (req, res, next) => {
+router.put('/edit', upload.single('file'), (req, res, next) => {
     for (let name of Object.keys(req.body) ) if (!req.body[name].trim()) delete req.body[name]
     next()
 },userValidator.validateUserInfoEdit(), userController.editUserData)
