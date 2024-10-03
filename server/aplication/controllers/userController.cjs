@@ -273,14 +273,16 @@ module.exports = class UserController {
                         _id: "$cupones._id", // Agrupar por ID del cupón
                         cupones: { $first: "$cupones" }, // Conservar el primer documento del cupón
                         nombre_taller: { $first: "$tallerDetalles.nombre_taller" }, // Conservar el nombre del taller
-                        img: { $first: "$productos.img" } // Conservar la imagen del producto
+                        img: { $first: "$productos.img" }, // Conservar la imagen del producto
+                        id: { $first: "$productos._id" } 
                     }
                 },
                 {
                     $project: {
                         cupones: 1,
                         nombre_taller: 1,
-                        img: 1
+                        img: 1,
+                        id:1
                     }
                 }
             ]

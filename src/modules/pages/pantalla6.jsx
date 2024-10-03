@@ -56,6 +56,10 @@ export function Pantalla6() {
 
     fetchCountries();
   }, []);
+  const isValidDate = (day, month, year) => {
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -97,6 +101,11 @@ export function Pantalla6() {
     // Validar que las contraseñas coincidan
     if (formData.password !== formData.confirmPassword) {
       setErrorMessage('La contraseña y la confirmación deben ser iguales.');
+      return;
+    }
+    // Validar fecha
+    if (!isValidDate(formData.day, formData.month, formData.year)) {
+      setErrorMessage('La fecha de nacimiento ingresada no es válida.');
       return;
     }
 

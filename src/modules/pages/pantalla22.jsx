@@ -23,6 +23,7 @@ export const Pantalla22 = () => {
       const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`); 
       const id = cuponCode.data._id
       const agregarCupon = await axios.post(`http://localhost:3000/user/coupons/${id}`); 
+
       console.log(agregarCupon)
       window.location.reload();
     } catch (error) {
@@ -30,6 +31,15 @@ export const Pantalla22 = () => {
       return;
     }
   }
+  const addCarrito = async (idProducto) => {
+      try{
+        const addCarrito= await axios.post(`http://localhost:3000/user/cart/${idProducto}`,);
+      console.log("Producto añadido a carrito", addCarrito);
+      } catch (error) {
+        console.error('El producto ya esta en el carrito', error)
+      }
+      window.location.href = "/cart";
+  };
 
   useEffect(()=> {
     const fetchCupon = async () => {
@@ -37,7 +47,7 @@ export const Pantalla22 = () => {
         const response = await axios.get(`http://localhost:3000/user/coupons/details`); 
         setCupones(response.data.data)
       } catch (error) {
-        console.error('Error al obtener los productos', error);
+        console.error('Error al obtener los cupones', error);
       }
     };
 
@@ -102,7 +112,7 @@ export const Pantalla22 = () => {
                   <p className={styles.fechaVencimiento}>
                     Fecha de vencimiento <span className={styles.fecha}>{cupon.cupones.fechaVencimiento}</span>
                   </p>
-                  <button>Usar cupón</button>
+                  <button onClick={() => addCarrito(cupon.id)}>Usar cupón</button>
                 </div>
               </div>
             ))
