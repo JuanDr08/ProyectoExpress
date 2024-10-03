@@ -1,3 +1,5 @@
+const { Binary } = require('mongodb')
+
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../../domain/models/userModel.cjs');
 
@@ -37,6 +39,8 @@ module.exports = (passport) => {
                 if(!resAgregate.length) return done(null, false);
 
                 const isValidaPassword = await userInstance.validatePassword(password, resAgregate[0].password);
+                
+                if (resAgregate[0]['photo'] instanceof Binary) resAgregate[0]['photo'] = `data:${resAgregate[0].mimetype};base64,${resAgregate[0].photo.buffer.toString('base64')}`
 
                 if (isValidaPassword) return done(null, resAgregate);
               

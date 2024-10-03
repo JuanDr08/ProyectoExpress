@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator')
 const UserService = require('../services/userService.cjs')
-const { ObjectId } = require('mongodb')
+const { ObjectId, Binary } = require('mongodb')
 const multer = require('multer');
 
 module.exports = class UserController {
@@ -48,30 +48,35 @@ module.exports = class UserController {
     }
 
     async editUserData(req, res) {
-        const  name  = req.body;
+        
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
         const file = req.file;
-        let prueba = Buffer.from(file.buffer, 'binary').toString('base64')
-        const imageDataUrl = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
-        console.log(imageDataUrl)
-        res.json({ message: 'Datos recibidos', name, imageDataUrl });
-        console.log(prueba)
 
-        //console.log(name, file)
-
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-        // const userService = new UserService()
-
-        // let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
-        // const fields = Object.keys(req.body)
-
-        // for (let field of fields) {
-        //     console.log(field)
-        //     let query = await userService.updateFieldsWithSet(userId, field, req.body[field])
-        //     console.log(query)
-        // }
-
-        // console.log(Object.keys(req.body))
+        try {
+            let imageDataUrl = undefined
+            
+            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+            let user = await userService.getUserById(userId)
+            for (let field of Object.keys(req.body)) {
+                if (user[field] == req.body[field]) continue
+                await userService.updateFieldsWithSet(userId, field, req.body[field])
+            }
+            
+            if (file) {
+                if ( !(user['photo'] instanceof Binary) || !file.buffer.equals(user['photo'].buffer)) {
+                    imageDataUrl = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
+                    await userService.updateFieldsWithSet(userId, 'photo', file.buffer)
+                    await userService.updateFieldsWithSet(userId, 'mimetyoe', file.mimetype)
+                } else imageDataUrl = `data:${user.mimetype};base64,${user['photo'].buffer.toString('base64')}`
+            }
+            
+            res.json({ message: 'Datos modificados', name: req.body, imageDataUrl: imageDataUrl ? imageDataUrl : undefined });
+        } catch (err) {
+            res.status(500).json({status: 500, message: 'Error inesperado en la edicion de los datos de usuario'})
+        }
 
     }
 

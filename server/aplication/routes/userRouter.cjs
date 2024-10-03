@@ -46,8 +46,28 @@ router.delete('/favorites/workshops/:id', express.json(), userValidator.validate
 router.delete('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'talleres_inscritos'))
 router.delete('/coupons/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'cupones'))
 
-const upload = multer();
-router.post('/edit', upload.single('file'), express.json(), userController.editUserData)
+
+// Estamos trabajando con la subida de archivos hacia nuestro endpoint, por lo que la trata de datos debe ser distinta, ya que ahora debemos recibir files.
+
+// Para esto, debemos especificarle a la ruta que ahora no va a esperar archivos json (express.json()), sino que deberá manejar archivos y que puede esperar
+// ninguno o uno o varios, esto se hace con multer upload.none(), upload.single('file'), upload.array('file', maxCount)  o upload.fields([{ name: 'file1' }, { name: 'file2' }]) 
+// con esto se le dice que va a esperar o ningun archivo, o uno solo con la llave 'file', o varios archivos con la misma clave 'file', o varios archivos con distintas claves
+// (upload es la variable que almacena la declaracion de la funcion multer).
+
+// Es importante que este middleware de multer sea puesto inmediatamente despues de la ruta para que procese los datos entrantes, y que posteriormente express-validator pueda procesar los datos de manera correcta y validarlos,
+// esto porque express-validator solo es compatible con archivos json (express.json() application/json) o con archvos url-extended (express.urlencoded({extended: true} application/x-www-form-urlencoded)
+// y el metodo con el que estamos trabajando para archivos es multipart/form-data, por lo que si definimos primero el express-validator, este no sabra como manipular los datos y le asignara a cada campo del body un undefined
+// por lo tanto definiendo primero multer, este procesa los datos y los acomoda en req.body y req.file o req.files para que posteriormente ahi si express-validator los pueda manejar
+
+// el nombre que se pone en el upload.single(<nombre>) de este caso debe ser igual al nombre del campo del formulario que se manda, es decir, el atributo name que se le dio o el que se le puso al formdata, y lo mismo con los nombres
+// que se les de por si especificamos multiples archivos
+const upload = multer({
+    limits: {fileSize: 524288}
+});
+router.post('/edit', upload.single('file'), (req, res, next) => {
+    for (let name of Object.keys(req.body) ) if (!req.body[name].trim()) delete req.body[name]
+    next()
+},userValidator.validateUserInfoEdit(), userController.editUserData)
 
 // router.get('/:id', auth, userValidator.validateUserId(), (req, res) => userController.getUser(req, res));
 // router.get('/search', auth, (req, res) => userController.searchUsers(req, res));

@@ -105,9 +105,9 @@ module.exports = class UserValidator {
     validateUserInfoEdit = () => {
         return [
 
-            body().notEmpty().withMessage('No ha enviado ningun dato a guardar').custom((value, { req }) => {
-                if (!req.body.email && !req.body.phone && !req.body.username && !req.body.sex && !req.body.birth_day && !req.body.payment_method && !req.files) {
-                    throw new Error('Debe proporcionar al menos nombre de usuario o un email o telefono, o sexo, o fecha de nacimiento, o metodo de pago para actualizar.');
+            body().custom((value, { req }) => {
+                if (!req.body.email && !req.body.phone && !req.body.username && !req.body.sex && !req.body.birth_day && !req.body.payment_method && !req.file) {
+                    throw new Error('Debe proporcionar al menos nombre de usuario o un email o telefono, o sexo, o fecha de nacimiento, o metodo de pago, o foto de perfil para actualizar.');
                 }
                 return true;
             }),
@@ -132,7 +132,7 @@ module.exports = class UserValidator {
                 .notEmpty().withMessage('Campo no puede estar vacio')
                 .isString().withMessage('Tipo de dato invalido')
                 .custom(value => {
-                    if (value && !['Masculino', 'Femenino'].includes(value)) throw new Error('Solo existen dos sexos: Masculino, Femenino')
+                    if (value && !['MASCULINO', 'FEMENINO'].includes(value.toUpperCase())) throw new Error('Solo existen dos sexos: Masculino, Femenino')
                     return true
                 }),
                 
