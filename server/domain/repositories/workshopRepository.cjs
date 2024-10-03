@@ -28,7 +28,7 @@ class WorkshopRepository {
     async getWorkshopById(id){
         try{
             const workshop = new Workshop();
-            console.log(id)
+            //console.log(id)
             const result = await workshop.findWorkshopByID(id);
             console.log(result);
             return result;
