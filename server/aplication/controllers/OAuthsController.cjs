@@ -69,6 +69,27 @@ exports.loginDiscordAuthCallback = (req, res, next) => {
 
 }
 
+exports.loginGitHubAuthCallback = (req, res, next) => {
+    
+    passport.authenticate('github', async (err, user, info) => {
+        //if (info.exists && info.path == 'register') return res.status(400).json({errorCode: 400, msg: 'Intento de registro de usuario que ya existe en base de datos'}) // Checkeo de error por si se intenta registrar con una cuenta que ya existe
+        console.log('holaa')
+        if (!user) return res.status(500).json({msg: 'Error en la autenticacion, fallida o cancelada'});
+
+        //if (user[0]['photo'] instanceof Binary) user[0]['photo'] = `data:${user[0].mimetype};base64,${user[0].photo.buffer.toString('base64')}`
+
+        req.logIn(user, (err) => { 
+            if (err) {
+                console.log(err, 'Error al iniciar sesión ')
+                return next(err)
+            }
+            return res.redirect('http://localhost:5173/home')
+        })
+
+    })(req, res, next);
+
+}
+
 exports.logOutController = (req, res, next, ret=false) => {
     
     if (!req.isAuthenticated()) return res.status(400).json({msg: 'No hay una sesion activa para desloguear'})

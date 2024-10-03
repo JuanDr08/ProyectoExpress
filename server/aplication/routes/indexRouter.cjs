@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const {loginGitHubAuthCallback} = require('../controllers/OAuthsController.cjs')
 
 const router = express.Router();
 
@@ -10,6 +11,8 @@ router.get('/auth/check', (req, res) => {
         return res.status(401).json({ authenticated: false, user: null, details: 'No se encuentra logueado' });
     }
 });
+
+router.get('/auth/github/callback', loginGitHubAuthCallback)
 // Ejemplo de una peticion de registro desde el frontend y manejar la respuesta
 /* router.get('/prueba', async (req, res, next) => {
 
