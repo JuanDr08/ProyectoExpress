@@ -1,7 +1,9 @@
 // Dependencias
 const express = require('express');
-const router = express.Router({ mergeParams: true }); // merge params me permite acceder a los parametros de rutas padres
+const router = express.Router(); // { mergeParams: true } merge params me permite acceder a los parametros de rutas padres
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
+const multer = require('multer')
 
 // Middlewares para verificacion
 const { auth, authCookie } = require('../middlewares/authenticationToken.cjs');
@@ -44,7 +46,8 @@ router.delete('/favorites/workshops/:id', express.json(), userValidator.validate
 router.delete('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'talleres_inscritos'))
 router.delete('/coupons/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'cupones'))
 
-router.put('/edit', express.json(), userValidator.validateUserInfoEdit(), userController.editUserData)
+const upload = multer();
+router.post('/edit', upload.single('file'), express.json(), userController.editUserData)
 
 // router.get('/:id', auth, userValidator.validateUserId(), (req, res) => userController.getUser(req, res));
 // router.get('/search', auth, (req, res) => userController.searchUsers(req, res));

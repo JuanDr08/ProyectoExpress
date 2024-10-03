@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator')
 const UserService = require('../services/userService.cjs')
 const { ObjectId } = require('mongodb')
-
+const multer = require('multer');
 
 module.exports = class UserController {
 
@@ -48,21 +48,30 @@ module.exports = class UserController {
     }
 
     async editUserData(req, res) {
+        const  name  = req.body;
+        const file = req.file;
+        let prueba = Buffer.from(file.buffer, 'binary').toString('base64')
+        const imageDataUrl = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+        console.log(imageDataUrl)
+        res.json({ message: 'Datos recibidos', name, imageDataUrl });
+        console.log(prueba)
 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-        const userService = new UserService()
+        //console.log(name, file)
 
-        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
-        const fields = Object.keys(req.body)
+        // const errors = validationResult(req);
+        // if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        // const userService = new UserService()
 
-        for (let field of fields) {
-            console.log(field)
-            let query = await userService.updateFieldsWithSet(userId, field, req.body[field])
-            console.log(query)
-        }
+        // let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+        // const fields = Object.keys(req.body)
 
-        console.log(Object.keys(req.body))
+        // for (let field of fields) {
+        //     console.log(field)
+        //     let query = await userService.updateFieldsWithSet(userId, field, req.body[field])
+        //     console.log(query)
+        // }
+
+        // console.log(Object.keys(req.body))
 
     }
 
