@@ -101,3 +101,79 @@ export function Home() {
         // </div>
     );
 }
+
+// import { useState } from "react";
+// import { Form } from "react-router-dom";
+
+
+// export const Home = () => {
+//     const [file, setFile] = useState(null);
+//     const [name, setName] = useState('');
+//     const [imageDataUrl, setImageDataUrl] = useState('');
+
+//     const handleFileChange = (event) => {
+//         setFile(event.target.files[0]);
+//     };
+
+//     const handleNameChange = (event) => {
+//         setName(event.target.value);
+//     };
+
+//     const handleSubmit = async (event) => {
+//         event.preventDefault();
+
+//         const formData = new FormData();
+//         formData.append('nick', name);
+//         if (file) {
+//             formData.append('file', file);
+//         }
+
+//         try {
+//             const response = await fetch('http://localhost:3000/user/edit', {
+//                 method: 'POST',
+//                 body: formData,
+//             });
+
+//             const data = await response.json();
+//             console.log('Respuesta del servidor:', data);
+//             setImageDataUrl(data.imageDataUrl);
+//         } catch (error) {
+//             console.error('Error al enviar datos:', error);
+//         }
+//     };
+
+//     return (
+//         <>
+
+//             <Form onSubmit={handleSubmit}>
+//                 <div>
+//                     <label htmlFor="name">Nombre:</label>
+//                     <input
+//                         type="text"
+//                         id="nick"
+//                         value={name}
+//                         onChange={handleNameChange}
+//                         required
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="file">Archivo:</label>
+//                     <input
+//                         type="file"
+//                         id="file"
+//                         accept="image/*"
+//                         onChange={handleFileChange}
+//                         required
+//                     />
+//                 </div>
+//                 <button type="submit">Enviar</button>
+//             </Form>
+//             {imageDataUrl && (
+//                 <div>
+//                     <h2>Imagen Subida:</h2>
+//                     <img src={imageDataUrl} alt="Imagen subida" style={{ maxWidth: '300px' }} />
+//                 </div>
+//             )}
+//         </>
+//     );
+// };

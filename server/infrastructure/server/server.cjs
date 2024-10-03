@@ -14,6 +14,7 @@ const indexRouter = require('../../aplication/routes/indexRouter.cjs'); // Rutas
 const registerRouter = require('../../aplication/routes/registerRouter.cjs')
 const loginRouter = require('../../aplication/routes/loginRouter.cjs'); // Rutas
 const workshopRoutes = require("../../aplication/routes/workshopRouter.cjs")
+const userRoutes = require('../../aplication/routes/userRouter.cjs')
 
 const { logOutController } = require('../../aplication/controllers/OAuthsController.cjs')
 
@@ -56,7 +57,7 @@ const createServer = () => {
     */
 
     app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
-        let validRoutesUnProtected = ['/login', '/register', '/auth/check'];
+        let validRoutesUnProtected = ['/login', '/register', '/auth', '/user'];
         let isProtectedRoute = validRoutesUnProtected.some(route => req.originalUrl.startsWith(route));
         
         if (!req.isAuthenticated() && !isProtectedRoute) {
@@ -67,15 +68,16 @@ const createServer = () => {
     }, indexRouter);
 
     app.use('/register', (req, res, next) => {
-        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, user: req.user, details: 'Hay un usuario logueado, cierre sesion para registrarse'})
+        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, details: 'Hay un usuario logueado, cierre sesion para registrarse'})
         next()
     }, registerRouter);
     app.use('/login', (req, res, next) => {
-        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, user: req.user, details: 'Hay un usuario logueado, cierre sesion para loguearse de nuevo'})
+        if (req.isAuthenticated()) return res.status(400).json({authenticated: true, details: 'Hay un usuario logueado, cierre sesion para loguearse de nuevo'})
         next()
     }, loginRouter);
     app.use('/logout', logOutController)
 
+    app.use('/user', userRoutes)
     app.use('/workshops', workshopRoutes);
     app.use('/product', productRoutes);
     app.use('/cupon', cuponRoutes);

@@ -2,20 +2,18 @@ const passport = require('passport');
 const express = require('express');
 const router = express.Router();
 
-// Manejadores de la autenticacion con google
+// Configuradores de passport para las diferentes estrategias de aitenticacion
 const configPassportGoogleOAuth = require('../middlewares/GoogleOAuth.cjs');
 const configPassportFacebookOAuth = require('../middlewares/FacebookOAuthStrategy.cjs')
 const configPassportDiscordOAuth = require('../middlewares/DiscordOAuthStrategy.cjs')
 const configPassportLocalOAuth = require('../middlewares/LocalOAuthStrategy.cjs')
+
+// Callbacks de los OAuths
 const {loginGoogleAuthCallback, loginFacebookAuthCallback, loginDiscordAuthCallback, loginLocalAuthCallback } = require('../controllers/OAuthsController.cjs')
 
-
-//configPassportGoogleOAuth(passport, 'login'); // Configuramos la estrategia de autenticacion de google
-//configPassportFacebookOAuth(passport, 'login') // Configuramos la estrategia de autenticacion de facebook
-//configPassportDiscordOAuth(passport, 'login') // Configuramos la estrategia de autenticacion de discord
-
-// req.isAuthenticated() -- Metodo habilitado por passport para verificar si hay un logIn activo
-
+// Validaciones de los cuerpos para peticiones HTTP
+const UserValidator = require('../validator/userValidator.cjs')
+const userValidator = new UserValidator()
 
 // router.post('/auth/user', express.urlencoded({ extended: true }), (req, res) => userController.verifyUser(req, res))
 
@@ -39,9 +37,9 @@ router.get('/auth/discord', (req, res, next) => {
 },passport.authenticate('discord'))
 router.get('/auth/discord/callback', loginDiscordAuthCallback)
 
-router.post('/auth/ruraqmaki', express.json(), (req, res, next) => {
-    configPassportLocalOAuth(passport);
-    next();
-}, passport.authenticate('local'), loginLocalAuthCallback);
+router.post('/auth/ruraqmaki', express.json(), userValidator.validateUserLogIn(), (req, res, next) => {
+    configPassportLocalOAuth(passport)
+    next()
+}, passport.authenticate('local'), (req, res) => res.status(200).json({code: 200, msg: 'login exitoso'}));
 
 module.exports = router;
