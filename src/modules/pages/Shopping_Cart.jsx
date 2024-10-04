@@ -42,7 +42,9 @@ export function ShoppingCart() {
 
       const fetchDescuentos = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/cupon/product/h');
+          const response = await axios.get('http://localhost:3000/cupon/product/h', {
+            withCredentials: true
+          });
           setProductosConDescuento(response.data); 
         } catch (error) {
           console.error('Error al obtener productos con descuento', error);
