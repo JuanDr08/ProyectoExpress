@@ -13,8 +13,7 @@ export const AppOpinions = () => {
     useEffect(()=> {
 
         if (!data) navigate('/register')
-        console.log(data.user)
-        setUser([data.user])
+        setUser(data.user[0])
 
     },[])
 

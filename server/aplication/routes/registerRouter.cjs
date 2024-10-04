@@ -6,6 +6,7 @@ const router = express.Router();
 const configPassportGoogleOAuth = require('../middlewares/GoogleOAuth.cjs');
 const configPassportFacebookOAuth = require('../middlewares/FacebookOAuthStrategy.cjs')
 const configPassportDiscordOAuth = require('../middlewares/DiscordOAuthStrategy.cjs')
+const configPassportGitHubOAuth = require('../middlewares/GitHubOAuthStrategy.cjs')
 
 // Callbacks de los OAuths
 const {loginGoogleAuthCallback, loginFacebookAuthCallback, loginDiscordAuthCallback } = require('../controllers/OAuthsController.cjs')
@@ -39,5 +40,10 @@ router.get('/auth/discord', (req, res, next) => {
 router.get('/auth/discord/callback', loginDiscordAuthCallback)
 
 router.post('/auth/ruraqMaki', express.json(),userValidator.validateUserRegistration(), userController.registerUser)
+
+router.get('/auth/github', (req, res, next) => {
+    configPassportGitHubOAuth(passport, 'register')
+    next()
+},passport.authenticate('github', { scope: [ 'user:email' ] }))
 
 module.exports = router;

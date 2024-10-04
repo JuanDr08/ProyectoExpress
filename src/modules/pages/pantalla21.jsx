@@ -32,13 +32,12 @@ export const Pantalla21 = () => {
     }
     useEffect(() => {
       if (!data) navigate('/register')
-        console.log(data.user)
         setUser([data.user])
 
      // Función para hacer la solicitud a la API
      const fetchTaller = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/workshops/`); 
+          const response = await axios.get(`http://localhost:3000/workshops/`, {withCredentials: true}); 
           setTalleres(response.data); // Almacena los productos en el estado
           setFilteredData(response.data)
         } catch (error) {

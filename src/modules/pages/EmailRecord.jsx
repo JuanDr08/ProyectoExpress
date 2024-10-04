@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 //import "react-datepicker/dist/react-datepicker.css";
-import { Form } from 'react-router-dom';
+import { Form, useLoaderData, useNavigate } from 'react-router-dom';
 import { Input } from '../components/Inputs';
 import { Muesca } from '../components/Muesca';
 
@@ -9,18 +9,53 @@ export const EmailRecord = () => {
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null)
 
     const handleDayChange = (e) => setDay(e.target.value);
     const handleMonthChange = (e) => setMonth(e.target.value);
     const handleYearChange = (e) => setYear(e.target.value);
+
+    const navigate = useNavigate();
+    const data = useLoaderData()
+
+
+    useEffect(() => {
+        if (data) navigate('/home')
+    }, [])
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        //const fecha = `${formData.year}/${formData.month}/${formData.day}`;
+        const formData = new FormData(e.target)
+        formData.append('birth_day', `${formData.get('year')}-${formData.get('month')}-${formData.get('day')}`)
+        delete formData.delete('day')
+        delete formData.delete('month')
+        delete formData.delete('year')
+
+        
+        if (formData.get('email') !== formData.get('authEmail')) return setErrorMessage('El correo electronico y su confirmación deben ser iguales.');
+        delete formData.delete('authEmail')
+        if (formData.get('password') !== formData.get('authPassword')) return setErrorMessage('La contraseña y la confirmación deben ser iguales.');
+        delete formData.delete('authPassword')
+                
+        navigate('/register/TermsAndConditions', {
+            state: {
+                nick: formData.get('nick'), 
+                email: formData.get('email'), 
+                birth_day: formData.get('birth_day'), 
+                sex: formData.get('sex'),
+                password: formData.get('password')
+            },
+        }); 
+    };
 
     return (
 
         <>
             <Muesca />
             <main className='pl-[65px] pr-[45px] py-10 w-[100dvw] h-[100dvh]'>
-                <Form method='post' className='flex flex-col text-lg gap-[25px]'>
-                    <Input desc='*Crea un nombre de usuario de mínimo 5 y máximo de 12 carácteres' title='Nombre de usuario*' min='5' max='12' name='name' />
+                <Form onSubmit={handleSubmit} className='flex flex-col text-lg gap-[25px]'>
+                    <Input desc='*Crea un nombre de usuario de mínimo 5 y máximo de 12 carácteres' title='Nombre de usuario*' min='5' max='12' name='nick' />
                     <Input title='Correo electrónico*' name='email' type='email' pattern=".+@gmail\.com" />
                     <Input title='Confirma tu correo*' name='authEmail' type='email' pattern=".+@gmail\.com" />
                     <Input title='Contraseña*' desc='Recuerda crear una contraseña dificil de adivinar' type='password' name='password' />
@@ -29,8 +64,8 @@ export const EmailRecord = () => {
 
                         <label htmlFor="authPassword"><big><strong>Sexo</strong></big></label>
                         <select className='w-[65%] text-yellow-500 rounded-md p-2 outline-none bg-703A31' name="sex" id="sex">
-                            <option value="male">Masculino</option>
-                            <option value="female">Femenino</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
                         </select>
                     </div>
                     <div className='flex flex-col gap-[10px]' >
@@ -59,6 +94,9 @@ export const EmailRecord = () => {
                             </select>
                         </div>
                     </div>
+                    {
+                        errorMessage && <p className='text-red-500 text-[13px] tracking-tighter'>{errorMessage}</p>
+                    }
                     <button className='flex gap-[10px] self-end underline  items-center text-9D1A1A' type='submit'>
                         <svg width="15" height="15" viewBox="0 0 27 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4.64563 1.79232L20.8184 17.9651C22.771 19.9177 22.7711 23.0836 20.8184 25.0362L4.64563 41.209" stroke="#FFA800" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />

@@ -20,13 +20,13 @@ export const Pantalla22 = () => {
   };
   const validarCupon = async (code) => {
     try {
-      const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`); 
+      const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`, {withCredentials: true}); 
       const id = cuponCode.data._id
       const agregarCupon = await axios.post(`http://localhost:3000/user/coupons/${id}`, {
         withCredentials: true // Esto incluye las cookies
     });
 
-      console.log(agregarCupon)
+      //console.log(agregarCupon)
       window.location.reload();
     } catch (error) {
       setErrorMessage('El codigo de cupon ingresado no es valido');
@@ -59,7 +59,6 @@ export const Pantalla22 = () => {
 
     fetchCupon();
       if (!data) navigate('/register')
-      console.log(data.user)
       setUser([data.user])
 
   },[data, navigate])

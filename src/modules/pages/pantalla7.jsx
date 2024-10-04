@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, Link, useNavigate, useLoaderData } from 'react-router-dom';
 import  styles from '../../css/pantalla7.module.css'
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 
 export function Pantalla7() {
+
+  const navigate = useNavigate();
+  const data = useLoaderData()
+
+  useEffect(()=> {
+    if (data) navigate('/home')
+  },[])
+
   const location = useLocation();
-  const { nick, phone, fecha, sex,  password} = location.state;
+  const formToSend = location.state;
 
   const [checkbox1, setCheckbox1] = useState(false);
   const [checkbox2, setCheckbox2] = useState(false);
@@ -16,18 +24,17 @@ export function Pantalla7() {
 
   const handleRegisterClick = async (e) => {
     e.preventDefault();
-    console.log(isRegisterButtonDisabled)
+    //console.log(isRegisterButtonDisabled)
     if (!isRegisterButtonDisabled) {
-      const data= {"nick": nick, "phone": phone, "birth_day": fecha, "sex": sex, "password": password}
-      const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', JSON.stringify(data), {
+      const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', formToSend, {
         headers: {
             'Content-Type': 'application/json'
         }
     })
-      console.log(direccion)
-      window.location.href = "/login/credentials";
+      //console.log(direccion)
+      navigate("/login/credentials")
     } else {
-      window.location.href = "/register/TermsAndConditions"; 
+      navigate("/register/TermsAndConditions")
     }
   };
   return (

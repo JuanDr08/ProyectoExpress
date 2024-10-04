@@ -19,41 +19,55 @@ const categories = [
 ];
 
 const productos = [ // Simulacion de lo que devolveria la API con todos los poductos de categoria textileria, deben implementar dicho filtro y la funcionalidad del buscador
-    {name: 'Tapiz Chumpi Andino III', price: 600, owner: 'Taller Awaq Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Porselani Cron III', price: 1600, owner: 'Taller Juan Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Barro Indio III', price: 100, owner: 'Taller Pepe Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Cuero de conejo III', price: 200, owner: 'Taller Camacho Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Pelaje de burro III', price: 500, owner: 'Taller Carlitos Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Cachos de toro III', price: 900, owner: 'Taller Postobon Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Pelaje de camello III', price: 3600, owner: 'Taller Esquinero Ayllu', img: '/img/Rectangle41.png'},
-    {name: 'Tapiz Pezuña de yegua III', price: 2600, owner: 'Taller Grundpet Ayllu', img: '/img/Rectangle41.png'}
+    { name: 'Tapiz Chumpi Andino III', price: 600, owner: 'Taller Awaq Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Porselani Cron III', price: 1600, owner: 'Taller Juan Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Barro Indio III', price: 100, owner: 'Taller Pepe Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Cuero de conejo III', price: 200, owner: 'Taller Camacho Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Pelaje de burro III', price: 500, owner: 'Taller Carlitos Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Cachos de toro III', price: 900, owner: 'Taller Postobon Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Pelaje de camello III', price: 3600, owner: 'Taller Esquinero Ayllu', img: '/img/Rectangle41.png' },
+    { name: 'Tapiz Pezuña de yegua III', price: 2600, owner: 'Taller Grundpet Ayllu', img: '/img/Rectangle41.png' }
 ]
 
 export const Categories = () => {
     const navigate = useNavigate();
 
-    const {categoryName} = useParams() // Captura la categoría desde la URL
+    const { categoryName } = useParams() // Captura la categoría desde la URL
     const categoriesNav = useRef(null)
 
     const [user, setUser] = useState(null)
     const data = useLoaderData()
-    
-    const [category, setCategory] = useState(null);
+
+    const [category, setCategory] = useState(categoryName);
+    const [products, setProducts] = useState([])
+    const [filteredProducts, setFilteredProducts] = useState([])
 
 
-    useEffect(()=> {
+    useEffect(() => {
 
         if (!data) navigate('/register')
-        console.log(data.user)
-        setUser([data.user])
+        setUser(data.user[0])
 
-        // Encuentra la categoría correspondiente
         const selectedCategory = categoriesNav.current.querySelector(`[data-category='${categoryName}']`);
         if (selectedCategory) {
             handleCategory(selectedCategory);
+            setCategory(selectedCategory)
         }
 
-    },[ categoryName ])
+        const fetchProducts = async () => {
+            try {
+                let allProducts = await fetch('http://localhost:3000/product', { cache: "force-cache" })
+                let res = await allProducts.json()
+                setProducts(res)
+            } catch (error) {
+                console.log('Error ', error)
+            }
+        }
+        fetchProducts()
+
+    }, [])
+
+    useEffect(() => { filtrarProductos(categoryName) }, [products])
 
     const handleCategory = (catClicked) => {
         const prevCategory = categoriesNav.current.querySelector('.border-b-4');
@@ -61,13 +75,15 @@ export const Categories = () => {
             prevCategory.classList.remove('border-b-4', 'border-b-2E1108');
         }
         catClicked.classList.add('border-b-4', 'border-b-2E1108');
+        setCategory(catClicked.textContent)
+        filtrarProductos(catClicked.textContent)
     };
 
+    const filtrarProductos = (textValue) => {
+        const data = products.filter(producto => producto.categoria == textValue || producto.nombre == textValue)
+        setFilteredProducts(data)
+    };
 
-    useEffect(()=> {
-        categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
-        setCategory(categoriesNav.current.firstChild)
-    }, [])
 
     return (
 
@@ -128,7 +144,8 @@ export const Categories = () => {
                 <section className="grid grid-cols-2 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-y-[40px] min-h-max">
 
                     {
-                        productos.map(({name, price, owner, img}, i) => <ProductCategoryCard key={i} name={name} price={price} owner={owner} img={img} />)
+                        filteredProducts.length ? filteredProducts.map(({ nombre, precio, nombre_taller, img, _id }, i) => <ProductCategoryCard key={_id} name={nombre} price={precio} owner={nombre_taller} prdtId={_id} img={img} />) :
+                        (<p>No se encuentran productos de esta categoria</p>)
                     }
 
                 </section>

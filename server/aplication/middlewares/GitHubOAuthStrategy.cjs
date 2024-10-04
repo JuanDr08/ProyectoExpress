@@ -1,4 +1,4 @@
-const FacebookStrategy = require('passport-facebook').Strategy;
+const GithubStrategy = require('passport-github2').Strategy;
 const User = require('../../domain/models/userModel.cjs');
 
 module.exports = (passport, path) => {
@@ -14,22 +14,20 @@ module.exports = (passport, path) => {
         }
     });
 
-    passport.use(new FacebookStrategy({
-        clientID: process.env.FACEBOOK_APP_ID,
-        clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: `http://localhost:3000/${path}/auth/facebook/callback`,
-        profileFields: ['id', 'emails', 'name', 'picture.type(large)']
+    passport.use(new GithubStrategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: `http://localhost:3000/auth/github/callback`
     }, async (accessToken, refreshToken, profile, done) => {
-            
+
             const { _json } = profile
             _json.provider = profile.provider
-            _json.picture = _json.picture.data.url
             
             try {
                 let userInstance = new User();
                 let dataUser = [{
                     $match: {
-                        email: _json.email,
+                        cedula: _json.id,
                         provider: _json.provider
                     }
                 }];
@@ -43,12 +41,12 @@ module.exports = (passport, path) => {
 
                 let data = { // Preparamos la data de insercion
                     cedula: _json.id,
-                    names: _json.first_name,
-                    surnames: _json.last_name,
-                    email: _json.email,
-                    photo: _json.picture,
+                    names: _json.login,
+                    surnames: 'Not assigned',
+                    email: _json.email ? _json.email : 'Not assigned',
+                    photo: _json.avatar_url,
                     provider: _json.provider,
-                    nick: "Not assigned",
+                    nick: _json.name,
                     phone: "Not assigned",
                     role: "Usuario Estandar",
                     password: "Not assigned"

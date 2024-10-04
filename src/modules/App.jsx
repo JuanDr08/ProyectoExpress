@@ -56,26 +56,32 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Entrada/>,
+        loader: loader
     },
     {
         path: '/register/email',
-        element: <EmailRecord/>
+        element: <EmailRecord/>,
+        loader: loader
     },
     {
         path: '/register/phone',
-        element: <Pantalla6/>
+        element: <Pantalla6/>,
+        loader: loader
     },
     {
         path: '/register/TermsAndConditions',
-        element: <Pantalla7/>
+        element: <Pantalla7/>,
+        loader: loader
     },
     {
         path: '/login',
-        element: <InicioSesion/>
+        element: <InicioSesion/>,
+        loader: loader
     },
     {
         path: '/login/credentials',
-        element: <InicioSesionRuraq/>
+        element: <InicioSesionRuraq/>,
+        loader: loader
     },
     {
         path: '/home',
