@@ -106,9 +106,17 @@ module.exports = class UserValidator {
         return [
 
             body().custom((value, { req }) => {
-                if (!req.body.email && !req.body.phone && !req.body.username && !req.body.sex && !req.body.birth_day && !req.body.payment_method && !req.file) {
+                if (!req.body.email && !req.body.phone && !req.body.username && !req.body.sex && !req.body.birth_day && !req.body.payment_method && !req.file && !req.body.nick) {
                     throw new Error('Debe proporcionar al menos nombre de usuario o un email o telefono, o sexo, o fecha de nacimiento, o metodo de pago, o foto de perfil para actualizar.');
                 }
+
+                const allowedFields = ['email', 'phone', 'username', 'sex', 'birth_day', 'payment_method', 'nick'];
+                const extraFields = Object.keys(req.body).filter(field => !allowedFields.includes(field) && field !== 'file');
+        
+                if (extraFields.length > 0) {
+                    throw new Error(`Los campos adicionales no están permitidos: ${extraFields.join(', ')}`);
+                }
+
                 return true;
             }),
             body('nick')
