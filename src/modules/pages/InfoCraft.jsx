@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Muesca } from '../components/Muesca';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import axios from "axios";
 
-function InfoCraft() {
+export const InfoCraft = () => {
 
   const navigate = useNavigate();
-    const [user, setUser] = useState(null)
-    const data = useLoaderData()
+  const [user, setUser] = useState(null)
+  const data = useLoaderData()
+  const { id } = useParams();  
 
+  useEffect(()=> {
 
-    useEffect(()=> {
+      if (!data) navigate('/register')
+      console.log(data.user)
+      setUser([data.user])
+      fetchWorkshops()
+  },[data, navigate])
 
-        if (!data) navigate('/register')
-        console.log(data.user)
-        setUser([data.user])
+  const fetchWorkshops = async () => {
+    try {
+        const response = await axios.get(`http://localhost:3000/workshops/${id}`,{
+            withCredentials: true,
+        });
+        console.log(response)
+        setWorkshops(response.data);
+    } catch (error) {
+        console.error('Error fetching workshops:', error);
+    }
+  };
 
-    },[])
 
   return (
     <div className="relative flex flex-col justify-center items-center w-full h-full ">
@@ -47,5 +61,4 @@ function InfoCraft() {
   );
 }
 
-export default InfoCraft;
 

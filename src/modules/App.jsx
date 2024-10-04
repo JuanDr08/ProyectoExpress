@@ -27,7 +27,7 @@ import { Settings } from "./pages/Settings";
 import { AppOpinions } from "./pages/AppOpinions";
 import { CustomerSupport } from "./pages/CustomerSupport";
 import { Chat } from "./pages/ChatView";
-import InfoCraft from "./pages/InfoCraft";
+import {InfoCraft} from "./pages/InfoCraft";
 import TallerCeramica from "./pages/CraftInscription";
 import InicioSesionRuraq from "./pages/InicioSesionRuraq";
 
@@ -108,7 +108,7 @@ const router = createBrowserRouter([
         loader: loader
     },
     {
-        path: '/workshop/related/:id',
+        path: '/workshops/related/:id',
         element: <WorkshopPreview/>,
         loader: loader
     },

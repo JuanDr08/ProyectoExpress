@@ -20,6 +20,12 @@ class WorkshopService {
         const products = await this.workshopRepository.getProductsByWorkshopId(id);
         return products;
     }
+
+    async getWorkshopById(id){
+        console.log(id)
+        const workshop = await this.workshopRepository.getWorkshopById(id);
+        return workshop;
+    }
 }
 
 module.exports = WorkshopService;
