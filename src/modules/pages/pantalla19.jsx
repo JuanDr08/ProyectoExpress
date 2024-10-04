@@ -33,7 +33,6 @@ export const Pantalla19 = () => {
   useEffect(()=> {
 
       if (!data) navigate('/register')
-      console.log(data.user)
       setUser([data.user])
       categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
       setCategory(categoriesNav.current.firstChild)
@@ -63,7 +62,6 @@ export const Pantalla19 = () => {
     }
     // Filtrar productos por categoría
     const filtrarProductos = (textValue) => {
-      console.log(textValue)
       const categoriaSeleccionada = textValue
       if (!categoriaSeleccionada) return productos[0].favoritos;
       const data = productos[0].favoritos.filter(favorito => favorito.categoria == categoriaSeleccionada)

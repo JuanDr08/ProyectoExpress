@@ -18,7 +18,6 @@ export function ShoppingCart() {
     useEffect(()=> {
 
         if (!data) navigate('/register')
-        console.log(data.user)
         setUser([data.user])
 
          // Función para hacer la solicitud a la API

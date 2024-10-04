@@ -18,7 +18,6 @@ export const Pantalla20 = () => {
 
   useEffect(() => {
     if (!data) navigate('/register')
-      console.log(data.user)
       setUser([data.user])
     
     

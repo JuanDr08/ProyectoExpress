@@ -25,7 +25,6 @@ function Entrada() {
 	
 		// Escuchar el mensaje desde el popup
 		const handleMessage = (event) => {
-			console.log(event.data)
 		  if (event.origin !== 'http://localhost:3000') return; // Cambia esto por tu URL del backend
 	
 		  if (event.data.success) {

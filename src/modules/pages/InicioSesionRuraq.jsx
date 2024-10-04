@@ -32,7 +32,6 @@ function InicioSesionRuraq() {
 
     })
     
-    console.log('here',query)
 
   }
 

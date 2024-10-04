@@ -26,7 +26,7 @@ export const Pantalla22 = () => {
         withCredentials: true // Esto incluye las cookies
     });
 
-      console.log(agregarCupon)
+      //console.log(agregarCupon)
       window.location.reload();
     } catch (error) {
       setErrorMessage('El codigo de cupon ingresado no es valido');
@@ -59,7 +59,6 @@ export const Pantalla22 = () => {
 
     fetchCupon();
       if (!data) navigate('/register')
-      console.log(data.user)
       setUser([data.user])
 
   },[data, navigate])

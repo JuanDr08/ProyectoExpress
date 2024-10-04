@@ -192,7 +192,6 @@ const Pantalla17 = () => {
   useEffect(() => {
 
     if (!data) navigate('/register')
-      console.log(data.user)
       setUser([data.user])
       
     const fetchProducto = async () => {

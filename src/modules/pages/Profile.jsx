@@ -25,10 +25,9 @@ export function Profile() {
             navigate('/register'); // Redirige si no hay datos de usuario
         } else {
             setUser(data.user[0]); // Almacena el objeto user en un array
-            console.log(data.user[0]);
+            //console.log(data.user[0]);
         }
     },[])
-    console.log(data.user)
 
     //console.log(Object.keys(data.user).length)
 

@@ -12,7 +12,6 @@ function InfoCraft() {
     useEffect(()=> {
 
         if (!data) navigate('/register')
-        console.log(data.user)
         setUser([data.user])
 
     },[])

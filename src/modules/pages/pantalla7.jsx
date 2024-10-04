@@ -24,14 +24,14 @@ export function Pantalla7() {
 
   const handleRegisterClick = async (e) => {
     e.preventDefault();
-    console.log(isRegisterButtonDisabled)
+    //console.log(isRegisterButtonDisabled)
     if (!isRegisterButtonDisabled) {
       const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', formToSend, {
         headers: {
             'Content-Type': 'application/json'
         }
     })
-      console.log(direccion)
+      //console.log(direccion)
       navigate("/login/credentials")
     } else {
       navigate("/register/TermsAndConditions")
