@@ -1,42 +1,96 @@
 import React, { useState, useEffect } from 'react';
-import '../../css/pantalla21.css';
+import  styles from '../../css/pantalla21.module.css'
+import { useLoaderData, useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { Muesca } from '../components/Muesca';
+import { CategoryHeaders } from '../components/CategoryHeaders';
 
 export const Pantalla21 = () => {
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
+      // Estado para almacenar los talleres
+  const [talleres, setTalleres] = useState([]);
+
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para almacenar el término de búsqueda
+    const [filteredData, setFilteredData] = useState(talleres); // Estado para almacenar los datos filtrados
+     // Función que se ejecuta cuando el input de búsqueda cambia
+     const handleSearch = (event) => {
+      const term = event.target.value.toLowerCase(); // Convierte el texto a minúsculas
+      setSearchTerm(term);
+  
+      // Filtra los datos según el término de búsqueda
+      const filtered = talleres.filter((item) => {
+        return (
+          item.nombre_taller.toLowerCase().includes(term) || // Filtra por nombre del taller
+          item.categoria.toLowerCase().includes(term) || // Filtra por categoría
+          item.encargado.toLowerCase().includes(term) // Filtra por artesano
+        );
+      });
+      
+      setFilteredData(filtered); // Actualiza el estado con los datos filtrados
+    }
+    useEffect(() => {
+      if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
+     // Función para hacer la solicitud a la API
+     const fetchTaller = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/workshops/`); 
+          setTalleres(response.data); // Almacena los productos en el estado
+          setFilteredData(response.data)
+        } catch (error) {
+          console.error('Error al obtener los productos', error);
+        }
+      };
+  
+    fetchTaller();
+    
+  }, [data, navigate]);
     return (
-        <div>
-            <header>
-                <div className="box-atras">
-                    <img src=".././../../../public/img/Group 53.png" alt="triangulo" />
-                    <a href="#"><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></a>
-                </div>
-                <div className="box-img">
-                    <img src="../../../../public/img/Rectangle 86.png" alt="rombo" />
-                    <h5>Talleres <br /> educativos</h5>
-                </div>
+        <div className={styles.body}>
+            <header className={styles.header}>
+            <div className={styles.boxAtras}>
+                <Muesca></Muesca>
+            </div>
+            <div className={styles.boxImg}>
+            <CategoryHeaders title ='Talleres educativo'/>
+            </div>
             </header>
-            <main>
-                <div className="search-container">
-                    <div className="buscador">
-                        <i className='bx bx-search-alt' style={{ color: '#ffffff' }}></i>
-                        <input type="text" placeholder="Buscar taller, por categoría o artesano" />
-                    </div>
+            <main className={styles.main}>
+            <div className={styles.searchContainer}>
+                <div className={styles.buscador}>
+                <i className='bx bx-search-alt' style={{ color: '#ffffff' }}></i>
+                <input
+                type="text"
+                placeholder="Buscar taller, por categoría o artesano"
+                value={searchTerm}
+                onChange={handleSearch} />
                 </div>
-                {Array.from({ length: 4 }).map((_, index) => (
-                    <section className="box" key={index}>
-                        <div className="box-img">
-                            <img src="../../../../public/img/y.jpg" alt="img-product" />
-                        </div>
-                        <div className="info">
-                            <div className="texto">
-                                <h4>Taller de bordado ayacuchado</h4>
-                                <a href="#" className="publico">Para el público en general</a>
-                                <p className="dado-por">Taller dado por los artesanos de</p>
-                                <p className="nombre-artesano">Taller Awaq Ayllus</p>
-                            </div>
-                            <button><a href="#">Entérate más sobre el taller aquí</a></button>
-                        </div>
-                    </section>
-                ))}
+            </div>
+            {filteredData.length > 0 ? (filteredData.map((item) => (
+                <section className={styles.box} key={item._id}>
+                <div className={styles.boxImg}>
+                    <img src={item.imagen} alt="img-product" />
+                </div>
+                <div className={styles.info}>
+                    <div className={styles.texto}>
+                    <h4>Taller {item.nombre_taller}</h4>
+                    <a href="#" className={styles.publico}>Para el público en general</a>
+                    <p className={styles.dadoPor}>Taller dado por {item.encargado} los artesanos de {item.categoria}</p>
+                    <p className={styles.nombreArtesano}>{item.nombre_taller}</p>
+                    </div>
+                    <button>
+                    <Link to={`/workshop/info/${item._id}`}>Entérate más sobre el taller aquí</Link>
+                    </button>
+                </div>
+                </section>
+             ))
+            ) : (
+              <p>No se encontraron resultados.</p>
+            )}
             </main>
         </div>
     );

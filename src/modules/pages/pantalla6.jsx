@@ -1,29 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Papa from 'papaparse';
-import '../../css/pantalla6.css';
+import  styles from '../../css/pantalla6.module.css'
+import { Muesca } from '../components/Muesca';
 
 export function Pantalla6() {
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [year, setYear] = useState('');
+  const [formData, setFormData] = useState({
+    nick: '',
+    celu: '',
+    confirmPhone: '',
+    password: '',
+    confirmPassword: '',
+    sex: '',
+    day: '',
+    month: '',
+    year: '',
+    countryCode: '', 
+    numeroCelular: '',
+  });
   const [countries, setCountries] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleDayChange = (e) => setDay(e.target.value);
-  const handleMonthChange = (e) => setMonth(e.target.value);
-  const handleYearChange = (e) => setYear(e.target.value);
+  const inputRef = useRef(null);
+  const codigo =useRef(null);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   useEffect(() => {
     const fetchCountries = async () => {
-    const response = await fetch('https://gist.githubusercontent.com/brenes/1095110/raw/c8f208b03485ba28f97c500ab7271e8bce43b9c6/paises.csv');
-    const reader = response.body.getReader();
-    const result = await reader.read(); 
-    const decoder = new TextDecoder('utf-8');
-    const csv = decoder.decode(result.value); 
-    let phoneCode = ' phone_code'
+      const response = await fetch(
+        'https://gist.githubusercontent.com/brenes/1095110/raw/c8f208b03485ba28f97c500ab7271e8bce43b9c6/paises.csv'
+      );
+      const reader = response.body.getReader();
+      const result = await reader.read();
+      const decoder = new TextDecoder('utf-8');
+      const csv = decoder.decode(result.value);
+
       Papa.parse(csv, {
         header: true,
         complete: (results) => {
-          const formattedCountries = results.data.map(country => ({
+          const formattedCountries = results.data.map((country) => ({
             code: country,
             name: country.name,
           }));
@@ -31,47 +53,106 @@ export function Pantalla6() {
         },
       });
     };
-    
 
     fetchCountries();
   }, []);
+  const isValidDate = (day, month, year) => {
+    const date = new Date(year, month - 1, day);
+    return date.getFullYear() == year && date.getMonth() == month - 1 && date.getDate() == day;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const numeroCelularCompleto = `+${inputRef.current.value}${formData.celu}`;
+    const fecha =`${formData.year }/${formData.month}/${formData.day}`;
+
+    // Validación del campo 'nick'
+    if (!formData.nick) {
+      setErrorMessage('Campo vacio: nick es obligatorio');
+      return
+    } else if (typeof formData.nick !== 'string' || formData.nick.length < 5 || formData.nick.length > 12) {
+      setErrorMessage('nick debe ser una cadena de entre 5 y 12 caracteres');
+      return
+    }
+    // Validación de campos vacíos
+    if (
+      !formData.nick ||
+      !formData.celu ||
+      !formData.confirmPhone ||
+      !formData.password ||
+      !formData.confirmPassword ||
+      !formData.sex ||
+      !formData.day ||
+      !formData.month ||
+      !formData.year ||
+      !inputRef.current.value ||
+      !codigo.current.value
+    ) {
+      setErrorMessage('Todos los campos deben estar llenos.');
+      return;
+    }
+
+    // Validar que los números de teléfono coincidan
+    if (numeroCelularCompleto !== `+${codigo.current.value}${formData.confirmPhone}`) {
+      setErrorMessage('El número de teléfono y la confirmación deben ser iguales.');
+      return;
+    }
+
+    // Validar que las contraseñas coincidan
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage('La contraseña y la confirmación deben ser iguales.');
+      return;
+    }
+    // Validar fecha
+    if (!isValidDate(formData.day, formData.month, formData.year)) {
+      setErrorMessage('La fecha de nacimiento ingresada no es válida.');
+      return;
+    }
+
+    // Si todo está bien, concatenamos el número de celular y redirigimos
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      numeroCelular: numeroCelularCompleto,
+    }));
+
+    // Redirigir a la siguiente página
+    navigate('/register/TermsAndConditions', {
+      state: { ...formData, phone: numeroCelularCompleto, fecha: fecha },
+    });
+  };
 
   return (
-    <div className='body'>
-      <header>
-        <div className="box-atras">
-          <img src=".././../../../public/img/Group 53.png" alt="triangulo" />
-          <a href="#"><i className='bx bx-arrow-back' style={{ color: '#ffa800' }}></i></a>
+    <div className={styles.body}>
+      <header className={styles.header}>
+        <div className={styles.boxAtras}>
+        <Muesca/>
         </div>
-        <div className="box-texto">
-          <h2>Nombre de usuario*</h2>
-          <p>*Crea un nombre de usuario de mínimo 5 y máximo de 12 carácteres</p>
+        <div className={styles.boxTexto}>
+          <h2 className={styles.h2}>Nombre de usuario*</h2>
+          <p className={styles.p}>*Crea un nombre de usuario de mínimo 5 y máximo de 12 carácteres</p>
         </div>
       </header>
-      <form>
-        <div className="box-nombre">
-          <input type="text" placeholder="Nombre de usuario" />
+      <form className={styles.form}>
+        <div className={styles.boxNombre}>
+          <input
+            type="text"
+            name="nick"
+            placeholder="Nombre de usuario"
+            value={formData.nick}
+            onChange={handleChange}
+          />
         </div>
-        <div className="box-numCelu">
-          <h2>Número de celular*</h2>
-          <div className="box-numeros">
-            <div className="codigo">
-              <select id="select-number" className="clase-numero">
-                {countries.map((country, index) => (
-                  <option key={index} value={country.code}>
-                   +{country.code[' phone_code']}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="num-celular"><input type="text" placeholder="Número de celular" /></div>
-          </div>
-        </div>
-        <div className="box-numCelu">
-          <h2>Confirma tu celular*</h2>
-          <div className="box-numeros">
-            <div className="codigo">
-            <select id="select-number" className="clase-numero">
+        <div className={styles.boxNumCelu}>
+          <h2 className={styles.h2}>Número de celular*</h2>
+          <div className={styles.boxNumeros}>
+            <div className={styles.codigo}>
+              <select
+                id="select-number"
+                className={styles.claseNumero}
+                name="countryCode"
+                ref={inputRef}
+              >
+                <option value="">Código</option>
                 {countries.map((country, index) => (
                   <option key={index} value={country.code[' phone_code']}>
                     +{country.code[' phone_code']}
@@ -79,56 +160,135 @@ export function Pantalla6() {
                 ))}
               </select>
             </div>
-            <div className="num-celular"><input type="text" placeholder="Confirma tu número" /></div>
+            <div className={styles.numCelular}>
+              <input
+                type="text"
+                name="celu"
+                placeholder="Número de celular"
+                value={formData.celu}
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
-        <div className="box-contraseña">
-          <h2>Contraseña*</h2>
-          <p>Recuerda crear una contraseña difícil de adivinar</p>
-          <div className="container-contraseña"><input type="password" placeholder="Contraseña" /></div>
+        <div className={styles.boxNumCelu}>
+          <h2 className={styles.h2}>Confirma tu celular*</h2>
+          <div className={styles.boxNumeros}>
+            <div className={styles.codigo}>
+              <select
+                id="select-number"
+                className={styles.claseNumero}
+                name="countryCodeConfirm"
+                ref={codigo}
+              >
+                <option value="">Código</option>
+                {countries.map((country, index) => (
+                  <option key={index} value={country.code[' phone_code']}>
+                    +{country.code[' phone_code']}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={styles.numCelular}>
+              <input
+                type="text"
+                name="confirmPhone"
+                placeholder="Confirma tu número"
+                value={formData.confirmPhone}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
         </div>
-        <div className="box-contraseña">
-          <h2>Confirma tu contraseña*</h2>
-          <p>Recuerda crear una contraseña difícil de adivinar</p>
-          <div className="container-contraseña"><input type="password" placeholder="Confirma tu contraseña" /></div>
+        <div className={styles.boxContraseña}>
+          <h2 className={styles.h2}>Contraseña*</h2>
+          <p className={styles.p}>Recuerda crear una contraseña difícil de adivinar</p>
+          <div className={styles.containerContraseña}>
+            <input
+              type="password"
+              name="password"
+              placeholder="Contraseña"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
         </div>
-        <div className="box-sexo">
-          <h2>Sexo</h2>
-          <select className="opciones-sexo">
+        <div className={styles.boxContraseña}>
+          <h2 className={styles.h2}>Confirma tu contraseña*</h2>
+          <p className={styles.p}>Recuerda crear una contraseña difícil de adivinar</p>
+          <div className={styles.containerContraseña}>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirma tu contraseña"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className={styles.boxSexo}>
+          <h2 className={styles.h2}>Sexo</h2>
+          <select
+            className={styles.opcionesSexo}
+            name="sex"
+            value={formData.sex}
+            onChange={handleChange}
+          >
             <option value=""></option>
-            <option value="femenino">femenino</option>
-            <option value="masculino">masculino</option>
-            <option value="indefinido">Otro</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Masculino">Masculino</option>
           </select>
         </div>
-        <div className="box-fecha-nacimiento">
-          <h2>Fecha de nacimiento</h2>
-          <div className="container-fechas">
-            <select value={day} onChange={handleDayChange} className='box-dia'>
+        <div className={styles.boxFechaNacimiento}>
+          <h2 className={styles.h2}>Fecha de nacimiento</h2>
+          <div className={styles.containerFechas}>
+            <select
+              value={formData.day}
+              name="day"
+              onChange={handleChange}
+              className={styles.boxDia}
+            >
               <option value="">DD</option>
               {Array.from({ length: 31 }, (_, i) => (
-                <option key={i} value={i + 1}>{i + 1}</option>
+                <option key={i} value={i + 1}>
+                  {i + 1}
+                </option>
               ))}
             </select>
-            <select value={month} onChange={handleMonthChange} className='box-dia'>
+            <select
+              value={formData.month}
+              name="month"
+              onChange={handleChange}
+              className={styles.boxDia}
+            >
               <option value="">MM</option>
               {Array.from({ length: 12 }, (_, i) => (
-                <option key={i} value={i + 1}>{i + 1}</option>
+                <option key={i} value={i + 1}>
+                  {i + 1}
+                </option>
               ))}
             </select>
-            <select value={year} onChange={handleYearChange} className='box-dia'>
+            <select
+              value={formData.year}
+              name="year"
+              onChange={handleChange}
+              className={styles.boxDia}
+            >
               <option value="">YY</option>
               {Array.from({ length: 100 }, (_, i) => (
-                <option key={i} value={2024 - i}>{2024 - i}</option>
+                <option key={i} value={2024 - i}>
+                  {2024 - i}
+                </option>
               ))}
             </select>
           </div>
         </div>
       </form>
-      <footer>
-        <div className="box-adelante">
+      <footer className={styles.footer}>
+        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        <div className={styles.boxAdelante} onClick={handleSubmit}>
           <i className='bx bx-chevron-right'></i>
-          <a href="#">Continuar</a>
+          <a href="/register/TermsAndConditions">Continuar</a>
         </div>
       </footer>
     </div>

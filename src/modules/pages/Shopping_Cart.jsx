@@ -1,12 +1,9 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-const items = [
-    { name: "Vasija pequeña con diseño de flor", price: "COP 1000", stats: "13x10 cm, 2KG", desc:"Asoc. de artesanos productores de Chazuta", img: "/img/Rectangle 44.png" },
-    { name: "Bolso negro con diseño de flores", price: "COP 1.000", stats: "13x10 cm, 2KG", desc:"Asoc. Pequeña Roma", img: "/img/Rectangle 45.png" }
-]
 
 export function ShoppingCart() {
     const navigate = useNavigate();
@@ -15,13 +12,63 @@ export function ShoppingCart() {
     
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     
+    const [productos, setProductos] = useState([]);
+    const [taller, setTaller] = useState([]);
+    const [productosConDescuento, setProductosConDescuento] = useState([])
+
+
     useEffect(()=> {
         
         if (!data) navigate('/register')
         console.log(data.user)
         setUser([data.user])
         
+
+         // Función para hacer la solicitud a la API
+    const fetchProductos = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/user/cart/details`, {
+            withCredentials: true // Esto incluye las cookies
+        });
+          setProductos(response.data.data); // Almacena los productos en el estado
+          if (response.data.data.length > 0) {
+              setTaller(response.data.data[0].nombre_taller); // Asignar el nombre del taller
+          }
+        } catch (error) {
+          console.error('Error al obtener los productos', error);
+        }
+      };
+      fetchProductos();
+
+      const fetchDescuentos = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/cupon/product/h');
+          setProductosConDescuento(response.data); 
+        } catch (error) {
+          console.error('Error al obtener productos con descuento', error);
+        }
+      };
+      fetchDescuentos();
+
     },[])
+     // Función para aplicar el descuento
+  const aplicarDescuento = (producto) => {
+    const productoConDescuento = productosConDescuento.find(
+      (descuento) => descuento.productoInfo._id === producto.carrito._id
+    );
+    if (productoConDescuento) {
+      // Aplicar descuento
+      const descuento = productoConDescuento.descuento;
+      const precioOriginal = producto.carrito.precio;
+      const precioDescuento = precioOriginal - (precioOriginal * descuento) / 100;
+      return precioDescuento;
+    }
+    return producto.carrito.precio; // Si no hay descuento, devolver el precio original
+  };
+    const subtotal = productos.reduce((acc, item) => acc + aplicarDescuento(item) * item.carrito.cantidad, 0);
+    const shippingCost = 20;
+    const total = subtotal + shippingCost;
+
 
     const handleOpenDialog = () => {
         setIsDialogOpen(true); // Abre el diálogo
@@ -41,33 +88,30 @@ export function ShoppingCart() {
             </div>
 
             <div className="grid grid-cols-1 gap-4 p-3">
-                {items.map((shop, index) => (
-                    <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[150px] justify-around items-center flex">
-                        <img src={shop.img} className="w-full h-[130px] w-[130px] object-cover" style={{ borderRadius: '10px' }} />
-                        <div className="flex flex-col">
-                            <h3 className="text-white text-sm">{shop.name}</h3>
-                            <p className="text-gray-300 text-sm">{shop.price}</p>
-                            <p className="text-gray-300 text-sm">{shop.stats}</p>
-                            <p className="text-gray-300 text-sm">{shop.desc}</p>
-
-                            <div className="addsubstract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg">
-                                <button>-</button>
-                                <div>1</div>
-                                <button>+</button>
+                {productos.map((item, index) => (
+                        <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[150px] justify-around items-center flex">
+                            <img src={item.carrito.img} className="w-[130px] h-[130px] object-cover" style={{ borderRadius: '10px' }} />
+                            <div className="flex flex-col">
+                                <h3 className="text-white text-sm">{item.carrito.nombre}</h3>
+                                <p className="text-gray-300 text-sm">COP {aplicarDescuento(item)}</p>
+                                <p className="text-gray-300 text-sm">{item.carrito.dimensiones}</p>
+                                <p className="text-gray-300 text-sm">{taller}</p>
+                                <div className="addsubstract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg">
+                                    <button >-</button>
+                                        <div>{item.carrito.cantidad}</div>
+                                    <button>+</button>
+                                </div>
                             </div>
-
                         </div>
-
-                        
-                    </div>
-                ))}
+                    ))}
             </div>
 
             <div className="coupon flex justify-center items-center">
-                <div className="bg-[var(--color-703A31)] w-[90%] h-10 flex items-center justify-center rounded-lg text-white">
-                Añadir cupón de descuento
-
-                </div>
+                <Link to={'/coupon'}>
+                    <div className="bg-[var(--color-703A31)] w-[100%] h-10 flex items-center justify-center rounded-lg text-white">
+                    Añadir cupón de descuento
+                    </div>
+                </Link>
             </div>
 
             <div className="subt mt-5 flex justify-center">
@@ -78,8 +122,8 @@ export function ShoppingCart() {
                             <p className="text-white opacity-50">Gastos de envío</p>
                         </div>
                         <div>
-                            <p className="text-white">COP 1000</p>
-                            <p className="text-white opacity-50">COP 50</p>
+                            <p className="text-white">COP {subtotal}</p>
+                            <p className="text-white opacity-50">COP {shippingCost}</p>
                         </div>
                     </div>
                 </div>
@@ -92,7 +136,7 @@ export function ShoppingCart() {
                             <p className="text-white">Total</p>
                         </div>
                         <div>
-                            <p className="text-white">COP 1050</p>
+                        <p className="text-white">COP {total}</p>
                         </div>
                     </div>
                 </div>

@@ -1,16 +1,8 @@
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { useState, useEffect } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
-
-const articles = [
-    { name: "Chalina Beige con flecos", price: "COP 50.000", description: "Una hermosa chalina con flecos.", img: "/img/Rectangle 41.png" },
-    { name: "Caminos de mesa", price: "COP 50.000", description: "Elegantes caminos de mesa para decorar.", img: "/img/Rectangle 42.png" },
-    { name: "Dueño de la malva", price: "COP 50.000", description: "Artículos de malva hechos a mano.", img: "/img/Rectangle 47.png" },
-    { name: "Chullo II", price: "COP 50.000", description: "Chullo de lana, ideal para el frío.", img: "/img/Rectangle 48.png" },
-    { name: "Taller Sanabria Nuñez", price: "COP 50.000", description: "Artesanías del Taller Sanabria.", img: "/img/Rectangle 49.png" },
-    { name: "Lastenia Canayo", price: "COP 50.000", description: "Artesanías de Lastenia Canayo.", img: "/img/Rectangle 50.png" }
-];
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const categories = [
     "Textilería",
@@ -27,10 +19,11 @@ const categories = [
 
 export function DiscountsPromotions() {
     const [activeIndex, setActiveIndex] = useState(0);
-
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const data = useLoaderData()
+    const [productos, setProductos] = useState([]);
 
 
     useEffect(()=> {
@@ -39,11 +32,28 @@ export function DiscountsPromotions() {
         console.log(data.user)
         setUser([data.user])
 
+        // Función para hacer la solicitud a la API
+        const fetchProductos = async () => {
+            try {
+            const response = await axios.get(`http://localhost:3000/cupon/product/h`);
+            setProductos(response.data); // Almacena los productos en el estado}
+            } catch (error) {
+            console.error('Error al obtener los productos', error);
+            }
+        };
+      fetchProductos();
+
     },[])
 
-    const handleButtonClick = (index) => {
+    const handleButtonClick = (index, category) => {
         setActiveIndex(index);
+        setSelectedCategory(category);
     };
+
+    // Filtrar productos según la categoría seleccionada
+    const filteredProductos = selectedCategory
+        ? productos.filter(item => item.productoInfo.categoria === selectedCategory)
+        : productos;
 
     return (
         <main>
@@ -55,13 +65,13 @@ export function DiscountsPromotions() {
             </div>
 
             <div className="overflow-x-auto flex h-10">
-                {categories.map((category, index) => (
+            {categories.map((category, index) => (
                     <button
                         key={index}
                         className={`px-4 py-2 text-white bg-[var(--color-703A31)] ${
                             activeIndex === index ? 'hover:bg-[var(--color-2E1108)]' : ''
                         } transition duration-200`}
-                        onClick={() => handleButtonClick(index)}
+                        onClick={() => handleButtonClick(index, category)}
                     >
                         {category}
                     </button>
@@ -69,18 +79,21 @@ export function DiscountsPromotions() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 p-5">
-                {articles.map((shop, index) => (
-                    <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md flex flex-col">
-                        <img
-                            src={shop.img}
-                            className="w-full h-40 object-cover"
-                        />
-                        <div className="p-2">
-                            <h3 className="text-white text-sm">{shop.name}</h3>
-                            <p className="text-gray-300">{shop.price}</p>
-                            <p className="text-gray-300 text-xs">{shop.description}</p>
+            {filteredProductos.map((item, index) => (
+                    <Link to={`/product/${item.productoInfo._id}`}>
+                        <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md flex flex-col">
+                            <img
+                                src={item.productoInfo.img}
+                                className="w-full h-40 object-cover"
+                            />
+                            <div className="p-2">
+                                <h3 className="text-white text-sm">{item.productoInfo.nombre}</h3>
+                                <p className="text-gray-300">COP {item.productoInfo.precio}</p>
+                                <p className="text-gray-300 text-xs">{item.productoInfo.descripcion}</p>
+                                <p className="text-gray-300 text-xs">Descuento: {item.descuento}%</p>
+                            </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
 

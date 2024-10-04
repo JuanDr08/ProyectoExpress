@@ -3,9 +3,9 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
-// import {Pantalla6} from "./pages/pantalla6";
-// import Pantalla7 from "./pages/pantalla7";
-// import Pantalla17 from "./pages/pantalla17";
+
+import {Pantalla7} from "./pages/pantalla7";
+import Pantalla17 from "./pages/pantalla17";
 import { Pantalla19 } from "./pages/pantalla19";
 import Carga from "./pages/Carga";
 import InicioSesion from "./pages/InicioSesion";
@@ -16,12 +16,13 @@ import { DiscountsPromotions } from "./pages/Discounts_Promotions";
 import { ShoppingCart } from "./pages/Shopping_Cart";
 import { Profile } from "./pages/Profile";
 import { EmailRecord } from "./pages/EmailRecord";
-//import { Pantalla6 } from "./pages/pantalla6"; -- VISTA CORRUPTA, LA IMPORTACION DE ESTA VISTA EMPIEZA A DAÑAR OTRAS DISTINTAS, DEBE REVISAR ESOS CSS QUE ESTAN DAÑANDO LA PAGINA
+import { Pantalla6 } from "./pages/pantalla6"; 
 import { TermsAndConditions } from "./pages/Terms&Conditions";
 import { Categories } from "./pages/Categories";
 import { WorkshopPreview } from "./pages/WorkshopPreview";
-//import { Pantalla20 } from "./pages/pantalla20";
-//import { Pantalla21 } from "./pages/pantalla21";
+import { Pantalla20 } from "./pages/pantalla20";
+import { Pantalla21 } from "./pages/pantalla21";
+import { Pantalla22 } from "./pages/pantalla22";
 import { Settings } from "./pages/Settings";
 import { AppOpinions } from "./pages/AppOpinions";
 import { CustomerSupport } from "./pages/CustomerSupport";
@@ -29,9 +30,7 @@ import { Chat } from "./pages/ChatView";
 import InfoCraft from "./pages/InfoCraft";
 import TallerCeramica from "./pages/CraftInscription";
 import InicioSesionRuraq from "./pages/InicioSesionRuraq";
-//import Pantalla17 from "./pages/pantalla17";// -- VISTA CORRUPTA, LA IMPORTACION DE LA VISTA Y SU CSS CORROMPE EL ESTILO DE LAS DEMAS VISTAS, REVISAR
-// import { Pantalla20 } from "./pages/pantalla20";
-// import { Pantalla21 } from "./pages/pantalla21";
+
 
 async function loader() {
 
@@ -62,13 +61,13 @@ const router = createBrowserRouter([
         path: '/register/email',
         element: <EmailRecord/>
     },
-    // {
-    //     path: '/register/phone',
-    //     element: <Pantalla6/>
-    // },
+    {
+        path: '/register/phone',
+        element: <Pantalla6/>
+    },
     {
         path: '/register/TermsAndConditions',
-        element: <TermsAndConditions/>
+        element: <Pantalla7/>
     },
     {
         path: '/login',
@@ -113,26 +112,31 @@ const router = createBrowserRouter([
         element: <WorkshopPreview/>,
         loader: loader
     },
-    // {
-    //     path: '/product/:id',
-    //     element: <Pantalla17/>,
-    //    loader: loader
-    // }
-    // {
-    //     path: '/crafts/favorites',
-    //     element: <Pantalla19/>,
-    //    loader: loader
-    // },
-    // {
-    //     path: '/purchases/success',
-    //     element: <Pantalla20/>,
-    //     loader: loader
-    // },
-    // {
-    //     path: '/workshops/educational',
-    //     element: <Pantalla21/>,
-    //     loader: loader
-    // }
+    {
+        path: '/product/:id',
+        element: <Pantalla17/>,
+       loader: loader
+    },
+    {
+        path: '/crafts/favorites',
+        element: <Pantalla19/>,
+       loader: loader
+    },
+    {
+        path: '/purchases/success',
+        element: <Pantalla20/>,
+        loader: loader
+    },
+    {
+        path: '/workshops/educational',
+        element: <Pantalla21/>,
+        loader: loader
+    },
+    {
+        path: '/coupon',
+        element: <Pantalla22/>,
+        loader: loader
+    },
     {
         path: '/settings',
         element: <Settings/>,
