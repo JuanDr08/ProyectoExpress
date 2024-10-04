@@ -84,10 +84,11 @@ Para poder utilizar este proyecto, sigue los siguientes pasos:
    Este comando instalará todas las dependencias listadas en el archivo `package.json`.
 
 3. **Ejecutar el proyecto**:
-   Después de instalar las dependencias, inicia el proyecto con el siguiente comando:
+   Después de instalar las dependencias, inicia el proyecto con los siguientes comandos en 2 terminales diferentes, para el front y back-end respectivamente:
 
    ```bash
-   npm run initproyect
+   npm run dev
+   npm run start
    ```
 
    Esto ejecutará el servidor y el entorno de desarrollo, iniciando el programa.
