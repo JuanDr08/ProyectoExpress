@@ -30,7 +30,7 @@ export const WorkshopPreview = () => {
     };
 
     const filteredProducts = tallerData
-        ? tallerData.productosDetalles.filter(product =>
+        ? tallerData.productosDetalles?.filter(product =>
             product.nombre.toLowerCase().includes(searchTerm.toLowerCase())
           )
         : [];
@@ -39,7 +39,8 @@ export const WorkshopPreview = () => {
     const handleSearch = async () => {
         try {
           const search = searchTerm.trim() ? searchTerm : '';  // Si no hay búsqueda, enviar cadena vacía
-          const response = await axios.get(`http://localhost:3000/workshops/${id}/${search}`);
+          const response = await axios.get(`http://localhost:3000/workshops/${id}/${search}`, {withCredentials: true});
+
           setResults(response.data.productosDetalles);  // Guardar los productos obtenidos
         } catch (error) {
           console.error('Error al realizar la búsqueda', error);
@@ -58,7 +59,7 @@ export const WorkshopPreview = () => {
           const response = await axios.get(`http://localhost:3000/workshops/${id}`, {
             withCredentials: true,
           });
-          setTallerData(response.data);  // Guardar los datos del taller
+          setTallerData(response.data.data[0]);  // Guardar los datos del taller
         } catch (error) {
           console.error("Error fetching workshop data", error);
           navigate('/404'); // Redirigir si ocurre un error o no se encuentra el taller
@@ -85,7 +86,7 @@ export const WorkshopPreview = () => {
 
             <section className="flex items-center my-[15px] relative">
                 <CategoryHeaders title={'Artesanias'} />
-                <Link to={'/'} className="absolute right-2">
+                <Link to={`/chat/${tallerData.nombre_taller}`} className="absolute right-2">
                     <svg width="45" height="43" viewBox="0 0 150 148" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" clipRule="evenodd" d="M31.4882 18.5098C22.3585 18.5098 15 26.6185 15 36.679V92.3489C15 102.409 22.3585 110.518 31.4882 110.518H38.4786C39.8593 110.518 40.9786 111.752 40.9786 113.273V129.015L63.0723 111.056C63.5021 110.707 64.0222 110.518 64.5563 110.518H101.987C111.117 110.518 118.476 102.409 118.476 92.3489V55.6363C118.476 54.1148 119.595 52.8814 120.976 52.8814C122.356 52.8814 123.476 54.1148 123.476 55.6363V92.3489C123.476 105.452 113.878 116.028 101.987 116.028H65.3786L39.9627 136.687C39.2035 137.304 38.1938 137.398 37.3517 136.93C36.5096 136.461 35.9786 135.51 35.9786 134.47V116.028H31.4882C19.5971 116.028 10 105.452 10 92.3489V36.679C10 23.5755 19.5971 13 31.4882 13H81.6605C83.0412 13 84.1605 14.2334 84.1605 15.7549C84.1605 17.2764 83.0412 18.5098 81.6605 18.5098H31.4882Z" fill="#FFA800" />
                     </svg>
@@ -106,7 +107,7 @@ export const WorkshopPreview = () => {
             </section>
 
             <section className="overflow-y-scroll h-[45dvh] grid grid-cols-2 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-[40px]">
-                {filteredProducts.length > 0 ? (
+                {filteredProducts?.length > 0 ? (
                     filteredProducts.map((product, index) => (
                         <ProductCategoryCard
                             key={index}

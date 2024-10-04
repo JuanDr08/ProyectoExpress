@@ -40,8 +40,24 @@ export const Categories = () => {
 
     const [category, setCategory] = useState(categoryName);
     const [products, setProducts] = useState([])
-    const [filteredProducts, setFilteredProducts] = useState([])
+    const [filteredProducts, setFilteredProducts] = useState(products)
 
+    const [searchTerm, setSearchTerm] = useState(''); // Estado para almacenar el término de búsqueda
+    const handleSearch = (event) => {
+        const term = event.target.value.toLowerCase(); // Convierte el texto a minúsculas
+        setSearchTerm(term);
+    
+        // Filtra los datos según el término de búsqueda
+        const filtered = products.filter((item) => {
+          return (
+            item.nombre.toLowerCase().includes(term) || // Filtra por nombre del taller
+            item.categoria.toLowerCase().includes(term) || // Filtra por categoría
+            item.nombre_taller.toLowerCase().includes(term) // Filtra por artesano
+          );
+        });
+        
+        setFilteredProducts(filtered); // Actualiza el estado con los datos filtrados
+      }
 
     useEffect(() => {
 
@@ -56,9 +72,10 @@ export const Categories = () => {
 
         const fetchProducts = async () => {
             try {
-                let allProducts = await fetch('http://localhost:3000/product', { cache: "force-cache" })
+                let allProducts = await fetch('http://localhost:3000/product', { credentials: 'include',cache: "force-cache" })
                 let res = await allProducts.json()
                 setProducts(res)
+                setFilteredProducts(res)
             } catch (error) {
                 console.log('Error ', error)
             }
@@ -128,6 +145,7 @@ export const Categories = () => {
                             type="text"
                             placeholder="Buscar producto o tienda..."
                             className="flex-1 bg-transparent border-none outline-none text-white"
+                            onChange={handleSearch}
                         />
                     </div>
                     <button className='w-[10%]'>

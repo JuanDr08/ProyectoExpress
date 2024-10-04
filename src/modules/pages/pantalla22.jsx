@@ -22,8 +22,9 @@ export const Pantalla22 = () => {
     try {
       const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`, {withCredentials: true}); 
       const id = cuponCode.data._id
-      const agregarCupon = await axios.post(`http://localhost:3000/user/coupons/${id}`, {
-        withCredentials: true // Esto incluye las cookies
+      const agregarCupon = await fetch(`http://localhost:3000/user/coupons/${id}`, {
+        method: 'POST',
+        credentials: 'include' // Esto incluye las cookies
     });
 
       //console.log(agregarCupon)
@@ -35,8 +36,9 @@ export const Pantalla22 = () => {
   }
   const addCarrito = async (idProducto) => {
       try{
-        const addCarrito= await axios.post(`http://localhost:3000/user/cart/${idProducto}`, {
-          withCredentials: true // Esto incluye las cookies
+        const addCarrito= await fetch(`http://localhost:3000/user/cart/${idProducto}`, {
+          method: 'POST',
+          credentials: 'include' // Esto incluye las cookies
       });
       console.log("Producto añadido a carrito", addCarrito);
       } catch (error) {
@@ -48,8 +50,8 @@ export const Pantalla22 = () => {
   useEffect(()=> {
     const fetchCupon = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/coupons/details`, {
-          withCredentials: true // Esto incluye las cookies
+        const response = await fetch(`http://localhost:3000/user/coupons/details`, {
+          credentials: 'include' // Esto incluye las cookies
       });
         setCupones(response.data.data)
       } catch (error) {

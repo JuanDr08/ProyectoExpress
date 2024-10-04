@@ -65,8 +65,8 @@ export function Pantalla6() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const numeroCelularCompleto = `+${inputRef.current.value}${formData.celu}`;
-    const fecha =`${formData.year }-${formData.month}-${formData.day}`;
+    const numeroCelularCompleto = `${formData.celu}`;
+    const fecha =`${formData.year }/${formData.month}/${formData.day}`;
 
     // Validación del campo 'nick'
     if (!formData.nick) {
@@ -95,7 +95,7 @@ export function Pantalla6() {
     }
 
     // Validar que los números de teléfono coincidan
-    if (numeroCelularCompleto !== `+${codigo.current.value}${formData.confirmPhone}`) {
+    if (numeroCelularCompleto !== `${formData.confirmPhone}`) {
       setErrorMessage('El número de teléfono y la confirmación deben ser iguales.');
       return;
     }

@@ -34,11 +34,13 @@ export const Pantalla20 = () => {
     
     const fecthCompras = async () => {
       try {
-        const compra = await axios.get('http://localhost:3000/user/purchases/details', {
-          withCredentials: true // Esto incluye las cookies
+        const compra = await fetch('http://localhost:3000/user/purchases/details', {
+          credentials: 'include' // Esto incluye las cookies
       });
-        setCompras(compra.data.data[0].compras); // Almacena los productos en el estado
-        setTaller(compra.data.data[0].nombre_taller)
+        let res = await compra.json()
+        console.log(res)
+        setCompras(res.data[0].compras); // Almacena los productos en el estado
+        setTaller(res.data[0].nombre_taller)
       } catch (error) {
         console.error('No ha ehcho compras', error);
         setErrorMessage('No hay compras todavia')
@@ -64,7 +66,7 @@ export const Pantalla20 = () => {
         <section className={styles.compras}>
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
           {/* Renderiza las coompras obtenidos de la API */}
-          {[compras].map((compra) => (
+          {!errorMessage && [compras].map((compra) => (
             <div key={compra._id} className={styles.compra}>
               <div className={styles.boxImg}>
                 <img src={compra.img} alt="compra" />

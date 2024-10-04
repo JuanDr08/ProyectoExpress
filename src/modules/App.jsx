@@ -30,12 +30,12 @@ import { Chat } from "./pages/ChatView";
 import {InfoCraft} from "./pages/InfoCraft";
 import TallerCeramica from "./pages/CraftInscription";
 import InicioSesionRuraq from "./pages/InicioSesionRuraq";
+import Purchase from "./pages/Purchase";
 
 
 async function loader() {
 
     let res = await fetch('http://localhost:3000/auth/check', {
-        method: 'GET',
         credentials: 'include'
     })
     let data = await res.json()
@@ -173,6 +173,11 @@ const router = createBrowserRouter([
         element: <TallerCeramica/>,
         loader: loader
     },
+    {
+        path: '/payment/success',
+        element: <Purchase/>,
+        loader: loader
+    }
 ]);
 
 export const App = () => {

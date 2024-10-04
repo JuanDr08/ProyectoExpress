@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Purchase() {
   return (
@@ -10,9 +11,9 @@ function Purchase() {
             <h3 className='text-[1.5em] pb-5'>!Compra realizada con exito!</h3>
             <img src='/img/rhombuses.png' className='w-[250px] pb-5'/>
             <p className='text-center text-[1.1em] pb-3'>Gracias por apoyar a los artesanos Santandereanos, puedes revisar tu compra en la opción de</p>
-            <div className = "bg-[#703A31] rounded-sm">
+            <Link to={'/purchases/success'} className = "bg-[#703A31] rounded-sm">
                 <button className='text-white w-[6em] h-[2em]'>Compras</button>
-            </div>
+            </Link>
             <img src='/img/rhombuses.png' className='w-[250px] pt-5'/>
         </div>
         <div className='flex flex-col gap-5 pb-5'>
@@ -22,9 +23,9 @@ function Purchase() {
                 <button className='mt-4 bg-[#703A31] text-white px-8 py-2 rounded-lg hover:bg-[#6a2926] transition'>Enviar</button>
             </form>
         </div>
-        <div className='flex flex-col justify-center items-center bg-[#703A31] w-[12em] h-[2.2em] text-white '>
+        <Link to={'/home'} className='flex flex-col justify-center items-center bg-[#703A31] w-[12em] h-[2.2em] text-white '>
             <a className='text-[1.3em]'>Regresar al inicio</a>
-        </div>
+        </Link>
     </div>
   )
 }

@@ -10,8 +10,8 @@ const Corazon = ({idProducto}) => {
   useEffect(() => {
     const fetchFavorito= async () => {
       try{
-        const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`, {
-          withCredentials: true // Esto incluye las cookies
+        const favorito = await fetch(`http://localhost:3000/user/favorite/check/${idProducto}`, {
+          credentials: 'include' // Esto incluye las cookies
       });
         if (favorito.data) setLiked(true);
       } catch (error) {
@@ -25,8 +25,8 @@ const Corazon = ({idProducto}) => {
 
   const toggleHeart = async () => {
     try{
-      const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`, {
-        withCredentials: true // Esto incluye las cookies
+      const favorito = await fetch(`http://localhost:3000/user/favorite/check/${idProducto}`, {
+        credentials: 'include' // Esto incluye las cookies
     });
       if (favorito.data) setLiked(true);
     } catch (error) {
@@ -36,16 +36,14 @@ const Corazon = ({idProducto}) => {
     try {
       if (!liked) {
         // Si no está en favoritos, hacemos una petición POST para agregarlo
-        const addFavoritos = await axios.post(`http://localhost:3000/user/favorites/products/${idProducto}`, {
-          withCredentials: true // Esto incluye las cookies
-      });
+        console.log('Entra a la post')
+        const addFavoritos = await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, {method: 'POST', credentials: 'include'});
         console.log("Producto añadido a favoritos", addFavoritos);
         setLiked(true)
       } else {
         // Si está en favoritos, hacemos una petición DELETE para eliminarlo
-        await axios.delete(`http://localhost:3000/user/favorites/products/${idProducto}`, {
-          withCredentials: true // Esto incluye las cookies
-      });
+        console.log('Entra a este delete')
+        await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, { method: 'DELETE',credentials: 'include' });
         console.log("Producto eliminado de favoritos");
         setLiked(false)
       }
@@ -135,8 +133,9 @@ const MainContent = ({ idProducto, cupon, nombre, precio, descripcion, dimension
   }, [idProducto, precio, cupon]);
 
   const addCarrito = async () => {
-      const addCarrito= await axios.post(`http://localhost:3000/user/cart/${idProducto}`, {
-        withCredentials: true // Esto incluye las cookies
+      const addCarrito= await fetch(`http://localhost:3000/user/cart/${idProducto}`, {
+        method: 'POST',
+        credentials: 'include' // Esto incluye las cookies
     });
       console.log("Producto añadido a carrito", addCarrito);
   };

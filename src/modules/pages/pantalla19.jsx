@@ -39,10 +39,11 @@ export const Pantalla19 = () => {
 
       const fetchCupon = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/user/favorites/products/details', {
-          withCredentials: true // Esto incluye las cookies
+          const response = await fetch('http://localhost:3000/user/favorites/products/details', {
+          credentials: 'include' // Esto incluye las cookies
       });
-          setProductos(response.data.data);
+          let res = await response.json()
+          setProductos(res.data);
           filtrarProductos('Textilería')
         } catch (error) {
           console.error('Error al obtener los productos', error);
@@ -63,13 +64,14 @@ export const Pantalla19 = () => {
     // Filtrar productos por categoría
     const filtrarProductos = (textValue) => {
       const categoriaSeleccionada = textValue
-      if (!categoriaSeleccionada) return productos[0].favoritos;
-      const data = productos[0].favoritos.filter(favorito => favorito.categoria == categoriaSeleccionada)
+      if (!categoriaSeleccionada) return productos[0]?.favoritos;
+      const data = productos[0]?.favoritos.filter(favorito => favorito.categoria == categoriaSeleccionada)
       setData(data)
     };
     const deleteFavorito = async (id) => {
-      await axios.delete(`http://localhost:3000/user/favorites/products/${id}`, {
-        withCredentials: true // Esto incluye las cookies
+      await fetch(`http://localhost:3000/user/favorites/products/${id}`, {
+        method: 'DELETE',
+        credentials: 'include' // Esto incluye las cookies
     });
         console.log("Producto eliminado de favoritos");
         window.location.reload();
