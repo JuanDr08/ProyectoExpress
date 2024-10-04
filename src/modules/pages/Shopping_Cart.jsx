@@ -16,6 +16,30 @@ export function ShoppingCart() {
     const [productos, setProductos] = useState([]);
     const [taller, setTaller] = useState([]);
     const [productosConDescuento, setProductosConDescuento] = useState([])
+    
+
+    // --- Manejo de Cantidades, sumar y restar ---
+
+    const [quantities, setQuantities] = useState(items.map(() => 1)); // 1 por defecto por item
+
+    const handleDecrement = (index) => {
+        setQuantities(prev => {
+            const newQuantity = prev[index] > 1 ? prev[index] - 1 : 1; 
+            const newQuantities = [...prev];
+            newQuantities[index] = newQuantity; // actualizamos la cantidad especifica
+            return newQuantities;
+        });
+    };
+
+    const handleIncrement = (index) => {
+        setQuantities(prev => {
+            const newQuantities = [...prev];
+            newQuantities[index] = newQuantities[index] + 1; // Incrementamos especificamente el item
+            return newQuantities;
+        });
+    };
+
+    ///
 
 
     useEffect(()=> {
@@ -99,11 +123,13 @@ export function ShoppingCart() {
                                 <p className="text-gray-300 text-sm">COP {aplicarDescuento(item)}</p>
                                 <p className="text-gray-300 text-sm">{item.carrito.dimensiones}</p>
                                 <p className="text-gray-300 text-sm">{taller}</p>
-                                <div className="addsubstract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg">
-                                    <button >-</button>
-                                        <div>{item.carrito.cantidad}</div>
-                                    <button>+</button>
+
+                                <div className="addsubtract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg p-1">
+                                    <button onClick={() => handleDecrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">-</button>
+                                    <div>{quantities[index]}</div>
+                                    <button onClick={() => handleIncrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">+</button>
                                 </div>
+
                             </div>
                         </div>
                     ))}
