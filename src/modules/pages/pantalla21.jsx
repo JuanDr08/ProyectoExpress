@@ -31,6 +31,10 @@ export const Pantalla21 = () => {
       setFilteredData(filtered); // Actualiza el estado con los datos filtrados
     }
     useEffect(() => {
+      if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
+
      // Función para hacer la solicitud a la API
      const fetchTaller = async () => {
         try {

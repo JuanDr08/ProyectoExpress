@@ -12,18 +12,21 @@ export function ShoppingCart() {
     const data = useLoaderData()
     const [productos, setProductos] = useState([]);
     const [taller, setTaller] = useState([]);
+    const [productosConDescuento, setProductosConDescuento] = useState([])
 
 
     useEffect(()=> {
 
-        // if (!data) navigate('/register')
-        // console.log(data.user)
-        // setUser([data.user])
+        if (!data) navigate('/register')
+        console.log(data.user)
+        setUser([data.user])
 
          // Función para hacer la solicitud a la API
     const fetchProductos = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/user/cart/details`);
+          const response = await axios.get(`http://localhost:3000/user/cart/details`, {
+            withCredentials: true // Esto incluye las cookies
+        });
           setProductos(response.data.data); // Almacena los productos en el estado
           if (response.data.data.length > 0) {
               setTaller(response.data.data[0].nombre_taller); // Asignar el nombre del taller
@@ -34,9 +37,33 @@ export function ShoppingCart() {
       };
       fetchProductos();
 
+      const fetchDescuentos = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/cupon/product/h');
+          setProductosConDescuento(response.data); 
+        } catch (error) {
+          console.error('Error al obtener productos con descuento', error);
+        }
+      };
+      fetchDescuentos();
+
     },[])
-    const subtotal = productos.reduce((acc, item) => acc + item.carrito.precio * item.carrito.cantidad, 0);
-    const shippingCost = 20; 
+     // Función para aplicar el descuento
+  const aplicarDescuento = (producto) => {
+    const productoConDescuento = productosConDescuento.find(
+      (descuento) => descuento.productoInfo._id === producto.carrito._id
+    );
+    if (productoConDescuento) {
+      // Aplicar descuento
+      const descuento = productoConDescuento.descuento;
+      const precioOriginal = producto.carrito.precio;
+      const precioDescuento = precioOriginal - (precioOriginal * descuento) / 100;
+      return precioDescuento;
+    }
+    return producto.carrito.precio; // Si no hay descuento, devolver el precio original
+  };
+    const subtotal = productos.reduce((acc, item) => acc + aplicarDescuento(item) * item.carrito.cantidad, 0);
+    const shippingCost = 20;
     const total = subtotal + shippingCost;
 
 
@@ -55,7 +82,7 @@ export function ShoppingCart() {
                             <img src={item.carrito.img} className="w-[130px] h-[130px] object-cover" style={{ borderRadius: '10px' }} />
                             <div className="flex flex-col">
                                 <h3 className="text-white text-sm">{item.carrito.nombre}</h3>
-                                <p className="text-gray-300 text-sm">COP {item.carrito.precio}</p>
+                                <p className="text-gray-300 text-sm">COP {aplicarDescuento(item)}</p>
                                 <p className="text-gray-300 text-sm">{item.carrito.dimensiones}</p>
                                 <p className="text-gray-300 text-sm">{taller}</p>
                                 <div className="addsubstract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg">

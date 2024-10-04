@@ -32,15 +32,17 @@ export const Pantalla19 = () => {
 
   useEffect(()=> {
 
-      // if (!data) navigate('/register')
-      // console.log(data.user)
-      // setUser([data.user])
+      if (!data) navigate('/register')
+      console.log(data.user)
+      setUser([data.user])
       categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
       setCategory(categoriesNav.current.firstChild)
 
       const fetchCupon = async () => {
         try {
-          const response = await axios.get('http://localhost:3000/user/favorites/products/details')
+          const response = await axios.get('http://localhost:3000/user/favorites/products/details', {
+          withCredentials: true // Esto incluye las cookies
+      });
           setProductos(response.data.data);
           filtrarProductos('Textilería')
         } catch (error) {
@@ -68,7 +70,9 @@ export const Pantalla19 = () => {
       setData(data)
     };
     const deleteFavorito = async (id) => {
-      await axios.delete(`http://localhost:3000/user/favorites/products/${id}`);
+      await axios.delete(`http://localhost:3000/user/favorites/products/${id}`, {
+        withCredentials: true // Esto incluye las cookies
+    });
         console.log("Producto eliminado de favoritos");
         window.location.reload();
     };

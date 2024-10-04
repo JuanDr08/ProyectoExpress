@@ -10,7 +10,9 @@ const Corazon = ({idProducto}) => {
   useEffect(() => {
     const fetchFavorito= async () => {
       try{
-        const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`);
+        const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`, {
+          withCredentials: true // Esto incluye las cookies
+      });
         if (favorito.data) setLiked(true);
       } catch (error) {
         console.error("El producto no se encuentra e favoritos:", error);
@@ -23,7 +25,9 @@ const Corazon = ({idProducto}) => {
 
   const toggleHeart = async () => {
     try{
-      const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`);
+      const favorito = await axios.get(`http://localhost:3000/user/favorite/check/${idProducto}`, {
+        withCredentials: true // Esto incluye las cookies
+    });
       if (favorito.data) setLiked(true);
     } catch (error) {
       console.error("El producto no se encuentra e favoritos:", error);
@@ -32,12 +36,16 @@ const Corazon = ({idProducto}) => {
     try {
       if (!liked) {
         // Si no está en favoritos, hacemos una petición POST para agregarlo
-        const addFavoritos = await axios.post(`http://localhost:3000/user/favorites/products/${idProducto}`);
+        const addFavoritos = await axios.post(`http://localhost:3000/user/favorites/products/${idProducto}`, {
+          withCredentials: true // Esto incluye las cookies
+      });
         console.log("Producto añadido a favoritos", addFavoritos);
         setLiked(true)
       } else {
         // Si está en favoritos, hacemos una petición DELETE para eliminarlo
-        await axios.delete(`http://localhost:3000/user/favorites/products/${idProducto}`);
+        await axios.delete(`http://localhost:3000/user/favorites/products/${idProducto}`, {
+          withCredentials: true // Esto incluye las cookies
+      });
         console.log("Producto eliminado de favoritos");
         setLiked(false)
       }
@@ -127,7 +135,9 @@ const MainContent = ({ idProducto, cupon, nombre, precio, descripcion, dimension
   }, [idProducto, precio, cupon]);
 
   const addCarrito = async () => {
-      const addCarrito= await axios.post(`http://localhost:3000/user/cart/${idProducto}`,);
+      const addCarrito= await axios.post(`http://localhost:3000/user/cart/${idProducto}`, {
+        withCredentials: true // Esto incluye las cookies
+    });
       console.log("Producto añadido a carrito", addCarrito);
   };
 
@@ -174,10 +184,17 @@ return (
 const Pantalla17 = () => {
   const { id } = useParams(); // Obtener el ID de la URL
   const navigate = useNavigate();
+    const [user, setUser] = useState(null)
+    const data = useLoaderData()
   const [producto, setProducto] = useState(null);
   const [cupon, setCupon] = useState([]);
 
   useEffect(() => {
+
+    if (!data) navigate('/register')
+      console.log(data.user)
+      setUser([data.user])
+      
     const fetchProducto = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/product/${id}`);
