@@ -2,6 +2,7 @@ import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useState, useEffect } from "react";
+import { PurchaseConfirmation } from "../components/PurchaseConfirmation";
 import axios from "axios";
 
 
@@ -145,9 +146,12 @@ export function ShoppingCart() {
             </div>
 
             <div className="flex justify-center">
-                <button className="mt-5 flex items-center justify-center w-[150px] h-[50px] bg-[var(--color-2E1108)] text-white rounded-lg">
+                <button onClick={handleOpenDialog} className="mt-5 flex items-center justify-center w-[150px] h-[50px] bg-[var(--color-2E1108)] text-white rounded-lg">
                     Realizar Compra
                 </button>
+                {isDialogOpen && (
+                    <PurchaseConfirmation onClose={handleCloseDialog} />
+                )}
             </div>
 
             {/* <div>
