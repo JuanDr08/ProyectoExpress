@@ -38,7 +38,7 @@ export const Pantalla21 = () => {
      // Función para hacer la solicitud a la API
      const fetchTaller = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/workshops/`); 
+          const response = await axios.get(`http://localhost:3000/workshops/`, {withCredentials: true}); 
           setTalleres(response.data); // Almacena los productos en el estado
           setFilteredData(response.data)
         } catch (error) {

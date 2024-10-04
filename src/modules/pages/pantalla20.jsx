@@ -25,7 +25,7 @@ export const Pantalla20 = () => {
     // Función para hacer la solicitud a la API
     const fetchProductos = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/product/`);
+        const response = await axios.get(`http://localhost:3000/product/`, {withCredentials: true});
         setProductos(response.data); // Almacena los productos en el estado}
       } catch (error) {
         console.error('Error al obtener los productos', error);

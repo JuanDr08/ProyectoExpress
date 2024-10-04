@@ -18,8 +18,7 @@ export const Chat = ({ nombre }) => {
 
     useEffect(() => {
 
-        if (!data) return navigate('/')
-        console.log(data.user)
+        if (!data) return navigate('/register')
     
         const currentUser = data.user[0];
         setUser(currentUser);

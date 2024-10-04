@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import  styles from '../../css/pantalla17.module.css'
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 
@@ -76,7 +76,7 @@ const Header =({ img, idProducto }) => {
     // Buscar si hay un producto en cupon con el idProducto
     const fetchProducto = async () => {
       try {
-        const cuponResponse = await axios.get(`http://localhost:3000/cupon/product/h`);
+        const cuponResponse = await axios.get(`http://localhost:3000/cupon/product/h`, {withCredentials: true});
         setCupon(cuponResponse.data);
         const productoConDescuento = cuponResponse.data.find(
           (item) => item.productoInfo._id == idProducto
@@ -197,10 +197,10 @@ const Pantalla17 = () => {
       
     const fetchProducto = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/product/${id}`);
+        const response = await axios.get(`http://localhost:3000/product/${id}`, {withCredentials: true});
         setProducto(response.data); // Guardar los datos del producto en el estado
       
-        const cuponResponse = await axios.get(`http://localhost:3000/cupon/product/h`);
+        const cuponResponse = await axios.get(`http://localhost:3000/cupon/product/h`, {withCredentials: true});
         setCupon(cuponResponse.data);
       } catch (error) {
         console.error("Error al obtener el producto:", error);

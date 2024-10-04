@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLoaderData } from 'react-router-dom';
 import Papa from 'papaparse';
 import  styles from '../../css/pantalla6.module.css'
 import { Muesca } from '../components/Muesca';
 
 export function Pantalla6() {
+  const data = useLoaderData()
   const [formData, setFormData] = useState({
     nick: '',
     celu: '',
@@ -33,6 +34,7 @@ export function Pantalla6() {
   };
 
   useEffect(() => {
+    if (data) navigate('/home')
     const fetchCountries = async () => {
       const response = await fetch(
         'https://gist.githubusercontent.com/brenes/1095110/raw/c8f208b03485ba28f97c500ab7271e8bce43b9c6/paises.csv'
@@ -64,7 +66,7 @@ export function Pantalla6() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const numeroCelularCompleto = `+${inputRef.current.value}${formData.celu}`;
-    const fecha =`${formData.year }/${formData.month}/${formData.day}`;
+    const fecha =`${formData.year }-${formData.month}-${formData.day}`;
 
     // Validación del campo 'nick'
     if (!formData.nick) {
@@ -117,7 +119,7 @@ export function Pantalla6() {
 
     // Redirigir a la siguiente página
     navigate('/register/TermsAndConditions', {
-      state: { ...formData, phone: numeroCelularCompleto, fecha: fecha },
+      state: { ...formData, phone: numeroCelularCompleto, birth_day: fecha },
     });
   };
 

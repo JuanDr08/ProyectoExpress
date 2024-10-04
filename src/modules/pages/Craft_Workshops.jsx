@@ -20,7 +20,7 @@ export function CraftWorkshops() {
         // Función para hacer la solicitud a la API
         const fetchProductos = async () => {
             try {
-            const response = await axios.get(`http://localhost:3000/product/`);
+            const response = await axios.get(`http://localhost:3000/product/`, {withCredentials: true});
             const workshopsData = response.data.map(item => ({
                 id: item._id,
                 name: item.nombre, // Usar el nombre del producto

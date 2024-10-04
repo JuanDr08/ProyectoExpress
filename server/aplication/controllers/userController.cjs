@@ -6,7 +6,6 @@ const multer = require('multer');
 module.exports = class UserController {
 
     async registerUser(req, res) {
-
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
         const userService = new UserService()
@@ -138,7 +137,7 @@ module.exports = class UserController {
     async checkForAnIdOnFavoriteUserList(req, res) {
 
         const userService = new UserService()
-
+        console.log(req.user)
         let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
         let favoriteList = await userService.getAllFromFIeld(userId, 'favoritos')
         if (!Object.keys(favoriteList).length) return res.status(404).json({ status: 404, message: 'El usuario no presenta favoritos en su lista' })

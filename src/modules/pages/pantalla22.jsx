@@ -20,7 +20,7 @@ export const Pantalla22 = () => {
   };
   const validarCupon = async (code) => {
     try {
-      const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`); 
+      const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`, {withCredentials: true}); 
       const id = cuponCode.data._id
       const agregarCupon = await axios.post(`http://localhost:3000/user/coupons/${id}`, {
         withCredentials: true // Esto incluye las cookies

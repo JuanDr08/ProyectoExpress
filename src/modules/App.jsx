@@ -65,11 +65,13 @@ const router = createBrowserRouter([
     },
     {
         path: '/register/phone',
-        element: <Pantalla6/>
+        element: <Pantalla6/>,
+        loader: loader
     },
     {
         path: '/register/TermsAndConditions',
-        element: <Pantalla7/>
+        element: <Pantalla7/>,
+        loader: loader
     },
     {
         path: '/login',

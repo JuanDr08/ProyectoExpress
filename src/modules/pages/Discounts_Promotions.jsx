@@ -35,7 +35,7 @@ export function DiscountsPromotions() {
         // Función para hacer la solicitud a la API
         const fetchProductos = async () => {
             try {
-            const response = await axios.get(`http://localhost:3000/cupon/product/h`);
+            const response = await axios.get(`http://localhost:3000/cupon/product/h`, {withCredentials: true});
             setProductos(response.data); // Almacena los productos en el estado}
             } catch (error) {
             console.error('Error al obtener los productos', error);
@@ -80,8 +80,8 @@ export function DiscountsPromotions() {
 
             <div className="grid grid-cols-2 gap-4 p-5">
             {filteredProductos.map((item, index) => (
-                    <Link to={`/product/${item.productoInfo._id}`}>
-                        <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md flex flex-col">
+                    <Link key={index} to={`/product/${item.productoInfo._id}`}>
+                        <div className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md flex flex-col">
                             <img
                                 src={item.productoInfo.img}
                                 className="w-full h-40 object-cover"
