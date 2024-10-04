@@ -197,5 +197,208 @@ module.exports = class UserController {
         }
 
     }
+    async getAllProductDetailseFromFieldWithWorkshops(req, res) {
+        try {
+            
+            const userService = new UserService()
+            
+            // 66fcd36332175b17183a6acb
+            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+            let userExists = await userService.getUserById(userId)
+            if (!userExists) return res.status(404).json({ status: 400, message: 'Usuario no econtrado' })
+
+            let agg = [
+                {
+                    $match: {
+                        _id: ObjectId.createFromHexString(`${userId}`)
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "productos",
+                        localField: "compras",
+                        foreignField: "_id",
+                        as: "compras"
+                    }
+                },
+                {
+                    $unwind: "$compras"
+                },
+                {
+                    $lookup: {
+                      from: "taller",                  // Colección a unir
+                      localField: "compras._id", // Campo en productos
+                      foreignField: "productos",     // Campo en 'taller'
+                      as: "tallerDetalles"             // Nombre del array resultante
+                    }
+                },
+                {
+                    $unwind: "$tallerDetalles"         // Descomponer para que haya un documento por taller
+                },
+                {
+                    $project: {
+                        compras: 1,
+                        nombre_taller: "$tallerDetalles.nombre_taller"
+                    }
+                },
+            ]
+
+            let aggDetails = await userService.agregate(agg)
+            
+            if (!aggDetails.length) return res.status(404).json({ status: 404, message: `El usuario no presenta contenido en compras` })
+
+            return res.status(200).json({ status: 200, data: aggDetails })
+
+        } catch (err) {
+            return res.status(500).json({ status: 500, message: err })
+        }
+
+    }
+
+    async getAllProductDetailsShopeFromFieldWithWorkshops(req, res) {
+        try {
+            
+            const userService = new UserService()
+            
+            // 66fcd36332175b17183a6acb
+            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+            let userExists = await userService.getUserById(userId)
+            if (!userExists) return res.status(404).json({ status: 400, message: 'Usuario no econtrado' })
+
+            let agg = [
+                {
+                    $match: {
+                        _id: ObjectId.createFromHexString(`${userId}`)
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "productos",
+                        localField: "carrito",
+                        foreignField: "_id",
+                        as: "carrito"
+                    }
+                },
+                {
+                    $unwind: "$carrito"
+                },
+                {
+                    $lookup: {
+                      from: "taller",                  // Colección a unir
+                      localField: "carrito._id", // Campo en productos
+                      foreignField: "productos",     // Campo en 'taller'
+                      as: "tallerDetalles"             // Nombre del array resultante
+                    }
+                },
+                {
+                    $unwind: "$tallerDetalles"         // Descomponer para que haya un documento por taller
+                },
+                {
+                    $group: {
+                        _id: "$carrito._id", // Agrupar por ID del cupón
+                        carrito: { $first: "$carrito" }, // Conservar el primer documento del cupón
+                        nombre_taller: { $first: "$tallerDetalles.nombre_taller" }, // Conservar el nombre del taller
+                    }
+                },
+                {
+                    $project: {
+                        _id:1,
+                        carrito: 1,
+                        nombre_taller: 1
+                    }
+                },
+            ]
+
+            let aggDetails = await userService.agregate(agg)
+            
+            if (!aggDetails.length) return res.status(404).json({ status: 404, message: `El usuario no presenta contenido en compras` })
+
+            return res.status(200).json({ status: 200, data: aggDetails })
+
+        } catch (err) {
+            return res.status(500).json({ status: 500, message: err })
+        }
+
+    }
+    async getAllCuponDetailseFromFieldWithWorkshop(req, res) {
+        try {
+            
+            const userService = new UserService()
+            
+            // 66fcd36332175b17183a6acb
+            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+            let userExists = await userService.getUserById(userId)
+            if (!userExists) return res.status(404).json({ status: 400, message: 'Usuario no econtrado' })
+
+            let agg = [
+                {
+                    $match: {
+                        _id: ObjectId.createFromHexString(`${userId}`)
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "cupon",
+                        localField: "cupones",
+                        foreignField: "_id",
+                        as: "cupones"
+                    }
+                },
+                {
+                    $unwind: "$cupones"
+                },
+                {
+                    $lookup: {
+                        from: "productos",
+                        localField: "cupones.idProductos",
+                        foreignField: "_id",
+                        as: "productos"
+                    }
+                },
+                {
+                    $unwind: "$productos"
+                },
+                {
+                    $lookup: {
+                        from: "taller",
+                        localField: "productos._id",
+                        foreignField: "productos",
+                        as: "tallerDetalles"
+                    }
+                },
+                {
+                    $unwind: "$tallerDetalles"
+                },
+                {
+                    $group: {
+                        _id: "$cupones._id", // Agrupar por ID del cupón
+                        cupones: { $first: "$cupones" }, // Conservar el primer documento del cupón
+                        nombre_taller: { $first: "$tallerDetalles.nombre_taller" }, // Conservar el nombre del taller
+                        img: { $first: "$productos.img" }, // Conservar la imagen del producto
+                        id: { $first: "$productos._id" } 
+                    }
+                },
+                {
+                    $project: {
+                        cupones: 1,
+                        nombre_taller: 1,
+                        img: 1,
+                        id:1
+                    }
+                }
+            ]
+            
+
+            let aggDetails = await userService.agregate(agg)
+            
+            if (!aggDetails.length) return res.status(404).json({ status: 404, message: `El usuario no presenta contenido en compras` })
+
+            return res.status(200).json({ status: 200, data: aggDetails })
+
+        } catch (err) {
+            return res.status(500).json({ status: 500, message: err })
+        }
+
+    }
 
 }

@@ -18,7 +18,32 @@ class Product{
         let obj = ConnectToDatabase.instanceConnect;
         const collection = obj.db.collection('productos');
         let lista = []
-        lista = await collection.find({}).toArray();
+        lista = await collection.aggregate([
+            {
+              $lookup: {
+                from: "taller",                   // Colección a unir
+                localField: "_id",                // Campo en 'productos'
+                foreignField: "productos",      // Campo en 'taller'
+                as: "tallerDetalles"              // Nombre del array resultante
+              }
+            },
+            {
+              $unwind: "$tallerDetalles"          // Descomponer el array para obtener un taller por producto
+            },
+            {
+              $project: {
+                _id: 1,                            // Mostrar el _id del producto
+                nombre: 1,                         // Mostrar el nombre del producto
+                descripcion: 1,                    // Mostrar la descripción
+                categoria: 1,                      // Mostrar la categoría
+                precio: 1,                         // Mostrar el precio
+                cantidad: 1,                       // Mostrar la cantidad
+                dimensiones: 1,                    // Mostrar las dimensiones
+                img: 1,                            // Mostrar la imagen
+                nombre_taller: "$tallerDetalles.nombre_taller" // Mostrar el nombre del taller
+              }
+            }
+          ]).toArray();
         return lista;
     }
     async insert(productData){

@@ -23,7 +23,9 @@ const { limiTotal } = require('../middlewares/rateLimit.cjs');
 const { Server } = require('socket.io');
 const readline = require('readline'); // Importar readline
 
+// Invocacion del ChatController
 const ChatController = require("../../aplication/controllers/chatController.cjs")
+const chatController = new ChatController()
 
 const createServer = () => {
     const app = express();
@@ -80,23 +82,35 @@ const createServer = () => {
     app.use('/product', productRoutes);
     app.use('/cupon', cuponRoutes);
     
+    const userSockets = {} // Objeto para almacenar las conexiones de usuario
+
     // Configuración de Socket.io
-    io.on("connection", (socket) => {
-        console.log("Un usuario se ha conectado");
-
-        // Escuchar mensajes del cliente
-        socket.on("sendMessage", async(message) => {
-            console.log("Mensaje recibido:", message);
-
-            const userId = socket.id;
-
-            await ChatController.handleMessage(userId, message);
-
-            io.emit("recievedMessage", {texto: message.texto, transmitter: "server"})
+    io.on('connection', (socket) => {
+        
+        socket.on('registerUser', (userId) => {
+            userSockets[socket.id] = userId; // Almacena el userId para este socket
+            console.log(`Usuario registrado: ${userId} con socket ID: ${socket.id}`);
         });
 
-        socket.on("disconnect", () => {
-            console.log("Usuario desconectado");
+        socket.on('disconnect', () => {
+            delete userSockets[socket.id]; // Elimina la entrada al desconectarse
+            console.log(`Usuario desconectado: ${socket.id}`);
+        });
+
+        console.log("Usuario conectado");
+    
+        socket.on('sendMessage', async (message) => {
+
+            // Aquí "message" es el objeto que enviamos desde el cliente
+            console.log("Mensaje recibido:", message);
+    
+            const userId = message.clientid;
+    
+            try {
+                await chatController.handleMessage(userId, message); // enviamos el objeto al controlador que maneja la lógica del chat
+            } catch (error) {
+                console.error("Error al manejar el mensaje:", error);
+            }
         });
     });
 
@@ -106,9 +120,26 @@ const createServer = () => {
         output: process.stdout
     });
 
-    rl.on('line', (input) => {
+    rl.on('line', async (input) => {
+        const socketId = Object.keys(userSockets)[0]; // Selecciona el socket ID que necesites
+        const userId = userSockets[socketId]; // Obtén el userId correspondiente
+
+        const serverMessage = {
+            texto: input,
+            transmitter: 'server',
+            clientid: userId //este es el id del cliente que se usa para buscar en los documentos
+        };
+
         // Emitir el mensaje a todos los usuarios conectados
-        io.emit("recievedMessage", { texto: input, transmitter: 'server' });
+        io.emit("recievedMessage", serverMessage);
+
+        // guardamos en la db usando el userId del cliente
+        try {
+            await chatController.handleMessage(userId, serverMessage); // enviamos el objeto al controlador que maneja la lógica del chat
+        } catch (error) {
+            console.error("Error al manejar el mensaje del servver:", error);
+        }
+        
         console.log(`Mensaje enviado desde la terminal: ${input}`);
     });
 

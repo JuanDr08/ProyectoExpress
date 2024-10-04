@@ -34,8 +34,8 @@ export function Home() {
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
-        // Aquí podemos redirigir a la vista de categorías
-        // Ejm: history.push(`/categorias/${category}`);
+        // Aquí podemos redirigir a la vista de categorías, la idea es que se abra la ruta con el botón presionado que presionamos desde home
+        navigate(`/products/${category}`); //
     };
 
     return (

@@ -27,11 +27,11 @@ router.get('/favorites/workshops', (req, res) => userController.getAllItemsFromA
 router.get('/subscribed/workshops', (req, res) => userController.getAllItemsFromAField(req, res, 'talleres_inscritos'))
 // Agregates
 router.get('/favorites/products/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'productos', 'favoritos'))
-router.get('/cart/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'productos', 'carrito'))
-router.get('/purchases/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'productos', 'compras'))
+router.get('/cart/details', (req, res) => userController.getAllProductDetailsShopeFromFieldWithWorkshops(req, res, 'productos', 'carrito'))
+router.get('/purchases/details', userController.getAllProductDetailseFromFieldWithWorkshops)
 router.get('/favorites/workshops/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'taller', 'talleres_favoritos'))
 router.get('/subscribed/workshops/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'taller', 'talleres_inscritos'))
-router.get('/coupons/details', (req, res) => userController.getAllProductDetailseFromField(req, res, 'cupon', 'cupones'))
+router.get('/coupons/details', userController.getAllCuponDetailseFromFieldWithWorkshop)
 
 router.post('/favorites/products/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'favoritos'))
 router.post('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'carrito'))

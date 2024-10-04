@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { LeftMenu } from "./Leftmenu"
 
-export function Header() {
+export function Header({searchTerm, handleSearch}) {
 
     const [menuchange, setMenuChange] = useState(false)
 
@@ -62,6 +62,8 @@ export function Header() {
                 type="text"
                 placeholder="Buscar producto o tienda..."
                 className="flex-1 bg-transparent border-none outline-none text-white"
+                value={searchTerm}
+                onChange={handleSearch}
             />
         </div>
         </header>
