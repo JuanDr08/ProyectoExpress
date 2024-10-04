@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 // import DatePicker from 'react-datepicker';
@@ -15,6 +16,9 @@ export function Profile() {
     const [isEditing, setIsEditing] = useState({ nick: false, email: false, phone: false }); 
     const [formData, setFormData] = useState({ nick: '',  email: '', phone: ''});
 
+    const [file, setFile] = useState(null); // Para almacenar el archivo de imagen
+    const [isImageChanged, setIsImageChanged] = useState(false); // Estado para controlar cambios de imagen
+
     useEffect(() => {
         if (!data || !data.user) {
             navigate('/register');
@@ -23,9 +27,10 @@ export function Profile() {
             setFormData({
                 nick: data.user[0].nick,
                 email: data.user[0].email,
+                phone: data.user[0].phone
             });
+            setImageDataUrl(data.user[0].photo); // Cargar imagen inicial
         }
-        console.log(data)
     }, [data, navigate]);
 
     const handleEdit = (field) => {
@@ -37,44 +42,44 @@ export function Profile() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageDataUrl(reader.result);
+                setFile(selectedFile); // Guardar el archivo seleccionado
+                setIsImageChanged(true); // Indica que se ha cambiado la imagen
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formDataToSend = new FormData();
         formDataToSend.append('nick', formData.nick);
         formDataToSend.append('email', formData.email);
+        formDataToSend.append('phone', formData.phone);
+        if (file) {
+            formDataToSend.append('file', file);
+        }
 
         try {
-
-            
             const response = await fetch('http://localhost:3000/user/edit', {
                 method: 'PUT',
                 body: formDataToSend,
-                credentials: 'include', 
+                credentials: 'include',
             });
-    
-            const responseData = await response.json();
-            console.log(data);
-            console.log('Resultado fetch: ', response);
-            console.log('Respuesta del servidor:', data);
-    
-            // Verifica que responseData.data exista
-            if (responseData.data) {
-                // Actualiza el estado de user y formData
-                setUser((prev) => ({ ...prev, nick: formData.nick, email: formData.email }));
-                setFormData({
-                    nick: responseData.data.nick,
-                    email: responseData.data.email,
-                });
 
-                setIsEditing((prev) => ({ ...prev, nick: false })); // Esto cierra la edición del nick
-            } else {
-                // Maneja el caso donde data.name no está definido
-                console.error('data.name no está definido:', data);
+            const responseData = await response.json();
+            if (responseData.imageDataUrl) {
+                setImageDataUrl(responseData.imageDataUrl); // Actualizar la imagen
+                setUser((prev) => ({ ...prev, photo: responseData.imageDataUrl }));
             }
-    
-            // Redirigir a la página de perfil
+            setIsEditing({ nick: false, email: false, phone: false });
+            setIsImageChanged(false); // Resetear el estado de cambio de imagen
             navigate('/profile');
-    
         } catch (error) {
             console.error('Error al enviar datos:', error);
         }
@@ -116,13 +121,32 @@ export function Profile() {
             <Header />
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
+
                 <div className="profileimg rounded-full outline w-[200px] h-[200px] overflow-hidden">
                     {user ? (
-                        <img className='w-full h-full object-cover' src={user.photo} alt="Perfil" />
+                        <img className='w-full h-full object-cover' src={imageDataUrl} alt="Perfil" />
                     ) : (
-                        <p>Cargando...</p> // Mensaje mientras se carga
+                        <p>Cargando...</p>
                     )}
                 </div>
+
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                    id="fileInput"
+                />
+                <label htmlFor="fileInput" className='flex absolute bg-[var(--color-703A31)] rounded-full w-[60px] h-[60px] justify-center items-center bottom-[530px] right-[100px] cursor-pointer'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 24 24"><path fill="#fff" d="M3 21v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z"/></svg>
+                </label>
+
+                {/* Mostrar "Guardar cambios" solo si se ha cambiado la imagen */}
+                {isImageChanged && (
+                    <button onClick={handleSubmit} className="bg-blue-500 text-white rounded-lg px-4 mt-4">
+                        Guardar cambios
+                    </button>
+                )}
             </div>
 
             <Form onSubmit={handleSubmit} className="userdata flex flex-col justify-center items-center mt-10 gap-5">
@@ -154,7 +178,7 @@ export function Profile() {
                     </svg>
                 </div>
 
-                {/* <div className="fila w-[100vw] flex items-center justify-around">
+                 <div className="fila w-[100vw] flex items-center justify-around">
                     <div className="correo">
                         <p className="text-[var(--color-9D1A1A)] text-xl">Correo:</p>
                     </div>
@@ -278,7 +302,7 @@ export function Profile() {
                             className="flex-1 bg-transparent border-none outline-none text-white"
                         />
                     </div>
-                </div> */}
+                </div> 
             </Form>
             <Footer />
         </main>
