@@ -7,11 +7,13 @@ import { Header } from "../components/Header";
 import { useLoaderData, useNavigate, Form } from 'react-router-dom';
 
 export function Profile() {
+    const [imageDataUrl, setImageDataUrl] = useState('');
     const navigate = useNavigate();
     const data = useLoaderData();
+    
     const [user, setUser] = useState(null);
-    const [isEditing, setIsEditing] = useState({ nick: false, email: false }); 
-    const [formData, setFormData] = useState({ nick: '',  email: ''});
+    const [isEditing, setIsEditing] = useState({ nick: false, email: false, phone: false }); 
+    const [formData, setFormData] = useState({ nick: '',  email: '', phone: ''});
 
     useEffect(() => {
         if (!data || !data.user) {
@@ -40,28 +42,46 @@ export function Profile() {
         const formDataToSend = new FormData();
         formDataToSend.append('nick', formData.nick);
         formDataToSend.append('email', formData.email);
-    
+
         try {
+
+            
             const response = await fetch('http://localhost:3000/user/edit', {
                 method: 'PUT',
                 body: formDataToSend,
+                credentials: 'include', 
             });
-            const data = await response.json();
-            console.log(data)
+    
+            const responseData = await response.json();
+            console.log(data);
             console.log('Resultado fetch: ', response);
             console.log('Respuesta del servidor:', data);
     
-            // Actualizar el estado de user y formData para reflejar el cambio
-            setUser((prev) => ({ ...prev, nick: formData.nick, email: formData.email }));
-            setFormData({
-                nick: data.name.nick,
-                email: data.name.email,
-            });
+            // Verifica que responseData.data exista
+            if (responseData.data) {
+                // Actualiza el estado de user y formData
+                setUser((prev) => ({ ...prev, nick: formData.nick, email: formData.email }));
+                setFormData({
+                    nick: responseData.data.nick,
+                    email: responseData.data.email,
+                });
+
+                setIsEditing((prev) => ({ ...prev, nick: false })); // Esto cierra la edición del nick
+            } else {
+                // Maneja el caso donde data.name no está definido
+                console.error('data.name no está definido:', data);
+            }
+    
+            // Redirigir a la página de perfil
+            navigate('/profile');
     
         } catch (error) {
             console.error('Error al enviar datos:', error);
         }
     };
+    
+    
+    
 
     const [selectedCountry, setSelectedCountry] = useState('CO');
 
@@ -110,64 +130,81 @@ export function Profile() {
                     <div className="user">
                         <p className="text-[var(--color-9D1A1A)] text-xl">Usuario:</p>
                     </div>
-                    <div className="userplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
+                    <div className="relative flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
                         {isEditing.nick ? (
-                                <>
-                                    <input
-                                        type='text'
-                                        name='nick'
-                                        value={formData.nick}
-                                        onChange={handleChange}
-                                        className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg"
-                                    />
-                                    <button type="submit" className="ml-2 bg-blue-500 text-white rounded-lg px-2">Submit</button>
-                                </>
-                            ) : (
-                                <>
-                                    <p>{user ? formData.nick : 'Cargando...'}</p>
-                                    <svg onClick={() => handleEdit('nick')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
-                                        <path fill="#fff" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
-                                    </svg>
-                                </>
-                            )}
+                            <>
+                                <input
+                                    type='text'
+                                    name='nick'
+                                    value={formData.nick}
+                                    onChange={handleChange}
+                                    className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg text-center"
+                                />
+                                <button type="submit" className=" bg-blue-500 text-white rounded-lg px-2">Ok</button>
+                            </>
+                        ) : (
+                            <>
+                                <p>{user ? formData.nick : 'Cargando...'}</p>
+                            </>
+                        )}
                     </div>
+                    <svg onClick={() => handleEdit('nick')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
+                        {/* Path que no necesitas leer */}
+                        <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
+                    </svg>
                 </div>
 
-                <div className="fila w-[100vw] flex items-center justify-around">
+                {/* <div className="fila w-[100vw] flex items-center justify-around">
                     <div className="correo">
                         <p className="text-[var(--color-9D1A1A)] text-xl">Correo:</p>
                     </div>
-                    <div className="correoplaceholder flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
+                    <div className="relative flex bg-[var(--color-703A31)] text-white w-[60%] h-10 rounded-lg justify-center items-center">
                         {isEditing.email ? (
+                            <>
                             <input
+                                type='email'
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg"
+                                className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg text-center"
                             />
+                            <button type="submit" className=" bg-blue-500 text-white rounded-lg px-2">Ok</button>
+                            </>
                         ) : (
-                            <p>{user ? user.email : 'Cargando...'}</p>
+                            <>
+                                <p>{user ? user.email : 'Cargando...'}</p>
+                            </>
                         )}
-                        <svg onClick={() => handleEdit('email')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
-                            <path fill="#fff" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
-                        </svg>
                     </div>
+                        <svg onClick={() => handleEdit('email')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
+                            <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
+                        </svg>
                 </div>
 
                 <div className="fila w-[100vw] flex items-center justify-around">
                     <div className="phone">
                         <p className="text-[var(--color-9D1A1A)] text-xl">Celular:</p>
                     </div>
-                    <div className="phoneplaceholder flex bg-[var(--color-703A31)] text-white w-[50%] h-10 rounded-lg justify-center items-center">
-                        {user ? (
-                            <p>{user.phone}</p>
-                        ) : (
-                            <p>Cargando...</p>
-                        )}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
+                    <div className="relative flex bg-[var(--color-703A31)] text-white w-[50%] h-10 rounded-lg justify-center items-center">
+                        {isEditing.phone ? (
+                            <>
+                                <input
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg"
+                                />
+                                <button type="submit" className=" bg-blue-500 text-white rounded-lg px-2">Ok</button>
+                            </>
+                            ) : (
+                                <>
+                                    <p>{user ? user.phone : 'Cargando...'}</p>
+                                </>
+                            )}
+                    </div>
+                        <svg onClick={() => handleEdit('phone')} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
                             <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
                         </svg>
-                    </div>
                 </div>
 
                 <div className="genero fila w-[100vw] flex items-center justify-around">
@@ -187,7 +224,7 @@ export function Profile() {
                             <div className="absolute left-0 mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
                                 {genders.map(gender => (
                                     <button
-                                        type="button" // Agregar este atributo también
+                                        type="button"
                                         key={gender.code}
                                         onClick={() => {
                                             setSelectedGender(gender.code);
@@ -208,7 +245,7 @@ export function Profile() {
 
                     <div className="relative">
                         <button
-                            type="button" // Agregar este atributo también
+                            type="button"
                             onClick={toggleBirthdayDropdown}
                             className="birthday bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
                         >
@@ -216,9 +253,9 @@ export function Profile() {
                         </button>
                         {isBirthdayOpen && (
                             <div className="absolute left-[-50px] mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
-                                {/* Aquí vamos a agregar un componente de selección de fecha */}
+                                
                                 <p className="p-4">Selecciona tu fecha de nacimiento</p>
-                                {/* Agregamos logica para seleccionar la fecha, esto es solo un ejemplo */}
+                                
                             </div>
                         )}
                     </div>
@@ -241,11 +278,109 @@ export function Profile() {
                             className="flex-1 bg-transparent border-none outline-none text-white"
                         />
                     </div>
-                </div>
-
-            <button type="submit" className="mt-5 bg-[var(--color-9D1A1A)] text-white rounded-lg p-2">Guardar Cambios</button>
+                </div> */}
             </Form>
             <Footer />
         </main>
     );
 }
+
+
+// import { useEffect, useState } from "react";
+// import { Form, useLoaderData, useNavigate } from "react-router-dom";
+// export const Home = () => {
+//     const [imageDataUrl, setImageDataUrl] = useState('');
+//     const [user, setUser] = useState(null);
+//     const data = useLoaderData();
+//     const navigate = useNavigate();
+
+//     useEffect(()=> {
+
+//         if (!data) navigate('/register')
+//         console.log(data.user)
+//         setUser(data.user[0])
+
+//     },[])
+
+//     useEffect(()=> {
+//         console.log(user);
+//     }, [user])
+
+//     useEffect(() => {
+//         console.log(user);
+//     }, [imageDataUrl])
+
+//     const handleSubmit = async (event) => {
+//         event.preventDefault();
+//         const formData = new FormData(event.target);
+//         try {
+//             const response = await fetch('http://localhost:3000/user/edit', {
+//                 method: 'PUT',
+//                 body: formData,
+//                 credentials: 'include'
+//             });
+//             console.log('Resultado fetch: ', response)
+//             const data = await response.json();
+//             console.log('Respuesta del servidor:', data);
+//             setImageDataUrl(data.imageDataUrl);
+//             location.href = 'http://localhost:5173/home'
+//         } catch (error) {
+//             console.error('Error al enviar datos:', error);
+//         }
+//     };
+//     return (
+//         <>
+//             <Form onSubmit={handleSubmit}>
+//                 <div>
+//                     <label htmlFor="nick">Nombre:</label>
+//                     <input
+//                         type="text"
+//                         id="nick"
+//                         name="nick"
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="email">email:</label>
+//                     <input
+//                         type="email"
+//                         id="email"
+//                         name='email'
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="phone">Celular:</label>
+//                     <input
+//                         type="text"
+//                         id="phone"
+//                         name="phone"
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="sex">Genero:</label>
+//                     <input
+//                         type="text"
+//                         id="sex"
+//                         name="sex"
+//                     />
+//                 </div>
+//                 <div className="relative inline-block overflow-hidden">
+//                     <label htmlFor="file">Archivo:</label>
+//                     <input
+//                         className="absolute top-0 right-0 opacity-0 cursor-pointer w-full h-full"
+//                         type="file"
+//                         name="file"
+//                         id="file"
+//                         accept="image/*"
+//                     />
+//                 </div>
+//                 <button type="submit">Enviar</button>
+//             </Form>
+//             {imageDataUrl && (
+//                 <div>
+//                     <h2>Imagen Subida:</h2>
+//                     <img src={imageDataUrl} alt="Imagen subida" style={{ maxWidth: '300px' }} />
+//                 </div>
+//             )}
+//         </>
+//     );
+// };

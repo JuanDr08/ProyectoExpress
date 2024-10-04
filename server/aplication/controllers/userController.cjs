@@ -48,32 +48,34 @@ module.exports = class UserController {
     }
 
     async editUserData(req, res) {
-        console.log('usuario editado desde controller');
+        
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
         const userService = new UserService()
 
         const file = req.file;
+        const prevUser = req.user
 
         try {
             let imageDataUrl = undefined
-            // console.log(req.user)
-            let userId = req.user ? req.user[0]._id : '66fc4e1ecea28adf2f935a77'
+            
+            let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
             let user = await userService.getUserById(userId)
             for (let field of Object.keys(req.body)) {
                 if (user[field] == req.body[field]) continue
-                await userService.updateFieldsWithSet(userId, field, req.body[field])
+                userService.updateFieldsWithSet(userId, field, req.body[field])
+                req.user[0][field] = req.body[field]
             }
-            
             if (file) {
                 if ( !(user['photo'] instanceof Binary) || !file.buffer.equals(user['photo'].buffer)) {
                     imageDataUrl = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
                     await userService.updateFieldsWithSet(userId, 'photo', file.buffer)
                     await userService.updateFieldsWithSet(userId, 'mimetyoe', file.mimetype)
                 } else imageDataUrl = `data:${user.mimetype};base64,${user['photo'].buffer.toString('base64')}`
+                req.user[0]['photo'] = imageDataUrl
             }
             
-            res.json({ message: 'Datos modificados', name: req.body, imageDataUrl: imageDataUrl ? imageDataUrl : undefined });
+            res.json({ message: 'Datos modificados', data: req.body, imageDataUrl: imageDataUrl ? imageDataUrl : undefined });
         } catch (err) {
             res.status(500).json({status: 500, message: 'Error inesperado en la edicion de los datos de usuario'})
         }

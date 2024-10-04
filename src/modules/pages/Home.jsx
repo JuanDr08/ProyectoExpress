@@ -34,7 +34,7 @@ export function Home() {
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
-        // Aquí podemos redirigir a la vista de categorías, la idea es que se abra la ruta con el botón presionado que presionamos desde home
+        // Redirigimos a la categoría correspondiente
         navigate(`/products/${category}`); //
     };
 
@@ -104,80 +104,101 @@ export function Home() {
 
 
 
-/* import { useState } from "react";
-import { Form } from "react-router-dom";
-export const Home = () => {
-    const [imageDataUrl, setImageDataUrl] = useState('');
+// import { useEffect, useState } from "react";
+// import { Form, useLoaderData, useNavigate } from "react-router-dom";
+// export const Home = () => {
+//     const [imageDataUrl, setImageDataUrl] = useState('');
+//     const [user, setUser] = useState(null);
+//     const data = useLoaderData();
+//     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        try {
-            const response = await fetch('http://localhost:3000/user/edit', {
-                method: 'POST',
-                body: formData,
-            });
-            console.log('Resultado fetch: ', response)
-            const data = await response.json();
-            console.log('Respuesta del servidor:', data);
-            setImageDataUrl(data.imageDataUrl);
-        } catch (error) {
-            console.error('Error al enviar datos:', error);
-        }
-    };
-    return (
-        <>
-            <Form onSubmit={handleSubmit}>
-                <div>
-                    <label for="nick">Nombre:</label>
-                    <input
-                        type="text"
-                        id="nick"
-                        name="nick"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name='email'
-                    />
-                </div>
-                <div>
-                    <label htmlFor="phone">Nombre:</label>
-                    <input
-                        type="text"
-                        id="phone"
-                        name="phone"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="sex">Nombre:</label>
-                    <input
-                        type="text"
-                        id="sex"
-                        name="sex"
-                    />
-                </div>
-                <div>
-                    <label htmlFor="file">Archivo:</label>
-                    <input
-                        type="file"
-                        name="file"
-                        id="file"
-                        accept="image/*"
-                    />
-                </div>
-                <button type="submit">Enviar</button>
-            </Form>
-            {imageDataUrl && (
-                <div>
-                    <h2>Imagen Subida:</h2>
-                    <img src={imageDataUrl} alt="Imagen subida" style={{ maxWidth: '300px' }} />
-                </div>
-            )}
-        </>
-    );
-};
- */
+//     useEffect(()=> {
+
+//         if (!data) navigate('/register')
+//         console.log(data.user)
+//         setUser(data.user[0])
+
+//     },[])
+
+//     useEffect(()=> {
+//         console.log(user);
+//     }, [user])
+
+//     useEffect(() => {
+//         console.log(user);
+//     }, [imageDataUrl])
+
+//     const handleSubmit = async (event) => {
+//         event.preventDefault();
+//         const formData = new FormData(event.target);
+//         try {
+//             const response = await fetch('http://localhost:3000/user/edit', {
+//                 method: 'PUT',
+//                 body: formData,
+//                 credentials: 'include'
+//             });
+//             console.log('Resultado fetch: ', response)
+//             const data = await response.json();
+//             console.log('Respuesta del servidor:', data);
+//             setImageDataUrl(data.imageDataUrl);
+//             location.href = 'http://localhost:5173/home'
+//         } catch (error) {
+//             console.error('Error al enviar datos:', error);
+//         }
+//     };
+//     return (
+//         <>
+//             <Form onSubmit={handleSubmit}>
+//                 <div>
+//                     <label htmlFor="nick">Nombre:</label>
+//                     <input
+//                         type="text"
+//                         id="nick"
+//                         name="nick"
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="email">email:</label>
+//                     <input
+//                         type="email"
+//                         id="email"
+//                         name='email'
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="phone">Celular:</label>
+//                     <input
+//                         type="text"
+//                         id="phone"
+//                         name="phone"
+//                     />
+//                 </div>
+//                 <div>
+//                     <label htmlFor="sex">Genero:</label>
+//                     <input
+//                         type="text"
+//                         id="sex"
+//                         name="sex"
+//                     />
+//                 </div>
+//                 <div className="relative inline-block overflow-hidden">
+//                     <label htmlFor="file">Archivo:</label>
+//                     <input
+//                         className="absolute top-0 right-0 opacity-0 cursor-pointer w-full h-full"
+//                         type="file"
+//                         name="file"
+//                         id="file"
+//                         accept="image/*"
+//                     />
+//                 </div>
+//                 <button type="submit">Enviar</button>
+//             </Form>
+//             {imageDataUrl && (
+//                 <div>
+//                     <h2>Imagen Subida:</h2>
+//                     <img src={imageDataUrl} alt="Imagen subida" style={{ maxWidth: '300px' }} />
+//                 </div>
+//             )}
+//         </>
+//     );
+// };
