@@ -46,7 +46,7 @@ router.get("/v2.0.0", sessionGoogleOAuth, (req, res)=>{
 router.get('/:id', ProductValidator.validateProductId(), (req, res) => ProductController.getProduct(req, res));
 router.get('/find/:category', ProductValidator.validateProductCategory(), (req, res) => ProductController.getProductCategory(req, res));
 router.get('/', (req, res) => ProductController.getAllProduct(req, res));
-// router.put('/:id', ProductValidator.validateProductUpdateDataById(), (req, res) => ProductController.updateProduct(req, res));
+router.put('/:id', ProductValidator.validateProductUpdateDataById(), (req, res) => ProductController.updateProduct(req, res));
 // router.delete('/:id', ProductValidator.validateProductId(), (req, res) => ProductController.deleteProduct(req, res));
 // router.get('/search', (req, res) => ProductController.searchProducts(req, res));
 

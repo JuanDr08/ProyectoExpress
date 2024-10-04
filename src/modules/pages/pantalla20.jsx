@@ -17,7 +17,9 @@ export const Pantalla20 = () => {
   const [taller, setTaller] = useState([]);
 
   useEffect(() => {
-    // Redireccionar si no hay datos
+    if (!data) navigate('/register')
+      console.log(data.user)
+      setUser([data.user])
     
     
     // Función para hacer la solicitud a la API
@@ -33,7 +35,9 @@ export const Pantalla20 = () => {
     
     const fecthCompras = async () => {
       try {
-        const compra = await axios.get(`http://localhost:3000/user/purchases/details`);
+        const compra = await axios.get('http://localhost:3000/user/purchases/details', {
+          withCredentials: true // Esto incluye las cookies
+      });
         setCompras(compra.data.data[0].compras); // Almacena los productos en el estado
         setTaller(compra.data.data[0].nombre_taller)
       } catch (error) {
