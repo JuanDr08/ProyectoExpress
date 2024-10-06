@@ -26,12 +26,12 @@ export function Pantalla7() {
     e.preventDefault();
     //console.log(isRegisterButtonDisabled)
     if (!isRegisterButtonDisabled) {
-      console.log(formToSend)
       const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', formToSend, {
         headers: {
             'Content-Type': 'application/json'
         }
     })
+      console.log(direccion)
       //console.log(direccion)
       navigate("/login/credentials")
     } else {
