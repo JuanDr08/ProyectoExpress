@@ -13,8 +13,8 @@ export function Profile() {
     const data = useLoaderData();
     
     const [user, setUser] = useState(null);
-    const [isEditing, setIsEditing] = useState({ nick: false, email: false, phone: false, gender: false}); 
-    const [formData, setFormData] = useState({ nick: '',  email: '', phone: '', gender: ''});
+    const [isEditing, setIsEditing] = useState({ nick: false, email: false, phone: false}); 
+    const [formData, setFormData] = useState({ nick: '',  email: '', phone: '', gender: '', birthday: ''});
 
     const [file, setFile] = useState(null); // Para almacenar el archivo de imagen
     const [isImageChanged, setIsImageChanged] = useState(false); // Estado para controlar cambios de imagen
@@ -28,7 +28,8 @@ export function Profile() {
                 nick: data.user[0].nick,
                 email: data.user[0].email,
                 phone: data.user[0].phone,
-                gender: data.user[0].sex == "MASCULINO" ? "M" : "F"
+                gender: data.user[0].sex == "MASCULINO" ? "M" : "F",
+                birthday: data.user[0].birth_day
             });
             setImageDataUrl(data.user[0].photo); // Cargar imagen inicial
         }
@@ -41,6 +42,11 @@ export function Profile() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        
+        // Si es el campo de cumpleaños también va a actualizar el estado de selectedBirthday
+        if (name === 'birthday') {
+            setSelectedBirthday(value);
+        }
     };
 
     const handleFileChange = (e) => {
@@ -63,6 +69,7 @@ export function Profile() {
         formDataToSend.append('email', formData.email);
         formDataToSend.append('phone', formData.phone);
         formDataToSend.append('sex', formData.gender === "M" ? "MASCULINO" : "FEMENINO");
+        formDataToSend.append("birth_day", formData.birthday); // Enviar 'birth_day' desde formData.birthday
     
         if (file) {
             formDataToSend.append('file', file);
@@ -80,10 +87,10 @@ export function Profile() {
                 setImageDataUrl(responseData.imageDataUrl);
                 setUser((prev) => ({ ...prev, photo: responseData.imageDataUrl }));
             }
-
+    
             setIsEditing({ nick: false, email: false, phone: false, gender: false });
-            setIsOkOpen(false)
-
+            setIsOkOpen(false);
+            setIsBirthdayOpen(false)
             setIsImageChanged(false); // Resetear el estado de cambio de imagen
             navigate('/profile');
         } catch (error) {
@@ -96,12 +103,12 @@ export function Profile() {
 
     const [selectedCountry, setSelectedCountry] = useState('CO');
 
-    const [isOpen, setIsOpen] = useState(false); // Estado para controlar la visibilidad del menú
-
     const [selectedGender, setSelectedGender] = useState('M'); // Estado para el género
     const [isCountryOpen, setIsCountryOpen] = useState(false); // Estado para el menú de país
     const [isGenderOpen, setIsGenderOpen] = useState(false); // Estado para el menú de género
+
     const [isBirthdayOpen, setIsBirthdayOpen] = useState(false); // Estado para el selector de cumpleaños
+    const [selectedBirthday, setSelectedBirthday] = useState(''); // Estado para la fecha de nacimiento seleccionada
 
     const [isOkOpen, setIsOkOpen] = useState(false)
 
@@ -131,8 +138,6 @@ export function Profile() {
     const toggleGenderDropdown = () => setIsGenderOpen(!isGenderOpen);
     
     const toggleBirthdayDropdown = () => setIsBirthdayOpen(!isBirthdayOpen);
-
-    const toggleDropdown = () => setIsOpen(!isOpen); // Función para alternar el menú desplegable
 
     return (
         <main className='pt-[70px] pb-[70px]'>
@@ -294,7 +299,6 @@ export function Profile() {
                                     type="submit"
                                     className="ml-2 bg-blue-500 text-white rounded-lg px-2"
                                     onClick={() => {
-                                        // Aquí puedes manejar la lógica para el botón "Ok"
                                         console.log('Género seleccionado:', selectedGender);
                                     }}
                                 >
@@ -314,19 +318,34 @@ export function Profile() {
                             <p className="text-[var(--color-9D1A1A)] text-l">Fecha de Nacimiento:</p>
                         </div>
 
-                        <div className="relative">
+                        <div className="relative flex items-center">
                             <button
                                 type="button"
                                 onClick={toggleBirthdayDropdown}
                                 className="birthday bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
                             >
-                                Selecciona Fecha
+                                {formData.birthday}
                             </button>
                             {isBirthdayOpen && (
-                                <div className="absolute left-[-50px] mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
-                                    
-                                    <p className="p-4">Selecciona tu fecha de nacimiento</p>
-                                    
+                                <div className="flex flex-col absolute top-[40px] left-[-50px] mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
+                                    <input
+                                        type="date"
+                                        name="birthday" 
+                                        value={selectedBirthday}
+                                        onChange={handleChange}
+                                        className="p-2"
+                                    />
+                                    {selectedBirthday && (
+                                        <button
+                                            type='submit'
+                                            onClick={() => {
+                                                console.log("Fecha de nacimiento seleccionada", selectedBirthday)
+                                            }}
+                                            className="ml-2 bg-blue-500 text-white rounded-lg px-2"
+                                        >
+                                            OK
+                                        </button>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -357,103 +376,3 @@ export function Profile() {
         </main>
     );
 }
-
-
-// import { useEffect, useState } from "react";
-// import { Form, useLoaderData, useNavigate } from "react-router-dom";
-// export const Home = () => {
-//     const [imageDataUrl, setImageDataUrl] = useState('');
-//     const [user, setUser] = useState(null);
-//     const data = useLoaderData();
-//     const navigate = useNavigate();
-
-//     useEffect(()=> {
-
-//         if (!data) navigate('/register')
-//         console.log(data.user)
-//         setUser(data.user[0])
-
-//     },[])
-
-//     useEffect(()=> {
-//         console.log(user);
-//     }, [user])
-
-//     useEffect(() => {
-//         console.log(user);
-//     }, [imageDataUrl])
-
-//     const handleSubmit = async (event) => {
-//         event.preventDefault();
-//         const formData = new FormData(event.target);
-//         try {
-//             const response = await fetch('http://localhost:3000/user/edit', {
-//                 method: 'PUT',
-//                 body: formData,
-//                 credentials: 'include'
-//             });
-//             console.log('Resultado fetch: ', response)
-//             const data = await response.json();
-//             console.log('Respuesta del servidor:', data);
-//             setImageDataUrl(data.imageDataUrl);
-//             location.href = 'http://localhost:5173/home'
-//         } catch (error) {
-//             console.error('Error al enviar datos:', error);
-//         }
-//     };
-//     return (
-//         <>
-//             <Form onSubmit={handleSubmit}>
-//                 <div>
-//                     <label htmlFor="nick">Nombre:</label>
-//                     <input
-//                         type="text"
-//                         id="nick"
-//                         name="nick"
-//                     />
-//                 </div>
-//                 <div>
-//                     <label htmlFor="email">email:</label>
-//                     <input
-//                         type="email"
-//                         id="email"
-//                         name='email'
-//                     />
-//                 </div>
-//                 <div>
-//                     <label htmlFor="phone">Celular:</label>
-//                     <input
-//                         type="text"
-//                         id="phone"
-//                         name="phone"
-//                     />
-//                 </div>
-//                 <div>
-//                     <label htmlFor="sex">Genero:</label>
-//                     <input
-//                         type="text"
-//                         id="sex"
-//                         name="sex"
-//                     />
-//                 </div>
-//                 <div className="relative inline-block overflow-hidden">
-//                     <label htmlFor="file">Archivo:</label>
-//                     <input
-//                         className="absolute top-0 right-0 opacity-0 cursor-pointer w-full h-full"
-//                         type="file"
-//                         name="file"
-//                         id="file"
-//                         accept="image/*"
-//                     />
-//                 </div>
-//                 <button type="submit">Enviar</button>
-//             </Form>
-//             {imageDataUrl && (
-//                 <div>
-//                     <h2>Imagen Subida:</h2>
-//                     <img src={imageDataUrl} alt="Imagen subida" style={{ maxWidth: '300px' }} />
-//                 </div>
-//             )}
-//         </>
-//     );
-// };
