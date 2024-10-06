@@ -22,6 +22,7 @@ export default function Pantalla22() {
     try {
       const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`, {withCredentials: true}); 
       const id = cuponCode.data._id
+      console.log(id)
       const agregarCupon = await fetch(`http://localhost:3000/user/coupons/${id}`, {
         method: 'POST',
         credentials: 'include' // Esto incluye las cookies
@@ -50,7 +51,7 @@ export default function Pantalla22() {
   useEffect(()=> {
     const fetchCupon = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/coupons/details`);
+        const response = await axios.get(`http://localhost:3000/user/coupons/details`, {withCredentials: true}); 
         setCupones(response.data.data)
       } catch (error) {
         console.error('Error al obtener los cupones', error);
