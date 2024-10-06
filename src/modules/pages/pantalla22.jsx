@@ -50,9 +50,7 @@ export const Pantalla22 = () => {
   useEffect(()=> {
     const fetchCupon = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/user/coupons/details`, {
-          credentials: 'include' // Esto incluye las cookies
-      });
+        const response = await axios.get(`http://localhost:3000/user/coupons/details`);
         setCupones(response.data.data)
       } catch (error) {
         console.error('Error al obtener los cupones', error);

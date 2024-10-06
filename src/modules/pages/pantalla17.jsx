@@ -13,7 +13,7 @@ const Corazon = ({idProducto}) => {
         const favorito = await fetch(`http://localhost:3000/user/favorite/check/${idProducto}`, {
           credentials: 'include' // Esto incluye las cookies
       });
-        if (favorito.data) setLiked(true);
+        if (favorito.ok) setLiked(true);
       } catch (error) {
         console.error("El producto no se encuentra e favoritos:", error);
         setLiked(false)
@@ -42,9 +42,8 @@ const Corazon = ({idProducto}) => {
         setLiked(true)
       } else {
         // Si está en favoritos, hacemos una petición DELETE para eliminarlo
-        console.log('Entra a este delete')
-        await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, { method: 'DELETE',credentials: 'include' });
-        console.log("Producto eliminado de favoritos");
+        const deleteFvoritos = await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, { method: 'DELETE',credentials: 'include' });
+        console.log("Producto eliminado de favoritos", deleteFvoritos);
         setLiked(false)
       }
     } catch (error) {
