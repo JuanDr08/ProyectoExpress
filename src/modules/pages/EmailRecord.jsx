@@ -4,7 +4,7 @@ import { Form, useLoaderData, useNavigate } from 'react-router-dom';
 import { Input } from '../components/Inputs';
 import { Muesca } from '../components/Muesca';
 
-export const EmailRecord = () => {
+export default function EmailRecord() {
 
     const [day, setDay] = useState('');
     const [month, setMonth] = useState('');
@@ -20,7 +20,7 @@ export const EmailRecord = () => {
 
 
     useEffect(() => {
-        if (data) navigate('/home')
+        if (data) navigate('/')
     }, [])
 
     const handleSubmit = (e) => {

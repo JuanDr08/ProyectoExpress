@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Muesca } from '../components/Muesca';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
-function TallerCeramica() {
+export default function TallerCeramica() {
 
   const navigate = useNavigate();
   const [user, setUser] = useState(null)
@@ -74,5 +74,3 @@ function TallerCeramica() {
     </div>
   );
 }
-
-export default TallerCeramica;

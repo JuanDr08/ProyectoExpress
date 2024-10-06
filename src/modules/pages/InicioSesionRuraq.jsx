@@ -3,7 +3,7 @@ import { Muesca } from '../components/Muesca';
 import { Form, useLoaderData, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function InicioSesionRuraq() {
+export default function InicioSesionRuraq() {
 
   const navigate = useNavigate();
   const data = useLoaderData()
@@ -11,7 +11,7 @@ function InicioSesionRuraq() {
 
 
   useEffect(() => {
-    if (data) navigate('/home')
+    if (data) navigate('/')
   }, [])
 
   const handleSubmit = (e) => {
@@ -28,7 +28,7 @@ function InicioSesionRuraq() {
       credentials: 'include'
     }).then(res => {
       
-      res.status == 200 ? navigate('/home') : setMessage('Credenciales incorrectas')
+      res.status == 200 ? navigate('/') : setMessage('Credenciales incorrectas')
 
     })
     
@@ -100,5 +100,3 @@ function InicioSesionRuraq() {
     </>
   );
 }
-
-export default InicioSesionRuraq;

@@ -16,7 +16,7 @@ export function Footer() {
             case '/discounts':
                 setActiveButton(1);
                 break;
-            case '/home':
+            case '/':
                 setActiveButton(2);
                 break;
             case '/cart':
@@ -42,7 +42,7 @@ export function Footer() {
                     navigate('/discounts');
                     break;
                 case 2:
-                    navigate('/home');
+                    navigate('/');
                     break;
                 case 3:
                     navigate('/cart');

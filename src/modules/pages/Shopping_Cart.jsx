@@ -6,16 +6,52 @@ import { PurchaseConfirmation } from "../components/PurchaseConfirmation";
 import axios from "axios";
 
 
-export function ShoppingCart() {
+export const shoppingCartLoader = async () => {
+    try {
+        let productos = await axios.get(`http://localhost:3000/user/cart/details`, {
+            headers: {
+                'Cache-Control': 'max-age=3600',
+                'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
+            },
+            withCredentials: true // Esto incluye las cookies
+        });
+        //let res = await productos.json()
+        if (productos.status === 404) {
+            productos = []
+        }
+
+        const descuentos = await axios.get('http://localhost:3000/cupon/product/h', {
+            headers: {
+                'Cache-Control': 'max-age=3600',
+                'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
+            },
+            withCredentials: true
+        });
+    
+        console.log('Descuentops',descuentos, 'Productos',productos)
+    
+        return {
+            productos: productos.data.data,
+            taller: productos.data.data.length > 0 ? productos.data.data[0].nombre_taller : null,
+            descuentos: descuentos.data
+        }
+
+    } catch (error) { // Si agarra el error 404 es porque el usuario no tiene productos en el carrito, deben manejar eso para que no rompa la pagina
+        return 404
+    }
+
+}
+
+export default function ShoppingCart() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const data = useLoaderData()
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const [productos, setProductos] = useState([]);
-    const [taller, setTaller] = useState([]);
-    const [productosConDescuento, setProductosConDescuento] = useState([])
+    const [productos, setProductos] = useState(data.data.productos);
+    const [taller, setTaller] = useState(data.data.taller);
+    const [productosConDescuento, setProductosConDescuento] = useState(data.data.descuentos)
 
 
     // --- Manejo de Cantidades, sumar y restar ---
@@ -45,11 +81,10 @@ export function ShoppingCart() {
     useEffect(() => {
 
         if (!data) navigate('/register')
-        setUser([data.user])
-
+        setUser(data.user)
 
         // Función para hacer la solicitud a la API
-        const fetchProductos = async () => {
+        /* const fetchProductos = async () => {
             try {
                 const response = await fetch(`http://localhost:3000/user/cart/details`, {
                     credentials: "include" // Esto incluye las cookies
@@ -76,7 +111,7 @@ export function ShoppingCart() {
                 console.error('Error al obtener productos con descuento', error);
             }
         };
-        fetchDescuentos();
+        fetchDescuentos(); */
 
     }, [])
     // Función para aplicar el descuento
@@ -108,7 +143,7 @@ export function ShoppingCart() {
 
     return (
         <main>
-            <Header />
+            <Header nick={user?.nick} photo={user?.photo} />
 
             <div className="upper flex flex-col p-5 gap-2">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Tu carrito de compras</span>

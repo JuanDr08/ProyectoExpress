@@ -4,13 +4,13 @@ import  styles from '../../css/pantalla7.module.css'
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 
-export function Pantalla7() {
+export default function Pantalla7() {
 
   const navigate = useNavigate();
   const data = useLoaderData()
 
   useEffect(()=> {
-    if (data) navigate('/home')
+    if (data) navigate('/')
   },[])
 
   const location = useLocation();

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 
 
-export const Settings = () => {
+export default function Settings() {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null)

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
-function Entrada() {
+export default function Entrada() {
 
 	const navigate = useNavigate();
     const data = useLoaderData()
 
 
     useEffect(()=> {
-        if (data) navigate('/home')
+        if (data) navigate('/')
     },[])
 	const openPopup = (auth) => {
 		const width = 600;
@@ -29,7 +29,7 @@ function Entrada() {
 	
 		  if (event.data.success) {
 			popup.close(); // Cierra el popup
-			window.location.href = 'http://localhost:5173/home'; // Redirige a tu frontend
+			window.location.href = 'http://localhost:5173/'; // Redirige a tu frontend
 		  }
 		};
 	
@@ -126,7 +126,7 @@ function Entrada() {
 	);
 }
 
-export default Entrada;
+
 
 
 

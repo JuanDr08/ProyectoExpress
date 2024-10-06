@@ -3,7 +3,7 @@ import { Muesca } from '../components/Muesca';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 
-export const InfoCraft = () => {
+export default function InfoCraft() {
 
   const navigate = useNavigate();
   const [user, setUser] = useState(null)

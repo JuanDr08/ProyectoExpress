@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // Definir el componente
 function Carga() {
 
-  const navigate = useNavigate()
 
-  setTimeout(() => navigate('/register'),3000)
 
   return (
     <div className='bg-[url(/img/Fondo.png)] bg-cover bg-center h-screen flex items-center justify-center'>

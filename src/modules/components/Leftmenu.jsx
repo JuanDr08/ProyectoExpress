@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 
-export function LeftMenu(){
+export function LeftMenu({photo, nick}){
     return(
         <div className="leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 text-white p-5 gap-5 justify-around absolute left-0 top-0">
             <div className="profile flex items-center gap-5">
 
                 <div className="rounded-full outline w-[100px] h-[100px] overflow-hidden">
-                    <img className='w-full h-full object-cover' src="https://unavatar.io/microlink/microlink.io" alt="Perfil" />
+                    <img className='w-full h-full object-cover' src={photo} alt={nick} />
                 </div>
-                <p>Nombre</p>
+                <p>{nick}</p>
             </div>
             <div className="upper flex flex-col gap-5">
 

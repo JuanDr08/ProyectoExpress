@@ -17,32 +17,48 @@ const categories = [
     "Pintura tradicional",
 ];
 
-export function DiscountsPromotions() {
+export const discountsLoader = async () => {
+    try {
+        const response = await axios.get(`http://localhost:3000/cupon/product/h`, {
+            headers: {
+                'Cache-Control': 'max-age=3600',
+                'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
+            },
+            withCredentials: true
+        });
+        console.log('asdasfasfasfa',response)
+        return response.data // Almacena los productos en el estado}
+    } catch (error) {
+        console.error('Error al obtener los productos', error);
+        return error
+    }
+}
+
+export default function DiscountsPromotions() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
     const data = useLoaderData()
-    const [productos, setProductos] = useState([]);
-
+    const [productos, setProductos] = useState(data.user ? data.data : []);
 
     useEffect(()=> {
 
-        if (!data) navigate('/register')
-        setUser([data.user])
+        if (!data.user) navigate('/register')
+        setUser(data.user[0])
 
         // Función para hacer la solicitud a la API
-        const fetchProductos = async () => {
+        /* const fetchProductos = async () => {
             try {
             const response = await axios.get(`http://localhost:3000/cupon/product/h`, {
-                withCredentials: true
+                withCredentials: true, cache: "force-cache"
             });
             setProductos(response.data); // Almacena los productos en el estado}
             } catch (error) {
             console.error('Error al obtener los productos', error);
             }
         };
-      fetchProductos();
+      fetchProductos(); */
 
     },[])
 
@@ -55,10 +71,9 @@ export function DiscountsPromotions() {
     const filteredProductos = selectedCategory
         ? productos.filter(item => item.productoInfo.categoria === selectedCategory)
         : productos;
-
     return (
-        <main>
-            <Header />
+        <main className="mb-[70px]">
+            <Header nick={user?.nick} photo={user?.photo} />
 
             <div className="upper flex flex-col p-5 gap-2">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Descuentos y promociones</span>
@@ -83,7 +98,7 @@ export function DiscountsPromotions() {
                 {filteredProductos.map((item, index) => (
                     <Link to={`/product/${item.productoInfo._id}`} key={index}>
 
-                        <div className="bg-[var(--color-703A31)] rounded-lg shadow-md flex flex-col relative">
+                        <div className="bg-[var(--color-703A31)] h-[280px] rounded-lg shadow-md flex flex-col relative">
 
                             <div className="absolute w-20 h-20 flex items-center justify-center top-[-30px] left-[-40px] z-5">
                             <svg viewBox="0 0 148 140" fill="none" xmlns="http://www.w3.org/2000/svg " className="absolute text-red-500 z-[1]">

@@ -3,7 +3,7 @@ import { CategoryHeaders } from '../components/CategoryHeaders'
 import { Muesca } from '../components/Muesca'
 import { useState, useEffect } from 'react';
 
-export const CustomerSupport = () => {
+export default function CustomerSupport() {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null)

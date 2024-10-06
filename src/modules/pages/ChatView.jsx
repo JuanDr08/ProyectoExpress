@@ -6,7 +6,7 @@ import { useLoaderData, useNavigate, useParams } from "react-router-dom"
 
 // import 
 
-export const Chat = () => {
+export default function Chat() {
     
     const navigate = useNavigate();
     const [user, setUser] = useState(null)

@@ -179,7 +179,7 @@ return (
 )};
 
 // Componente principal
-const Pantalla17 = () => {
+export default function Pantalla17() {
   const { id } = useParams(); // Obtener el ID de la URL
   const navigate = useNavigate();
     const [user, setUser] = useState(null)
@@ -232,5 +232,3 @@ const Pantalla17 = () => {
     </div>
   );
 };
-
-export default Pantalla17;

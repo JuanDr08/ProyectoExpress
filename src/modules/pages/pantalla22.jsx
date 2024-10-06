@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 import { CategoryHeaders } from '../components/CategoryHeaders';
 
-export const Pantalla22 = () => {
+export default function Pantalla22() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null)
   const data = useLoaderData()

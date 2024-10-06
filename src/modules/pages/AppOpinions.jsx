@@ -3,7 +3,7 @@ import { CategoryHeaders } from '../components/CategoryHeaders'
 import { Form, useLoaderData, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 
-export const AppOpinions = () => {
+export default function AppOpinions() {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(null)

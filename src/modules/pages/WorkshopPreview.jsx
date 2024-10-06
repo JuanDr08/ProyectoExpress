@@ -5,7 +5,7 @@ import { ProductCategoryCard } from "../components/ProductCategoryCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export const WorkshopPreview = () => {
+export default function WorkshopPreview() {
     const { id } = useParams();
     const [tallerData, setTallerData] = useState(null);  // Inicializar como null
     const navigate = useNavigate();

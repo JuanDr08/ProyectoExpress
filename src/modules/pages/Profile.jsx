@@ -7,7 +7,7 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useLoaderData, useNavigate, Form } from 'react-router-dom';
 
-export function Profile() {
+export default function Profile() {
     const [imageDataUrl, setImageDataUrl] = useState('');
     const navigate = useNavigate();
     const data = useLoaderData();
@@ -118,7 +118,7 @@ export function Profile() {
 
     return (
         <main>
-            <Header />
+            <Header nick={user?.nick} photo={user?.photo} />
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
 

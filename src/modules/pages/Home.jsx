@@ -16,7 +16,7 @@ const categories = [
     { name: "Pintura tradicional", icon: <svg width="30" viewBox="0 0 91 92" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="83" height="84" rx="9" stroke="white" strokeWidth="7"/><path d="M8 87L45.0742 55.6223C51.2361 50.4072 60.52 51.4699 65.344 57.9426L87 87" stroke="white" strokeWidth="7"/><mask id="path-3-inside-1_126_4192" fill="white"><rect x="29.123" y="13.334" width="23.1467" height="23.1467" rx="7" transform="rotate(45 29.123 13.334)"/></mask><rect x="29.123" y="13.334" width="23.1467" height="23.1467" rx="7" transform="rotate(45 29.123 13.334)" stroke="white" strokeWidth="16" mask="url(#path-3-inside-1_126_4192)"/></svg> }
 ];
 
-export function Home() {
+export default function Home() {
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export function Home() {
 
         if (!data) navigate('/register')
         console.log(data.user)
-        setUser([data.user])
+        setUser(data.user[0])
 
     },[])
 
@@ -43,7 +43,7 @@ export function Home() {
         // <div className="flex flex-col min-h-screen">
 
         <main className="flex-grow">
-            <Header />
+            <Header nick={user?.nick} photo={user?.photo} />
             <div className="locationzone flex items-center justify-center">
                 <div className="location flex justify-evenly h-[40px] items-center mt-5 bg-[var(--color-703A31)] w-[300px] rounded-md">
                     <svg width="16" height="35" viewBox="0 0 56 85" fill="none" xmlns="http://www.w3.org/2000/svg">

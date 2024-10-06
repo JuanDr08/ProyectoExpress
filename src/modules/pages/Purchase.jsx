@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function Purchase() {
+export default function Purchase() {
   return (
     <div className='flex flex-col justify-center items-center'>
         <div className='flex justify-center pt-10'>
@@ -23,11 +23,9 @@ function Purchase() {
                 <button className='mt-4 bg-[#703A31] text-white px-8 py-2 rounded-lg hover:bg-[#6a2926] transition'>Enviar</button>
             </form>
         </div>
-        <Link to={'/home'} className='flex flex-col justify-center items-center bg-[#703A31] w-[12em] h-[2.2em] text-white '>
+        <Link to={'/'} className='flex flex-col justify-center items-center bg-[#703A31] w-[12em] h-[2.2em] text-white '>
             <a className='text-[1.3em]'>Regresar al inicio</a>
         </Link>
     </div>
   )
 }
-
-export default Purchase
