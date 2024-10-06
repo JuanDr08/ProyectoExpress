@@ -13,8 +13,8 @@ export function Profile() {
     const data = useLoaderData();
     
     const [user, setUser] = useState(null);
-    const [isEditing, setIsEditing] = useState({ nick: false, email: false, phone: false }); 
-    const [formData, setFormData] = useState({ nick: '',  email: '', phone: ''});
+    const [isEditing, setIsEditing] = useState({ nick: false, email: false, phone: false, gender: false}); 
+    const [formData, setFormData] = useState({ nick: '',  email: '', phone: '', gender: ''});
 
     const [file, setFile] = useState(null); // Para almacenar el archivo de imagen
     const [isImageChanged, setIsImageChanged] = useState(false); // Estado para controlar cambios de imagen
@@ -97,6 +97,8 @@ export function Profile() {
     const [isGenderOpen, setIsGenderOpen] = useState(false); // Estado para el menú de género
     const [isBirthdayOpen, setIsBirthdayOpen] = useState(false); // Estado para el selector de cumpleaños
 
+    const [isOkOpen, setIsOkOpen] = useState(false)
+
 
     const countries = [
         { code: 'CO', name: 'Colombia', dialCode: '+57' },
@@ -111,7 +113,9 @@ export function Profile() {
 
 
     const toggleCountryDropdown = () => setIsCountryOpen(!isCountryOpen);
+    
     const toggleGenderDropdown = () => setIsGenderOpen(!isGenderOpen);
+    
     const toggleBirthdayDropdown = () => setIsBirthdayOpen(!isBirthdayOpen);
 
     const toggleDropdown = () => setIsOpen(!isOpen); // Función para alternar el menú desplegable
@@ -212,6 +216,7 @@ export function Profile() {
                     <div className="relative flex bg-[var(--color-703A31)] text-white w-[50%] h-10 rounded-lg justify-center items-center">
                         {isEditing.phone ? (
                             <>
+                            {console.log("editando phone")}
                                 <input
                                     name="phone"
                                     value={formData.phone}
@@ -222,6 +227,7 @@ export function Profile() {
                             </>
                             ) : (
                                 <>
+                                    {console.log("phone no esta en edicion")}
                                     <p>{user ? user.phone : 'Cargando...'}</p>
                                 </>
                             )}
@@ -231,57 +237,87 @@ export function Profile() {
                         </svg>
                 </div>
 
-                <div className="genero fila w-[100vw] flex items-center justify-around">
-                    <div className="genre">
-                        <p className="text-[var(--color-9D1A1A)] text-xl">Género:</p>
-                    </div>
+                <div className="fila w-[100vw] flex items-center justify-around">
 
-                    <div className="relative">
-                        <button
-                            type='button'
-                            onClick={toggleGenderDropdown}
-                            className="gender bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
-                        >
-                            {genders.find(gender => gender.code === selectedGender).name}
-                        </button>
-                        {isGenderOpen && (
-                            <div className="absolute left-0 mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
-                                {genders.map(gender => (
-                                    <button
-                                        type="button"
-                                        key={gender.code}
-                                        onClick={() => {
-                                            setSelectedGender(gender.code);
-                                            setIsGenderOpen(false);
-                                        }}
-                                        className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                                    >
-                                        {gender.name}
-                                    </button>
-                                ))}
+                    <div className='genero flex'>
+
+                        <div className="gender">
+                            <p className="text-[var(--color-9D1A1A)] text-xl">Género:</p>
+                        </div>
+
+                        <div className="relative flex pl-3">
+
+                            <div
+                                className="gender bg-[var(--color-703A31)] w-[30px] flex items-center justify-center text-white rounded-lg"
+                            >
+                                {genders.find(gender => gender.code === selectedGender).code}
                             </div>
-                        )}
+                            
+                            <svg className='ml-3' onClick={toggleGenderDropdown} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
+                                <path fill="#9d1a1a" d="M2 26h28v2H2zM25.4 9c.8-.8.8-2 0-2.8l-3.6-3.6c-.8-.8-2-.8-2.8 0l-15 15V24h6.4zm-5-5L24 7.6l-3 3L17.4 7zM6 22v-3.6l10-10l3.6 3.6l-10 10z"/>
+                            </svg>
+
+                            {isGenderOpen && (
+                                <div className="absolute left-0 mt-10 bg-white shadow-md rounded-md w-[150px] z-10">
+                                    {genders.map(gender => (
+                                        <button
+                                            type="button"
+                                            key={gender.code}
+                                            onClick={() => {
+                                                setSelectedGender(gender.code);
+                                                setIsGenderOpen(false);
+                                                setIsOkOpen(true)
+                                            }}
+                                            className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                                        >
+                                            {gender.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+
+                            { isOkOpen && (
+                                <button
+                                type="submit"
+                                className="ml-2 bg-blue-500 text-white rounded-lg px-2"
+                                onClick={() => {
+                                    // Aquí puedes manejar la lógica para el botón "Ok"
+                                    console.log('Género seleccionado:', selectedGender);
+                                }}
+                                >
+                                    Ok
+                                </button>
+                            )}
+                        </div>
+
+                        
+
                     </div>
 
-                    <div className="birthday w-[90px]">
-                        <p className="text-[var(--color-9D1A1A)] text-l">Fecha de Nacimiento:</p>
-                    </div>
 
-                    <div className="relative">
-                        <button
-                            type="button"
-                            onClick={toggleBirthdayDropdown}
-                            className="birthday bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
-                        >
-                            Selecciona Fecha
-                        </button>
-                        {isBirthdayOpen && (
-                            <div className="absolute left-[-50px] mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
-                                
-                                <p className="p-4">Selecciona tu fecha de nacimiento</p>
-                                
-                            </div>
-                        )}
+                    <div className='nacimiento flex'>
+
+                        <div className="birthday w-[90px]">
+                            <p className="text-[var(--color-9D1A1A)] text-l">Fecha de Nacimiento:</p>
+                        </div>
+
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={toggleBirthdayDropdown}
+                                className="birthday bg-[var(--color-703A31)] w-[100px] flex items-center justify-center text-white rounded-lg"
+                            >
+                                Selecciona Fecha
+                            </button>
+                            {isBirthdayOpen && (
+                                <div className="absolute left-[-50px] mt-1 bg-white shadow-md rounded-md w-[150px] z-10">
+                                    
+                                    <p className="p-4">Selecciona tu fecha de nacimiento</p>
+                                    
+                                </div>
+                            )}
+                        </div>
+
                     </div>
                 </div>
 

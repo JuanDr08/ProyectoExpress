@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 export const Muesca = ({color="703A31"}) => {
 
     return (
-        <div className="absolute top-[0%] right-100 h-[100px] w-[100px]">
+        <div className="fixed top-[0%] right-100 h-[100px] w-[100px] z-20 ">
             <svg width="100" height="100" viewBox="70 0 136 272" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="-2" width="195.161" height="195.869" rx="7" transform="rotate(45 0.5 -2)" fill={"#"+color} />
             </svg>  
