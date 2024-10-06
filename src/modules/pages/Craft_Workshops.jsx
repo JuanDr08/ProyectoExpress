@@ -53,7 +53,7 @@ export function CraftWorkshops() {
                 <small className="text-[var(--color-9D1A1A)] opacity-50">Tiendas de artesanías de todas partes de Santander</small>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 p-5">
+            <div className="overflow-y-scroll grid grid-cols-2 gap-4 p-5" style={{ maxHeight: "65vh" }}>
                 {workshops.map((shop) => (
                     <div 
                         key={shop._id} 

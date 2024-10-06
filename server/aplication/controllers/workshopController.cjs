@@ -17,6 +17,32 @@ class WorkshopController {
         }
     }
 
+    async getWorkshopsSearched(req, res) {
+        try {
+
+            const { search } = req.params;
+
+            const workshops = await this.workshopService.getAllWorkshops(); // Llamamos al método en la instancia
+            let talleres = workshops[0];
+
+            if (search && search.trim() !== "") {
+                const searchRegex = new RegExp(search, 'i'); // Expresión regular para búsqueda insensible a mayúsculas
+                talleres = talleres.filter(taller => searchRegex.test(taller.nombre_taller));
+            }
+            // Devolver la información del taller y sus productos (filtrados o no)
+            return res.status(200).json({
+                nombre_taller: products[0].nombre_taller,
+                imagen: products[0].imagen,
+                productosDetalles: productos
+            });
+        } catch (error) {
+            return res.status(404).json({
+                status: 404,
+                message: error.message || 'Error fetching products',
+            });
+        }
+    }
+
     async getProductsByWorkshopId(req, res) {
         try {
             console.log("hola")
@@ -63,6 +89,7 @@ class WorkshopController {
             });
         }
     }
+
 }
 
 module.exports = WorkshopController;
