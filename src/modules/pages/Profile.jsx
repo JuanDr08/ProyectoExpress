@@ -27,7 +27,8 @@ export function Profile() {
             setFormData({
                 nick: data.user[0].nick,
                 email: data.user[0].email,
-                phone: data.user[0].phone
+                phone: data.user[0].phone,
+                gender: data.user[0].sex
             });
             setImageDataUrl(data.user[0].photo); // Cargar imagen inicial
         }
@@ -61,6 +62,7 @@ export function Profile() {
         formDataToSend.append('nick', formData.nick);
         formDataToSend.append('email', formData.email);
         formDataToSend.append('phone', formData.phone);
+        formDataToSend.append('sex', formData.gender)
         if (file) {
             formDataToSend.append('file', file);
         }
@@ -77,7 +79,7 @@ export function Profile() {
                 setImageDataUrl(responseData.imageDataUrl); // Actualizar la imagen
                 setUser((prev) => ({ ...prev, photo: responseData.imageDataUrl }));
             }
-            setIsEditing({ nick: false, email: false, phone: false });
+            setIsEditing({ nick: false, email: false, phone: false, gender: false });
             setIsImageChanged(false); // Resetear el estado de cambio de imagen
             navigate('/profile');
         } catch (error) {
@@ -107,8 +109,8 @@ export function Profile() {
     ];
 
     const genders = [
-        { code: 'M', name: 'Masculino' },
-        { code: 'F', name: 'Femenino' },
+        { code: 'M', name: 'MASCULINO' },
+        { code: 'F', name: 'FEMENINO' },
     ];
 
 
@@ -141,7 +143,7 @@ export function Profile() {
                     className="hidden"
                     id="fileInput"
                 />
-                <label htmlFor="fileInput" className='flex absolute bg-[var(--color-703A31)] rounded-full w-[60px] h-[60px] justify-center items-center bottom-[530px] right-[100px] cursor-pointer'>
+                <label htmlFor="fileInput" className='flex absolute bg-[var(--color-703A31)] rounded-full w-[60px] h-[60px] justify-center items-center bottom-[560px] right-[100px] cursor-pointer'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 24 24"><path fill="#fff" d="M3 21v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z"/></svg>
                 </label>
 
@@ -216,12 +218,12 @@ export function Profile() {
                     <div className="relative flex bg-[var(--color-703A31)] text-white w-[50%] h-10 rounded-lg justify-center items-center">
                         {isEditing.phone ? (
                             <>
-                            {console.log("editando phone")}
+                            {/* {console.log("editando phone")} */}
                                 <input
                                     name="phone"
                                     value={formData.phone}
                                     onChange={handleChange}
-                                    className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg"
+                                    className="h-10 w-full bg-[var(--color-703A31)] text-white rounded-lg flex text-center"
                                 />
                                 <button type="submit" className=" bg-blue-500 text-white rounded-lg px-2">Ok</button>
                             </>
@@ -250,7 +252,7 @@ export function Profile() {
                             <div
                                 className="gender bg-[var(--color-703A31)] w-[30px] flex items-center justify-center text-white rounded-lg"
                             >
-                                {genders.find(gender => gender.code === selectedGender).code}
+                                {formData.gender}
                             </div>
                             
                             <svg className='ml-3' onClick={toggleGenderDropdown} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 32 32">
@@ -265,6 +267,7 @@ export function Profile() {
                                             key={gender.code}
                                             onClick={() => {
                                                 setSelectedGender(gender.code);
+                                                setFormData(prev => ({ ...prev, gender: gender.name })); // Actualizar el estado de formData
                                                 setIsGenderOpen(false);
                                                 setIsOkOpen(true)
                                             }}
@@ -278,12 +281,12 @@ export function Profile() {
 
                             { isOkOpen && (
                                 <button
-                                type="submit"
-                                className="ml-2 bg-blue-500 text-white rounded-lg px-2"
-                                onClick={() => {
-                                    // Aquí puedes manejar la lógica para el botón "Ok"
-                                    console.log('Género seleccionado:', selectedGender);
-                                }}
+                                    type="submit"
+                                    className="ml-2 bg-blue-500 text-white rounded-lg px-2"
+                                    onClick={() => {
+                                        // Aquí puedes manejar la lógica para el botón "Ok"
+                                        console.log('Género seleccionado:', selectedGender);
+                                    }}
                                 >
                                     Ok
                                 </button>
