@@ -28,7 +28,7 @@ export function Profile() {
                 nick: data.user[0].nick,
                 email: data.user[0].email,
                 phone: data.user[0].phone,
-                gender: data.user[0].sex
+                gender: data.user[0].sex == "MASCULINO" ? "M" : "F"
             });
             setImageDataUrl(data.user[0].photo); // Cargar imagen inicial
         }
@@ -62,24 +62,28 @@ export function Profile() {
         formDataToSend.append('nick', formData.nick);
         formDataToSend.append('email', formData.email);
         formDataToSend.append('phone', formData.phone);
-        formDataToSend.append('sex', formData.gender)
+        formDataToSend.append('sex', formData.gender === "M" ? "MASCULINO" : "FEMENINO");
+    
         if (file) {
             formDataToSend.append('file', file);
         }
-
+    
         try {
             const response = await fetch('http://localhost:3000/user/edit', {
                 method: 'PUT',
                 body: formDataToSend,
                 credentials: 'include',
             });
-
+    
             const responseData = await response.json();
             if (responseData.imageDataUrl) {
-                setImageDataUrl(responseData.imageDataUrl); // Actualizar la imagen
+                setImageDataUrl(responseData.imageDataUrl);
                 setUser((prev) => ({ ...prev, photo: responseData.imageDataUrl }));
             }
+
             setIsEditing({ nick: false, email: false, phone: false, gender: false });
+            setIsOkOpen(false)
+
             setIsImageChanged(false); // Resetear el estado de cambio de imagen
             navigate('/profile');
         } catch (error) {
@@ -101,6 +105,14 @@ export function Profile() {
 
     const [isOkOpen, setIsOkOpen] = useState(false)
 
+    const handleGenderSelect = (gender) => {
+        setSelectedGender(gender.code);
+        setFormData(prev => ({
+            ...prev,
+            gender: gender.code // Guardar el código (M o F)
+        })); 
+        setIsOkOpen(true);
+    };
 
     const countries = [
         { code: 'CO', name: 'Colombia', dialCode: '+57' },
@@ -229,7 +241,7 @@ export function Profile() {
                             </>
                             ) : (
                                 <>
-                                    {console.log("phone no esta en edicion")}
+                                    {/* {console.log("phone no esta en edicion")} */}
                                     <p>{user ? user.phone : 'Cargando...'}</p>
                                 </>
                             )}
@@ -266,10 +278,8 @@ export function Profile() {
                                             type="button"
                                             key={gender.code}
                                             onClick={() => {
-                                                setSelectedGender(gender.code);
-                                                setFormData(prev => ({ ...prev, gender: gender.name })); // Actualizar el estado de formData
-                                                setIsGenderOpen(false);
-                                                setIsOkOpen(true)
+                                                setIsGenderOpen(false)
+                                                handleGenderSelect(gender)
                                             }}
                                             className="block w-full text-left px-4 py-2 hover:bg-gray-200"
                                         >
