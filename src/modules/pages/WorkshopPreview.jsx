@@ -29,8 +29,6 @@ export const WorkshopPreview = () => {
         setSearchTerm(event.target.value);
     };
 
-    
-
     // Función para realizar la búsqueda en la API
     const handleSearch = async () => {
         try {
