@@ -117,7 +117,7 @@ export function Profile() {
     const toggleDropdown = () => setIsOpen(!isOpen); // Función para alternar el menú desplegable
 
     return (
-        <main>
+        <main className='pt-[70px] pb-[70px]'>
             <Header />
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>

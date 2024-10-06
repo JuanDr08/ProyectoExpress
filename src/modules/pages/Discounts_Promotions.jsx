@@ -57,7 +57,7 @@ export function DiscountsPromotions() {
         : productos;
 
     return (
-        <main>
+        <main className="pt-[70px] pb-[70px]">
             <Header />
 
             <div className="upper flex flex-col p-5 gap-2">

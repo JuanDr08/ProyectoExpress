@@ -51,11 +51,11 @@ export function Header() {
     }
 
     return(
-        <header className=" bg-[var(--color-2E1108)] w-full flex justify-around h-[70px] items-center">
+        <header className="bg-[var(--color-2E1108)] w-full flex justify-around h-[70px] items-center fixed top-0 z-10">
             
             <div
                 ref={menuRef}
-                className={`leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 absolute text-white p-5 gap-5 justify-around left-0 top-0 transition-transform duration-300 ease-in-out ${
+                className={`leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 fixed text-white p-5 gap-5 justify-around left-0 top-0 transition-transform duration-300 ease-in-out ${
                     menuchange ? 'translate-x-0' : '-translate-x-full'
                 }`}
             >

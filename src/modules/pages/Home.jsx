@@ -42,7 +42,7 @@ export function Home() {
 
         // <div className="flex flex-col min-h-screen">
 
-        <main className="flex-grow">
+        <main className="pt-[70px] ">
             <Header />
             <div className="locationzone flex items-center justify-center">
                 <div className="location flex justify-evenly h-[40px] items-center mt-5 bg-[var(--color-703A31)] w-[300px] rounded-md">

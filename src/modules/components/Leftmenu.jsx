@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 export function LeftMenu(){
     return(
-        <div className="leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 text-white p-5 gap-5 justify-around absolute left-0 top-0">
+        <div className="leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-30 text-white p-5 gap-5 justify-around fixed left-0 top-0">
             <div className="profile flex items-center gap-5">
 
                 <div className="rounded-full outline w-[100px] h-[100px] overflow-hidden">
