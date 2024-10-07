@@ -36,8 +36,8 @@ router.get('/coupons/details', userController.getAllCuponDetailseFromFieldWithWo
 router.post('/favorites/products/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushCouponsItems(req, res, 'favoritos'))
 router.post('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), userController.createCartOfArraysAndPushObjectIdItems)
 router.post('/purchases', express.json(), userValidator.validatePurchasesBodyPost(), userController.createPurchasesOfArraysAndPushObjectIdItems)
-router.post('/favorites/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'talleres_favoritos'))
-router.post('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'talleres_inscritos'))
+router.post('/favorites/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushCouponsItems(req, res, 'talleres_favoritos'))
+router.post('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushCouponsItems(req, res, 'talleres_inscritos'))
 router.post('/coupons/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushCouponsItems(req, res, 'cupones'))
 
 router.delete('/favorites/products/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'favoritos'))

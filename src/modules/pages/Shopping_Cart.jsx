@@ -40,6 +40,30 @@ export const shoppingCartLoader = async () => {
 };
 
 export default function ShoppingCart() {
+
+    const handleDelete = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:3000/user/cart/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+    
+            if (res.ok) {
+                console.log("Producto eliminado con éxito");
+                
+                setProductos(prevProductos => prevProductos.filter(producto => producto.productoInfo._id !== id));
+            } else {
+                console.log("Hubo un error al eliminar el producto");
+            }
+        } catch (error) {
+            console.error("Hubo un error eliminando el producto", error);
+        }
+    };
+    
+
+
+    
+
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const data = useLoaderData();
@@ -135,6 +159,9 @@ export default function ShoppingCart() {
                                     <button onClick={() => handleIncrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">+</button>
                                 </div>
                             </div>
+
+                            <svg onClick={() => handleDelete(productoInfo._id)} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 256 256"><path fill="#fff" d="M216 48h-40v-8a24 24 0 0 0-24-24h-48a24 24 0 0 0-24 24v8H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16M96 40a8 8 0 0 1 8-8h48a8 8 0 0 1 8 8v8H96Zm96 168H64V64h128Zm-80-104v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0m48 0v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0"/></svg>
+
                         </div>
 
                     </>
