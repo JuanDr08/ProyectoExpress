@@ -122,8 +122,8 @@ module.exports = class UserController {
         const userService = new UserService()
 
         let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
-
-        let query = await userService.updateArrayPush(userId, 'compras', [{id: ObjectId.createFromHexString(req.params.id), cantidad: req.body.cantidad, total: req.body.total}])
+        console.log(req.body)
+        let query = await userService.updateArrayPush(userId, 'compras', [{productos: req.body.productos, cantidad: req.body.cantidad, total: req.body.total}])
         
         if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto agregado con exito al carrito' })
         else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo carrito` })
@@ -238,7 +238,7 @@ module.exports = class UserController {
         let favoriteList = await userService.getAllFromFIeld(userId, 'favoritos')
         if (!Object.keys(favoriteList).length) return res.status(404).json({ status: 404, message: 'El usuario no presenta favoritos en su lista' })
         let aux = ObjectId.createFromHexString(req.params.id)
-        let existsParamId = favoriteList.favoritos.some(({id}) => id.equals(aux) )
+        let existsParamId = favoriteList.favoritos.some((prdt) => prdt.equals(aux) )
         if (existsParamId) return res.status(200).json({ status: 200, exists: true })
         else if (!existsParamId) return res.status(404).json({ status: 200, exists: false })
 

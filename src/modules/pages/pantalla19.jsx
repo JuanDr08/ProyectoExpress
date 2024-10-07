@@ -73,6 +73,7 @@ export default function Pantalla19() {
       setData(data)
     };
     const deleteFavorito = async (id) => {
+      console.log('entra')
       await fetch(`http://localhost:3000/user/favorites/products/${id}`, {
         method: 'DELETE',
         credentials: 'include' // Esto incluye las cookies

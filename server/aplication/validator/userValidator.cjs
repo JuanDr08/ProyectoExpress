@@ -104,14 +104,11 @@ module.exports = class UserValidator {
     validatePurchasesBodyPost = () => {
 
         return [
-
-            param('id')
-                .isMongoId()
-                .withMessage('El id proporcionado no es un ObjectId válido'),
             body('cantidad')
                 .isNumeric().withMessage('Tipo de dato invalido'),
             body('total')
                 .isNumeric().withMessage('Debe registrar un total como valor entero'),
+            body('productos').isArray({min: 1}).withMessage('Minimo un id para la compra'),
             query().custom((value, { req }) => {
                 return Object.keys(req.query).length === 0;
             }).withMessage('No se debe enviar ningún dato en la query')
