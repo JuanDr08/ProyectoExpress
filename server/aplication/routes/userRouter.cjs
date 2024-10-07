@@ -34,14 +34,15 @@ router.get('/subscribed/workshops/details', (req, res) => userController.getAllP
 router.get('/coupons/details', userController.getAllCuponDetailseFromFieldWithWorkshop)
 
 router.post('/favorites/products/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'favoritos'))
-router.post('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'carrito'))
-router.post('/purchases/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'compras'))
+router.post('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), userController.createCartOfArraysAndPushObjectIdItems)
+router.post('/purchases/:id', express.json(), userValidator.validatePurchasesBodyPost(), userController.createPurchasesOfArraysAndPushObjectIdItems)
 router.post('/favorites/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'talleres_favoritos'))
 router.post('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'talleres_inscritos'))
 router.post('/coupons/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.createFieldOfArraysAndPushObjectIdItems(req, res, 'cupones'))
 
 router.delete('/favorites/products/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'favoritos'))
-router.delete('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'carrito'))
+router.delete('/cart/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromCartsList(req, res, 'carrito'))
+router.delete('/cart/dec/:id', express.json(), userValidator.validateFavoriteProductParam(), userController.decrementCartProduct)
 router.delete('/favorites/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'talleres_favoritos'))
 router.delete('/subscribed/workshops/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'talleres_inscritos'))
 router.delete('/coupons/:id', express.json(), userValidator.validateFavoriteProductParam(), (req, res) => userController.removeProductsFromFieldsList(req, res, 'cupones'))

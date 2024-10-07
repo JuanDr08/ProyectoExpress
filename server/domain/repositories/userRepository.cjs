@@ -64,6 +64,16 @@ module.exports = class UserRepository {
 
     }
 
+    async removeElementsFromCart(userId, productId) {
+
+        try {
+            return await this.userModel.removeElementsFromCart(userId, productId)
+        } catch {
+            throw new Error(JSON.stringify({status: 500, message: 'Error during the user extraction'}))
+        }
+
+    }
+
     async getAllFromFIeld(userId, field) {
 
         try {
@@ -72,6 +82,44 @@ module.exports = class UserRepository {
             throw new Error(JSON.stringify({status: 500, message: 'Error during the user cart fetching'}))
         }
 
+    }
+
+    async verifyProductIdInUserCart(userId, productId) {
+
+        try {
+            return await this.userModel.verifyProductIdInUserCart(userId, productId)
+        } catch {
+            throw new Error(JSON.stringify({status: 500, message: 'Error during the user cart fetching'}))
+        }
+
+    }
+
+    async incrementDataFromCart(userId, amount, productId) {
+
+        try {
+            return await this.userModel.incrementDataFromCart(userId, amount,productId)
+        } catch {
+            throw new Error(JSON.stringify({status: 500, message: 'Error during the user cart fetching'}))
+        }
+
+    }
+
+    async updateArrayPush(userId,field, values) {
+
+        try {
+            return await this.userModel.updateArrayPush(userId, field, values)
+        } catch {
+            throw new Error(JSON.stringify({status: 500, message: 'Error during the user updating'}))
+        }
+
+    }
+
+    async decrementDataFromCart(userId, productId) {
+        try {
+            return await this.userModel.decrementDataFromCart(userId, productId)
+        } catch {
+            throw new Error(JSON.stringify({status: 500, message: 'Error during the user updating'}))
+        }
     }
 
 }

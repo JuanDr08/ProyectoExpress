@@ -88,10 +88,53 @@ module.exports = class UserController {
         const userService = new UserService()
 
         let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
-        let query = await userService.updateFieldFromUser(userId, fieldName, [ObjectId.createFromHexString(req.params.id)])
 
-        if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Documento agregado con exito' })
-        else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo ${fieldName}` })
+        let query = await userService.updateFieldFromUser(userId, fieldName, [{id: ObjectId.createFromHexString(req.params.id), cantidad: 1}])
+        
+        if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto agregado con exito al carrito' })
+        else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo carrito` })
+        else if (query.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
+        else return res.status(500).json({ status: 500, message: query })
+
+    }
+
+    async createPurchasesOfArraysAndPushObjectIdItems(req, res) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
+        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+
+        let query = await userService.updateArrayPush(userId, 'compras', [{id: ObjectId.createFromHexString(req.params.id), cantidad: req.body.cantidad, total: req.body.total}])
+        
+        if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto agregado con exito al carrito' })
+        else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo carrito` })
+        else if (query.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
+        else return res.status(500).json({ status: 500, message: query })
+
+    }
+
+    async createCartOfArraysAndPushObjectIdItems(req, res) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
+        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+
+        
+        let verifyExistence = await userService.verifyProductIdInUserCart(userId, ObjectId.createFromHexString(req.params.id) )
+        let response = verifyExistence == null ? verifyExistence : await userService.incrementDataFromCart(userId, 1, ObjectId.createFromHexString(req.params.id))
+
+        if (response == null) console.log('No se realiza incremento, el producto ya existia')
+        else if (response.modifiedCount == 1) return res.status(200).json({ status: 200, message: 'Producto del carrito incrementado' })
+        else console.log(response)
+
+        let query = await userService.updateFieldFromUser(userId, 'carrito', [{id: ObjectId.createFromHexString(req.params.id), cantidad: 1}])
+        
+        if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto agregado con exito al carrito' })
+        else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo carrito` })
         else if (query.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
         else return res.status(500).json({ status: 500, message: query })
 
@@ -112,6 +155,42 @@ module.exports = class UserController {
         if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Documento eliminado con exito' })
         else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea eliminar no existe dentro del campo ${field}` })
         else if (query.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
+        else return res.status(500).json({ status: 500, message: query })
+
+    }
+
+    async removeProductsFromCartsList(req, res) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
+        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+
+        let query = await userService.removeElementsFromCart(userId, req.params.id)
+        console.log(query)
+
+        if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto eliminado del carrito con exito' })
+        else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea eliminar no existe dentro del campo carrito` })
+        else if (query.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
+        else return res.status(500).json({ status: 500, message: query })
+
+    }
+
+    async decrementCartProduct(req, res) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
+        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+
+        
+        let verifyExistence = await userService.verifyProductIdInUserCart(userId, ObjectId.createFromHexString(req.params.id) )
+        let response = verifyExistence == null ? verifyExistence : await userService.decrementDataFromCart(userId, ObjectId.createFromHexString(req.params.id))
+        console.log(response)
+        if (response == null || response.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
+        else if (response.modifiedCount == 1) return res.status(200).json({ status: 200, message: 'Producto del carrito decrementado' })
         else return res.status(500).json({ status: 500, message: query })
 
     }
@@ -215,7 +294,7 @@ module.exports = class UserController {
                 {
                     $lookup: {
                         from: "productos",
-                        localField: "compras",
+                        localField: "compras.id",
                         foreignField: "_id",
                         as: "compras"
                     }
@@ -273,7 +352,7 @@ module.exports = class UserController {
                 {
                     $lookup: {
                         from: "productos",
-                        localField: "carrito",
+                        localField: "carrito.id",
                         foreignField: "_id",
                         as: "carrito"
                     }

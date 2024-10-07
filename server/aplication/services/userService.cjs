@@ -42,10 +42,32 @@ module.exports = class UserService {
 
     }
 
+    async removeElementsFromCart(userId, productId) {
+        return await this.UserRepository.removeElementsFromCart(userId, productId)
+    }
+
     async getAllFromFIeld(userId, field) {
 
         return await this.UserRepository.getAllFromFIeld(userId, field)
 
+    }
+
+    async verifyProductIdInUserCart(userId, productId) {
+
+        return await this.UserRepository.verifyProductIdInUserCart(userId, productId)
+
+    }
+
+    async incrementDataFromCart(userId, amount, productId) {
+        return await this.UserRepository.incrementDataFromCart(userId, amount, productId)
+    }
+
+    async updateArrayPush(userId, field, values) {
+        return await this.UserRepository.updateArrayPush(userId, field, values)
+    }
+
+    async decrementDataFromCart(userId, productId) {
+        return await this.UserRepository.decrementDataFromCart(userId, productId)
     }
 
 }
