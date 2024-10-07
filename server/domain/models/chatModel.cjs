@@ -33,9 +33,25 @@ module.exports = class Chat{
             }
         } catch (error) {
             console.log("Error al guardar el chat en la db:", error.message);
-            throw error; // Lanza el error para manejarlo más adelante
+            throw error; 
         }
     }
+    
+
+    async getChat(userId) {
+        const obj = ConnectToDatabase.instanceConnect;
+        const chatcollection = obj.db.collection("chatLogs");
+    
+        const chat = await chatcollection.findOne({ userId });
+    
+        if (chat) {
+            return chat.messages;
+        } else {
+            return [];
+        }
+    }
+    
+    
     
     
 }
