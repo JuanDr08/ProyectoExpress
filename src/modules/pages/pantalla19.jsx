@@ -30,9 +30,12 @@ export const favProductsLoader = async () => {
     //console.log(res.data)
     //setProductos(res.data);
     //setData(res.data[0].favoritos)
+    console.log(res.status);
+    if (res.status == 404) return false
     return res.data
   } catch (error) {
     console.error('Error al obtener los productos', error);
+    return false
   }
 
 }
@@ -40,10 +43,11 @@ export const favProductsLoader = async () => {
 export default function Pantalla19() {
   const navigate = useNavigate();
   const data = useLoaderData()
+  console.log(data);
   const [user, setUser] = useState(!data.user ? null : data.user.user)
-  const [productos, setProductos] = useState(data.data);
+  const [productos, setProductos] = useState(!data.data ? null : data.data);
   const [category, setCategory] = useState(null);
-  const [dataFiltrada, setData] = useState(data.data[0].favoritos);
+  const [dataFiltrada, setData] = useState(!data.data ? null : data.data[0].favoritos);
   const categoriesNav = useRef(null)
 
 
