@@ -117,9 +117,11 @@ export default function Entrada() {
 
 				<div className='mt-8 text-center text-[1.5em]'> {/* Centramos la sección de inicio de sesión */}
 					<h3 className='font-semibold text-white'>¿Ya tienes una cuenta?</h3> {/* Texto blanco */}
-					<li>
-						<a href="/login" className='text-white hover:underline text-lg list-none' style={{ color: '#FFA800' }}>Inicia sesión</a> {/* Texto blanco */}
-					</li>
+					<ul>
+						<li>
+							<a href="/login" className=' hover:underline text-lg list-none text-FFA800'>Inicia sesión</a> {/* Texto blanco */}
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

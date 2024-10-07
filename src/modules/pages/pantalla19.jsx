@@ -43,9 +43,11 @@ export default function Pantalla19() {
           credentials: 'include' // Esto incluye las cookies
       });
           let res = await response.json()
+          console.log(res)
           setProductos(res.data);
           filtrarProductos('Textilería')
         } catch (error) {
+          setProductos()
           console.error('Error al obtener los productos', error);
         }
       };
@@ -63,7 +65,9 @@ export default function Pantalla19() {
     }
     // Filtrar productos por categoría
     const filtrarProductos = (textValue) => {
+      if (!productos) return
       const categoriaSeleccionada = textValue
+      console.log(productos)
       if (!categoriaSeleccionada) return productos[0]?.favoritos;
       const data = productos[0]?.favoritos.filter(favorito => favorito.categoria == categoriaSeleccionada)
       setData(data)
@@ -97,7 +101,7 @@ export default function Pantalla19() {
           }
         </nav>
         <section className={styles.productos}>
-        {dataFiltrada && dataFiltrada.map((favorito) => (
+        { !productos ? <p>El usuario no presenta ningun producto en favoritos</p> : dataFiltrada && dataFiltrada.map((favorito) => (
               <div className={styles.producto} key={favorito._id}>
                 <Link to={`/product/${favorito._id}`}>
                   <div className={styles.box}>

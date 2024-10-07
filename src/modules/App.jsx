@@ -116,7 +116,7 @@ const router = createBrowserRouter([
         element: <Suspense fallback={<Carga />}><ShoppingCart /></Suspense>,
         loader: async () => {
             let user = await loader()
-            let data = await shoppingCartLoader()
+            let data = await shoppingCartLoader()            
             return {user, data}
         }
     },

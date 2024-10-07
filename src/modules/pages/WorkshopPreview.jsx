@@ -49,10 +49,11 @@ export default function WorkshopPreview() {
     // Función para obtener los datos del taller
     const fetchTallerData = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/workshops/${id}/products`, {
+            console.log(id)
+          const response = await axios.get(`http://localhost:3000/workshops/${id}/products/?`, {
             withCredentials: true,
           });
-          setTallerData(response.data.data[0]);  // Guardar los datos del taller
+          setTallerData(response.data);  // Guardar los datos del taller
         } catch (error) {
           console.error("Error fetching workshop data", error);
           navigate('/404'); // Redirigir si ocurre un error o no se encuentra el taller
@@ -110,12 +111,17 @@ export default function WorkshopPreview() {
             <section className="overflow-y-scroll h-[45dvh] grid grid-cols-2 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-[40px]">
                 {filteredProducts?.length > 0 ? (
                     filteredProducts.map((product, index) => (
-                        <ProductCategoryCard
+                        <>
+                            {console.log(product)}
+                            <ProductCategoryCard
                             key={index}
                             name={product.nombre}
                             price={product.precio}
                             img={product.img}
+                            prdtId={product._id}
                         />
+                        </>
+                        
                     ))
                 ) : (
                     <p>No se encontraron productos.</p>

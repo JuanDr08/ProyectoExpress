@@ -30,7 +30,7 @@ class WorkshopRepository {
             const workshop = new Workshop();
             //console.log(id)
             const result = await workshop.findWorkshopByID(id);
-            console.log(result);
+            //console.log(result);
             return result;
         } catch(error){
             throw new Error(`Error retrieving workshop: ${error.message}`);

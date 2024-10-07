@@ -9,6 +9,7 @@ const cors = require('cors');
 const sessionConfigPassport = require('../middlewares/sessionOAuthConf.cjs'); // Importamos la configuracion de la sesion que usara passport
 
 const productRoutes = require('../../aplication/routes/productRouter.cjs');
+const chatRoutes = require("../../aplication/routes/chatRouter.cjs")
 const cuponRoutes = require('../../aplication/routes/cuponRouter.cjs');
 const indexRouter = require('../../aplication/routes/indexRouter.cjs'); // Rutas
 const registerRouter = require('../../aplication/routes/registerRouter.cjs')
@@ -81,6 +82,7 @@ const createServer = () => {
     app.use('/workshops', workshopRoutes);
     app.use('/product', productRoutes);
     app.use('/cupon', cuponRoutes);
+    app.use("/chat", chatRoutes)
     
     const userSockets = {} // Objeto para almacenar las conexiones de usuario
 
@@ -124,10 +126,13 @@ const createServer = () => {
         const socketId = Object.keys(userSockets)[0]; // Selecciona el socket ID que necesites
         const userId = userSockets[socketId]; // Obtén el userId correspondiente
 
+        const timestamp = new Date().toISOString(); // Genera el timestamp actual
+        
         const serverMessage = {
             texto: input,
             transmitter: 'server',
-            clientid: userId //este es el id del cliente que se usa para buscar en los documentos
+            clientid: userId, //este es el id del cliente que se usa para buscar en los documentos
+            timestamp
         };
 
         // Emitir el mensaje a todos los usuarios conectados

@@ -12,6 +12,17 @@ class chatRepository{
         }
     }
 
+    async reflect(userId) {
+        try {
+            const ChatModel = new chatModel();
+            const result = await ChatModel.getChat(userId); // Pasa el userId
+            return result;
+        } catch (error) {
+            throw new Error(JSON.stringify({ status: 500, message: 'Error fetching Chat' }));
+        }
+    }
+    
+
 }
 
 module.exports = chatRepository

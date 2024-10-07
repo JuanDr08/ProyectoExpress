@@ -51,11 +51,11 @@ export function Header({photo, nick}) {
     }
 
     return(
-        <header className=" bg-[var(--color-2E1108)] w-full flex justify-around h-[70px] items-center">
+        <header className="bg-[var(--color-2E1108)] w-full flex justify-around h-[70px] items-center fixed top-0 z-10">
             
             <div
                 ref={menuRef}
-                className={`leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 absolute text-white p-5 gap-5 justify-around left-0 top-0 transition-transform duration-300 ease-in-out ${
+                className={`leftmenu flex flex-col w-[70vw] h-[100%] bg-[var(--color-2E1108)] z-20 fixed text-white p-5 gap-5 justify-around left-0 top-0 transition-transform duration-300 ease-in-out ${
                     menuchange ? 'translate-x-0' : '-translate-x-full'
                 }`}
             >
@@ -101,7 +101,7 @@ export function Header({photo, nick}) {
         </div>
             {
                 estado && filteredData.length && (
-                    <div className=" overflow-y-scroll flex flex-col z-[10] top-[70px] absolute h-max w-full bg-703A31 p-[10px] gap-[15px] rounded-xl rounded-tl-none rounded-tr-none">
+                    <div className=" overflow-y-scroll flex flex-col z-[10] top-[70px] absolute h-[80dvh] w-full bg-703A31 p-[10px] gap-[15px] rounded-xl rounded-tl-none rounded-tr-none">
                         {
                             filteredData && filteredData.map(({ _id, nombre, nombre_taller, categoria, img, imagen }) => (
                                 <Link className={'bg-2E1108 p-4 rounded-2xl'}  key={_id} to={`${ img ? `/product/${_id}` : `/workshop/details/${_id}` }`}>

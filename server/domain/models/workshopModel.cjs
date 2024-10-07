@@ -9,7 +9,7 @@ class Workshop {
         let lista = []
         
         lista = await collection.find({}).toArray(); 
-        console.log(lista)
+        //console.log(lista)
         return lista;
     }
 
@@ -60,6 +60,7 @@ class Workshop {
                 nombre_taller: 1,               
                 imagen: 1,
                 productosDetalles: {
+                  _id: 1,
                   img: 1,                   
                   precio: 1,                   
                   nombre: 1,

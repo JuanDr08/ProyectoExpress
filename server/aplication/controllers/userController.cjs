@@ -98,6 +98,23 @@ module.exports = class UserController {
 
     }
 
+    async createFieldOfArraysAndPushCouponsItems(req, res, fieldName) {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        const userService = new UserService()
+
+        let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
+
+        let query = await userService.updateFieldFromUser(userId, fieldName, [ObjectId.createFromHexString(req.params.id)])
+        
+        if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto agregado con exito al carrito' })
+        else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo carrito` })
+        else if (query.matchedCount == 0) return res.status(404).json({ status: 404, message: 'No se encontro el documento del usuario' })
+        else return res.status(500).json({ status: 500, message: query })
+
+    }
+
     async createPurchasesOfArraysAndPushObjectIdItems(req, res) {
 
         const errors = validationResult(req);
@@ -220,8 +237,8 @@ module.exports = class UserController {
         let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
         let favoriteList = await userService.getAllFromFIeld(userId, 'favoritos')
         if (!Object.keys(favoriteList).length) return res.status(404).json({ status: 404, message: 'El usuario no presenta favoritos en su lista' })
-
-        let existsParamId = favoriteList.favoritos.some(id => id.equals(ObjectId.createFromHexString(req.params.id)) )
+        let aux = ObjectId.createFromHexString(req.params.id)
+        let existsParamId = favoriteList.favoritos.some(({id}) => id.equals(aux) )
         if (existsParamId) return res.status(200).json({ status: 200, exists: true })
         else if (!existsParamId) return res.status(404).json({ status: 200, exists: false })
 
@@ -263,7 +280,6 @@ module.exports = class UserController {
                     }
                 }
             ]
-
             let aggDetails = await userService.agregate(agg)
             
             if (!aggDetails.length) return res.status(404).json({ status: 404, message: `El usuario no presenta contenido en ${campoLocal}` })
@@ -468,7 +484,7 @@ module.exports = class UserController {
             
 
             let aggDetails = await userService.agregate(agg)
-            
+            console.log(aggDetails)
             if (!aggDetails.length) return res.status(404).json({ status: 404, message: `El usuario no presenta contenido en compras` })
 
             return res.status(200).json({ status: 200, data: aggDetails })

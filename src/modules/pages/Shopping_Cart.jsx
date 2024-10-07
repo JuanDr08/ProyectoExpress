@@ -80,8 +80,10 @@ export default function ShoppingCart() {
 
     useEffect(() => {
 
-        if (!data) navigate('/register')
-        setUser(data.user)
+        if (!data.user) navigate('/register')
+            console.log(data.user.user[0])
+        setUser(data.user.user[0])
+        console.log(data.user)
 
         // Función para hacer la solicitud a la API
         /* const fetchProductos = async () => {
@@ -142,7 +144,7 @@ export default function ShoppingCart() {
     };
 
     return (
-        <main>
+        <main className="py-[70px]">
             <Header nick={user?.nick} photo={user?.photo} />
 
             <div className="upper flex flex-col p-5 gap-2">

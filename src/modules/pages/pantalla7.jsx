@@ -8,6 +8,7 @@ export default function Pantalla7() {
 
   const navigate = useNavigate();
   const data = useLoaderData()
+  const [error, setError] = useState(false)
 
   useEffect(()=> {
     if (data) navigate('/')
@@ -26,14 +27,19 @@ export default function Pantalla7() {
     e.preventDefault();
     //console.log(isRegisterButtonDisabled)
     if (!isRegisterButtonDisabled) {
-      const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', formToSend, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-      console.log(direccion)
+      try {
+        const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', formToSend, {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+        })
+        console.log(direccion)
+        navigate("/login/credentials")
+      } catch (error) {
+        console.log(error)
+        setError('Ya existe un usuario registrado ')
+      }
       //console.log(direccion)
-      navigate("/login/credentials")
     } else {
       navigate("/register/TermsAndConditions")
     }
@@ -80,6 +86,7 @@ export default function Pantalla7() {
             <p>Acepto que me envíen promociones y eventos a mi número de celular</p>
           </div>
         </article>
+        { error && <p className='text-red-500'>{error + '*'}</p> }
       </main>
       <footer className={styles.footer}>
         <div className={styles.boxAdelante}>

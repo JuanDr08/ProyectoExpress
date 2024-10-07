@@ -56,7 +56,7 @@ export function Footer() {
         }
         
     return (
-        <footer className="fixed bottom-0 left-0 right-0 bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center">
+        <footer className="fixed bottom-0 left-0 right-0 z-[10] bg-[var(--color-2E1108)] flex justify-around h-[70px] items-center">
             <button
                 onClick={() => handleButtonClick(0)}
                 className={`flex items-center justify-center w-[45px] h-[45px] bg-[var(--color-703A31)] text-white rounded-full transition-transform duration-200 transform 

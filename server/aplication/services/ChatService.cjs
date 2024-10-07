@@ -15,6 +15,17 @@ class ChatService {
             throw error;
         }
     }
+
+    async getMessages(userId) {
+        try {
+            const chat = await this.chatRepo.reflect(userId); // Pasa el userId
+            return chat;
+        } catch (error) {
+            console.error("Error obteniendo los mensajes:", error);
+            throw error;
+        }
+    }
+    
 }
 
 

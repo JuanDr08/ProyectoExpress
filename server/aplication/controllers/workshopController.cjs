@@ -44,19 +44,22 @@ class WorkshopController {
     }
 
     async getProductsByWorkshopId(req, res) {
+        console.log('pasa aca')
         try {
             console.log("hola")
             const { workshopId, search } = req.params; // Obtener el ID del taller y el parámetro de búsqueda desde la URL
-
+            console.log(workshopId)
             const products = await this.workshopService.getProductsByWorkshopId(workshopId);
+            console.log(products)
             // Filtrar productos si el parámetro `search` está presente
             let productos = products[0].productosDetalles;
-            console.log(productos)
+            //console.log(productos)
             if (search && search.trim() !== "") {
                 const searchRegex = new RegExp(search, 'i'); // Expresión regular para búsqueda insensible a mayúsculas
                 productos = productos.filter(producto => searchRegex.test(producto.nombre));
             }
-            console.log(productos)
+            console.log('clog final',productos)
+            //console.log(productos)
             // Devolver la información del taller y sus productos (filtrados o no)
             return res.status(200).json({
                 nombre_taller: products[0].nombre_taller,

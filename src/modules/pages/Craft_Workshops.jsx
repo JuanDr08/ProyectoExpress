@@ -33,8 +33,8 @@ export default function CraftWorkshops() {
 
 
     useEffect(()=> {
-        if (!data) navigate('/register')
-        setUser(data.user[0])
+        if (!data.user) navigate('/register')
+        setUser(data.user.user[0])
         //        fetchWorkshops();
     }, [data, navigate])
 
@@ -65,7 +65,7 @@ export default function CraftWorkshops() {
                 <small className="text-[var(--color-9D1A1A)] opacity-50">Tiendas de artesanías de todas partes de Santander</small>
             </div>
 
-            <div className="overflow-y-scroll grid grid-cols-2 gap-4 p-5" style={{ maxHeight: "65vh" }}>
+            <div className="overflow-y-scroll grid grid-cols-2 gap-4 p-5" style={{ maxHeight: "75vh" }}>
                 {workshops.map((shop) => (
                     <div
                         key={shop._id}

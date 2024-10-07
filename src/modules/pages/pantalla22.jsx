@@ -43,7 +43,8 @@ export default function Pantalla22() {
       });
       console.log("Producto añadido a carrito", addCarrito);
       } catch (error) {
-        console.error('El producto ya esta en el carrito', error)
+        setErrorMessage('El producto ya esta en el carrito')
+        //console.error('El producto ya esta en el carrito', error)
       }
       window.location.href = "/cart";
   };
@@ -52,9 +53,10 @@ export default function Pantalla22() {
     const fetchCupon = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/user/coupons/details`, {withCredentials: true}); 
+        console.log(response)
         setCupones(response.data.data)
       } catch (error) {
-        console.error('Error al obtener los cupones', error);
+        //console.error('Error al obtener los cupones', error);
       }
     };
 

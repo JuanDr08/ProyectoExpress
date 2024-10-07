@@ -58,8 +58,7 @@ module.exports = class UserValidator {
                 }),
 
             body('birth_day')
-                .optional()
-                .isDate().withMessage('Formato de fecha invalido'),
+                .optional(),
 
             query()
                 .custom((value, { req }) => {
@@ -131,7 +130,7 @@ module.exports = class UserValidator {
 
                 const allowedFields = ['email', 'phone', 'username', 'sex', 'birth_day', 'payment_method', 'nick'];
                 const extraFields = Object.keys(req.body).filter(field => !allowedFields.includes(field) && field !== 'file');
-        
+
                 if (extraFields.length > 0) {
                     throw new Error(`Los campos adicionales no están permitidos: ${extraFields.join(', ')}`);
                 }
@@ -142,8 +141,8 @@ module.exports = class UserValidator {
                 .optional()
                 .notEmpty().withMessage('Campo no puede estar vacio')
                 .isString().withMessage('Tipo de dato invalido')
-                .isLength({min: 5, max: 12}).withMessage('Cadena de minimo 5 caracteres y maximo 12'),
-            
+                .isLength({ min: 5, max: 12 }).withMessage('Cadena de minimo 5 caracteres y maximo 12'),
+
             body('email')
                 .optional()
                 .notEmpty().withMessage('Campo no puede estar vacio')
@@ -162,7 +161,7 @@ module.exports = class UserValidator {
                     if (value && !['MASCULINO', 'FEMENINO'].includes(value.toUpperCase())) throw new Error('Solo existen dos sexos: Masculino, Femenino')
                     return true
                 }),
-                
+
             body('birth_day')
                 .optional()
                 .isDate().withMessage('Formato de fecha invalido'),

@@ -45,7 +45,7 @@ export default function DiscountsPromotions() {
     useEffect(()=> {
 
         if (!data.user) navigate('/register')
-        setUser(data.user[0])
+        setUser(data.user.user[0])
 
         // Función para hacer la solicitud a la API
         /* const fetchProductos = async () => {
@@ -72,7 +72,7 @@ export default function DiscountsPromotions() {
         ? productos.filter(item => item.productoInfo.categoria === selectedCategory)
         : productos;
     return (
-        <main className="mb-[70px]">
+        <main className="py-[70px]">
             <Header nick={user?.nick} photo={user?.photo} />
 
             <div className="upper flex flex-col p-5 gap-2">
