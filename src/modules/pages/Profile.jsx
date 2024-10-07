@@ -7,6 +7,18 @@ import { Header } from "../components/Header";
 import { useLoaderData, useNavigate, Form } from 'react-router-dom';
 
 export default function Profile() {
+
+    const handleLogout = async() => {
+        try {
+            const res = await fetch("http://localhost:3000/logout", {
+                method: 'PUT',
+                credentials: 'include',
+                
+            })
+        } catch(error) {
+            console.log("Hubo un problema al cerrar sesion :", error)
+        }
+    }
     const [imageDataUrl, setImageDataUrl] = useState('');
     const navigate = useNavigate();
     const data = useLoaderData();
@@ -140,11 +152,19 @@ export default function Profile() {
 
     return (
         <main className="py-[70px]">
+            <svg className='absolute z-[-1] right-0' width="300px" viewBox="0 0 693 1381" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1375.94" y="690.242" width="969.008" height="969.008" transform="rotate(135 1375.94 690.242)" stroke="#703A31" strokeOpacity="0.51" strokeWidth="7"/>
+            </svg>
+
+            <svg className='absolute z-[-1] left-0 bottom-1 transform rotate-180' width="300px" viewBox="0 0 693 1381" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1375.94" y="690.242" width="969.008" height="969.008" transform="rotate(135 1375.94 690.242)" stroke="#703A31" strokeOpacity="0.51" strokeWidth="7"/>
+            </svg>
+
             <Header nick={user?.nick} photo={user?.photo} />
             <div className="profile flex flex-col items-center gap-5 mt-5">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Foto de perfil</span>
 
-                <div className="profileimg rounded-full outline w-[200px] h-[200px] overflow-hidden">
+                <div className="profileimg rounded-full outline w-[200px] h-[200px] overflow-hidden z-[1]">
                     {user ? (
                         <img className='w-full h-full object-cover' src={imageDataUrl} alt="Perfil" />
                     ) : (
@@ -159,7 +179,7 @@ export default function Profile() {
                     className="hidden"
                     id="fileInput"
                 />
-                <label htmlFor="fileInput" className='flex absolute bg-[var(--color-703A31)] rounded-full w-[60px] h-[60px] justify-center items-center bottom-[560px] right-[100px] cursor-pointer'>
+                <label htmlFor="fileInput" className='flex absolute bg-[var(--color-703A31)] rounded-full w-[60px] h-[60px] justify-center items-center bottom-[560px] right-[100px] cursor-pointer z-[1]'>
                     <svg xmlns="http://www.w3.org/2000/svg" width="40px" viewBox="0 0 24 24"><path fill="#fff" d="M3 21v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z"/></svg>
                 </label>
 
@@ -370,6 +390,10 @@ export default function Profile() {
                         />
                     </div>
                 </div> 
+
+                <div className='flex items-center'>
+                    <button onClick={handleLogout} className='flex bg-[var(--color-703A31)] text-white h-10 rounded-lg p-2 items-center'>Log-Out</button>
+                </div>
             </Form>
             <Footer />
         </main>
