@@ -126,10 +126,13 @@ const createServer = () => {
         const socketId = Object.keys(userSockets)[0]; // Selecciona el socket ID que necesites
         const userId = userSockets[socketId]; // Obtén el userId correspondiente
 
+        const timestamp = new Date().toISOString(); // Genera el timestamp actual
+        
         const serverMessage = {
             texto: input,
             transmitter: 'server',
-            clientid: userId //este es el id del cliente que se usa para buscar en los documentos
+            clientid: userId, //este es el id del cliente que se usa para buscar en los documentos
+            timestamp
         };
 
         // Emitir el mensaje a todos los usuarios conectados

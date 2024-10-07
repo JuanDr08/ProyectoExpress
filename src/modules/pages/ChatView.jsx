@@ -79,18 +79,21 @@ export const Chat = () => {
         let mensaje = inputRef.current.value.trim();
         if (mensaje === '') return;
     
+        const timestamp = new Date().toISOString(); // Genera el timestamp actual
+    
         // Emitir el mensaje al servidor
         socket.current.emit('sendMessage', { 
             texto: mensaje, 
             transmitter: "cliente", 
-            clientid: user._id 
+            clientid: user._id, 
+            timestamp // Incluye el timestamp en el mensaje enviado
         });
-        //console.log(user)
     
-        // Agregar solo el mensaje del cliente
-        setMessages(prevMessages => [...prevMessages, { texto: mensaje, transmitter: 'cliente' }]);
+        // Agregar el mensaje del cliente con el timestamp
+        setMessages(prevMessages => [...prevMessages, { texto: mensaje, transmitter: 'cliente', timestamp }]);
         inputRef.current.value = '';
     };
+    
     
 
     return (
