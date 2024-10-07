@@ -104,7 +104,7 @@ Para poder utilizar este proyecto, sigue los siguientes pasos:
 
 ## Registro de usuario
 
-- **Ruta**
+- **Ruta POST**
 `http://localhost:3000/register/auth/ruraqmaki`
 - **Parámetros**:
 
@@ -130,7 +130,7 @@ Para poder utilizar este proyecto, sigue los siguientes pasos:
 
 ## Logueo de usuarios
 
-- **Ruta**
+- **Ruta POST**
 `http://localhost:3000/login/auth/ruraqmaki`
 - **Parámetros**:
 

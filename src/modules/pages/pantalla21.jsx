@@ -82,7 +82,7 @@ export default function Pantalla21() {
                     <p className={styles.nombreArtesano}>{item.nombre_taller}</p>
                     </div>
                     <button>
-                    <Link to={`/workshop/info/${item._id}`}>Entérate más sobre el taller aquí</Link>
+                    <Link to={`/workshop/details/${item._id}`}>Entérate más sobre el taller aquí</Link>
                     </button>
                 </div>
                 </section>
