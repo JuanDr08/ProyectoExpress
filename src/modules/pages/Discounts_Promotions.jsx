@@ -26,7 +26,7 @@ export const discountsLoader = async () => {
             },
             withCredentials: true
         });
-        console.log('asdasfasfasfa',response)
+        //console.log('asdasfasfasfa',response)
         return response.data // Almacena los productos en el estado}
     } catch (error) {
         console.error('Error al obtener los productos', error);

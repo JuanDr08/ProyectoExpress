@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { PurchaseConfirmation } from "../components/PurchaseConfirmation";
 import axios from "axios";
 
-
 export const shoppingCartLoader = async () => {
     try {
         let productos = await axios.get(`http://localhost:3000/user/cart/details`, {
@@ -13,11 +12,11 @@ export const shoppingCartLoader = async () => {
                 'Cache-Control': 'max-age=3600',
                 'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
             },
-            withCredentials: true // Esto incluye las cookies
+            withCredentials: true
         });
-        //let res = await productos.json()
+
         if (productos.status === 404) {
-            productos = []
+            productos = [];
         }
 
         const descuentos = await axios.get('http://localhost:3000/cupon/product/h', {
@@ -27,42 +26,65 @@ export const shoppingCartLoader = async () => {
             },
             withCredentials: true
         });
-    
-        console.log('Descuentops',descuentos, 'Productos',productos)
-    
+
+        //console.log('Descuentops',descuentos, 'Productos',productos)
+
         return {
-            productos: productos.data.data,
+            productos: productos.data.data[0].productos,
             taller: productos.data.data.length > 0 ? productos.data.data[0].nombre_taller : null,
             descuentos: descuentos.data
-        }
-
-    } catch (error) { // Si agarra el error 404 es porque el usuario no tiene productos en el carrito, deben manejar eso para que no rompa la pagina
-        return 404
+        };
+    } catch (error) {
+        return 404;
     }
-
-}
+};
 
 export default function ShoppingCart() {
+
+    const handleDelete = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:3000/user/cart/${id}`, {
+                method: 'DELETE',
+                credentials: 'include',
+            });
+    
+            if (res.ok) {
+                console.log("Producto eliminado con éxito");
+                
+                setProductos(prevProductos => prevProductos.filter(producto => producto.productoInfo._id !== id));
+            } else {
+                console.log("Hubo un error al eliminar el producto");
+            }
+        } catch (error) {
+            console.error("Hubo un error eliminando el producto", error);
+        }
+    };
+    
+
+
+    
+
     const navigate = useNavigate();
-    const [user, setUser] = useState(null)
-    const data = useLoaderData()
+    const [user, setUser] = useState(null);
+    const data = useLoaderData();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const [productos, setProductos] = useState(data.data.productos);
-    const [taller, setTaller] = useState(data.data.taller);
-    const [productosConDescuento, setProductosConDescuento] = useState(data.data.descuentos)
+    const [productos, setProductos] = useState(!data.user ? null : data.data.productos);
+    const [productosConDescuento, setProductosConDescuento] = useState(!data.user ? [] : data.data.descuentos);
 
+    const [quantities, setQuantities] = useState([]);
 
-    // --- Manejo de Cantidades, sumar y restar ---
-
-    const [quantities, setQuantities] = useState([0].map(item => item + 1)); // 1 por defecto por item
+    useEffect(() => {
+        setQuantities(productos?.map(({ cantidad }) => cantidad));
+    }, [productos]);
 
     const handleDecrement = (index) => {
         setQuantities(prev => {
-            const newQuantity = prev[index] > 1 ? prev[index] - 1 : 1;
             const newQuantities = [...prev];
-            newQuantities[index] = newQuantity; // actualizamos la cantidad especifica
+            if (newQuantities[index] > 1) {
+                newQuantities[index] -= 1;
+            }
             return newQuantities;
         });
     };
@@ -70,106 +92,79 @@ export default function ShoppingCart() {
     const handleIncrement = (index) => {
         setQuantities(prev => {
             const newQuantities = [...prev];
-            newQuantities[index] = newQuantities[index] + 1; // Incrementamos especificamente el item
+            newQuantities[index] = (newQuantities[index] || 0) + 1;
             return newQuantities;
         });
     };
 
-    ///
-
+    //useEffect(() => {console.log(quantities)}, [quantities])
 
     useEffect(() => {
+        if (!data.user) navigate('/register');
+        setUser(data.user.user[0]);
+    }, []);
 
-        if (!data.user) navigate('/register')
-            console.log(data.user.user[0])
-        setUser(data.user.user[0])
-        console.log(data.user)
-
-        // Función para hacer la solicitud a la API
-        /* const fetchProductos = async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/user/cart/details`, {
-                    credentials: "include" // Esto incluye las cookies
-                });
-                let res = await response.json()
-                setProductos(res.data); // Almacena los productos en el estado
-                if (res.status == 200 && res.data.length > 0) {
-                    setTaller(res.data[0].nombre_taller); // Asignar el nombre del taller
-                } else if (res.status == 404) throw new Error('Usuario no presenta elementos en el carrito')
-
-            } catch (error) {
-                console.error('Error al obtener los productos', error);
-            }
-        };
-        fetchProductos();
-
-        const fetchDescuentos = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/cupon/product/h', {
-                    withCredentials: true
-                });
-                setProductosConDescuento(response.data);
-            } catch (error) {
-                console.error('Error al obtener productos con descuento', error);
-            }
-        };
-        fetchDescuentos(); */
-
-    }, [])
-    // Función para aplicar el descuento
     const aplicarDescuento = (producto) => {
         const productoConDescuento = productosConDescuento.find(
-            (descuento) => descuento.productoInfo._id === producto.carrito._id
+            (descuento) => descuento.productoInfo._id === producto._id
         );
         if (productoConDescuento) {
-            // Aplicar descuento
             const descuento = productoConDescuento.descuento;
-            const precioOriginal = producto.carrito.precio;
-            const precioDescuento = precioOriginal - (precioOriginal * descuento) / 100;
-            return precioDescuento;
+            const precioOriginal = producto.precio;
+            return precioOriginal - (precioOriginal * descuento) / 100;
         }
-        return producto.carrito.precio; // Si no hay descuento, devolver el precio original
+        return producto.precio;
     };
-    const subtotal = productos?.reduce((acc, item) => acc + aplicarDescuento(item) * item.carrito.cantidad, 0);
-    const shippingCost = 20;
-    const total = subtotal + shippingCost;
 
+    // Calcular subtotal y total
+    const [subtotal, setSubtotal] = useState(0);
+    const [total, setTotal] = useState(0);
+    const shippingCost = 10000;
+    useEffect(() => {
+        const newSubtotal = productos?.reduce((acc, item, index, arr) => acc + aplicarDescuento(item.productoInfo) * quantities[index], 0);
+        setSubtotal(newSubtotal);
+        setTotal(newSubtotal + shippingCost);
+    }, [quantities, productos]); // Se ejecuta cada vez que 'quantities' o 'productos' cambian
 
     const handleOpenDialog = () => {
-        setIsDialogOpen(true); // Abre el diálogo
+        setIsDialogOpen(true);
     };
 
     const handleCloseDialog = () => {
-        setIsDialogOpen(false); // Cierra el diálogo
+        setIsDialogOpen(false);
     };
 
     return (
         <main className="py-[70px]">
             <Header nick={user?.nick} photo={user?.photo} />
-
             <div className="upper flex flex-col p-5 gap-2">
                 <span className="text-lg font-bold text-[var(--color-9D1A1A)]">Tu carrito de compras</span>
-                <small className="text-[var(--color-9D1A1A)] opaprice-50">Revisa aquí los productos que añadiste a tu carrito</small>
+                <small className="text-[var(--color-9D1A1A)] opacity-50">Revisa aquí los productos que añadiste a tu carrito</small>
             </div>
 
             <div className="grid grid-cols-1 gap-4 p-3">
-                {productos?.map((item, index) => (
-                    <div key={index} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[150px] justify-around items-center flex">
-                        <img src={item.carrito.img} className="w-[130px] h-[130px] object-cover" style={{ borderRadius: '10px' }} />
-                        <div className="flex flex-col w-[170px] break-words">
-                            <h3 className="text-white text-sm">{item.carrito.nombre}</h3>
-                            <p className="text-gray-300 text-sm">COP {aplicarDescuento(item)}</p>
-                            <p className="text-gray-300 text-sm">{item.carrito.dimensiones}</p>
-                            <p className="text-gray-300 text-sm">{taller}</p>
+                {!productos ? <p className="text-red-500">No posee articulos en el carrito</p> : productos.map(({ cantidad, nombre_taller, productoInfo }, index) => (
+                    <>
+                        <div key={productoInfo._id} className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[150px] justify-around items-center flex">
+                            <img src={productoInfo.img} className="w-[130px] h-[130px] object-cover" style={{ borderRadius: '10px' }} />
+                            <div className="flex flex-col w-[170px] break-words">
+                                <h3 className="text-white text-sm">{productoInfo.nombre}</h3>
+                                <p className="text-gray-300 text-sm">COP {aplicarDescuento(productoInfo)}</p>
+                                <p className="text-gray-300 text-sm">{productoInfo.dimensiones}</p>
+                                <p className="text-gray-300 text-sm">{nombre_taller}</p>
 
-                            <div className="addsubtract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg p-1">
-                                <button onClick={() => handleDecrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">-</button>
-                                <div>{quantities[index]}</div>
-                                <button onClick={() => handleIncrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">+</button>
+                                <div className="addsubtract flex text-white justify-around bg-[var(--color-2E1108)] rounded-lg p-1">
+                                    <button onClick={() => handleDecrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">-</button>
+                                    <div>{quantities[index]}</div>
+                                    <button onClick={() => handleIncrement(index)} className="bg-[var(--color-2E1108)] px-2 rounded">+</button>
+                                </div>
                             </div>
 
+                            <svg onClick={() => handleDelete(productoInfo._id)} xmlns="http://www.w3.org/2000/svg" width="2em" viewBox="0 0 256 256"><path fill="#fff" d="M216 48h-40v-8a24 24 0 0 0-24-24h-48a24 24 0 0 0-24 24v8H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16M96 40a8 8 0 0 1 8-8h48a8 8 0 0 1 8 8v8H96Zm96 168H64V64h128Zm-80-104v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0m48 0v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0"/></svg>
+
                         </div>
-                    </div>
+
+                    </>
                 ))}
             </div>
 
@@ -189,8 +184,8 @@ export default function ShoppingCart() {
                             <p className="text-white opacity-50">Gastos de envío</p>
                         </div>
                         <div>
-                            <p className="text-white">COP {subtotal}</p>
-                            <p className="text-white opacity-50">COP {shippingCost}</p>
+                            <p className="text-white">COP {!productos ? 0 : subtotal}</p>
+                            <p className="text-white opacity-50">COP {!productos ? 0 : shippingCost}</p>
                         </div>
                     </div>
                 </div>
@@ -203,28 +198,22 @@ export default function ShoppingCart() {
                             <p className="text-white">Total</p>
                         </div>
                         <div>
-                            <p className="text-white">COP {total}</p>
+                            <p className="text-white">COP {!productos ? 0 : total}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="flex justify-center">
-                <button onClick={handleOpenDialog} className="mt-5 flex items-center justify-center w-[150px] h-[50px] bg-[var(--color-2E1108)] text-white rounded-lg">
-                    Realizar Compra
-                </button>
-                {isDialogOpen && (
-                    <PurchaseConfirmation productos={productos} onClose={handleCloseDialog} />
-                )}
-            </div>
-
-            {/* <div>
-                <button onClick={handleOpenDialog}>Realizar compra</button>
-
-                {isDialogOpen && (
-                    <PurchaseConfirmation onClose={handleCloseDialog} />
-                )}
-            </div> */}
+            {
+                productos && <div className="flex justify-center">
+                    <button onClick={handleOpenDialog} className="mt-5 flex items-center justify-center w-[150px] h-[50px] bg-[var(--color-2E1108)] text-white rounded-lg">
+                        Realizar Compra
+                    </button>
+                    {isDialogOpen && (
+                        <PurchaseConfirmation productos={JSON.stringify(productos)} quantities={quantities} total={total} onClose={handleCloseDialog} />
+                    )}
+                </div>
+            }
 
             <Footer />
         </main>
