@@ -29,18 +29,11 @@ export default function WorkshopPreview() {
         setSearchTerm(event.target.value);
     };
 
-    const filteredProducts = tallerData
-        ? tallerData.productosDetalles?.filter(product =>
-            product.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        : [];
-
     // Función para realizar la búsqueda en la API
     const handleSearch = async () => {
         try {
           const search = searchTerm.trim() ? searchTerm : '';  // Si no hay búsqueda, enviar cadena vacía
-          const response = await axios.get(`http://localhost:3000/workshops/${id}/${search}`, {withCredentials: true});
-
+          const response = await axios.get(`http://localhost:3000/workshops/${id}/products/${search}`);
           setResults(response.data.productosDetalles);  // Guardar los productos obtenidos
         } catch (error) {
           console.error('Error al realizar la búsqueda', error);
@@ -56,7 +49,7 @@ export default function WorkshopPreview() {
     // Función para obtener los datos del taller
     const fetchTallerData = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/workshops/${id}`, {
+          const response = await axios.get(`http://localhost:3000/workshops/${id}/products`, {
             withCredentials: true,
           });
           setTallerData(response.data.data[0]);  // Guardar los datos del taller
@@ -65,6 +58,14 @@ export default function WorkshopPreview() {
           navigate('/404'); // Redirigir si ocurre un error o no se encuentra el taller
         }
     };
+
+    console.log(tallerData)
+
+    const filteredProducts = tallerData
+        ? tallerData.productosDetalles.filter(product =>
+            product.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        : [];
 
     if (!tallerData) return <p>Cargando...</p>;  // Renderizar algo mientras se cargan los datos
 
