@@ -60,11 +60,13 @@ module.exports = class UserController {
             
             let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
             let user = await userService.getUserById(userId)
+            console.log(user)
             for (let field of Object.keys(req.body)) {
                 if (user[field] == req.body[field]) continue
                 userService.updateFieldsWithSet(userId, field, req.body[field])
                 req.user[0][field] = req.body[field]
             }
+            console.log(req.user, user)
             if (file) {
                 if ( !(user['photo'] instanceof Binary) || !file.buffer.equals(user['photo'].buffer)) {
                     imageDataUrl = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`
@@ -122,8 +124,9 @@ module.exports = class UserController {
         const userService = new UserService()
 
         let userId = req.user ? req.user[0]._id : '66fce2a0da531255789f1fff'
-        console.log(req.body)
-        let query = await userService.updateArrayPush(userId, 'compras', [{productos: req.body.productos, cantidad: req.body.cantidad, total: req.body.total}])
+        const productoIds = req.body.productos.map((productoInfo) => ObjectId.createFromHexString(productoInfo));
+        console.log(productoIds)
+        let query = await userService.updateArrayPush(userId, 'compras', [{productos: productoIds, cantidad: req.body.cantidad, total: req.body.total}])
         
         if (query.modifiedCount) return res.status(200).json({ status: 200, message: 'Producto agregado con exito al carrito' })
         else if (query.modifiedCount == 0) return res.status(304).json({ status: 304, message: `Usuario encontrado, pero el id que desea registrar ya existe dentro del campo carrito` })
@@ -303,39 +306,63 @@ module.exports = class UserController {
 
             let agg = [
                 {
-                    $match: {
-                        _id: ObjectId.createFromHexString(`${userId}`)
-                    }
+                  $match: {
+                    _id: ObjectId.createFromHexString(`${userId}`)
+                  }
                 },
                 {
-                    $lookup: {
-                        from: "productos",
-                        localField: "compras.productos",
-                        foreignField: "_id",
-                        as: "compras"
-                    }
+                  $unwind: "$compras"  // Descomponer el array de compras para tener una compra por documento
                 },
                 {
-                    $unwind: "$compras"
+                  $unwind: "$compras.productos"  // Descomponer el array de productos dentro de cada compra
                 },
                 {
-                    $lookup: {
-                      from: "taller",                  // Colección a unir
-                      localField: "compras._id", // Campo en productos
-                      foreignField: "productos",     // Campo en 'taller'
-                      as: "tallerDetalles"             // Nombre del array resultante
-                    }
+                  $lookup: {
+                    from: "productos",  // Unir con la colección de productos
+                    localField: "compras.productos",  // ID del producto en compras.productos
+                    foreignField: "_id",  // ID del producto en la colección de productos
+                    as: "productoDetalles"
+                  }
                 },
                 {
-                    $unwind: "$tallerDetalles"         // Descomponer para que haya un documento por taller
+                  $unwind: "$productoDetalles"  // Descomponer para tener solo un producto detallado
                 },
                 {
-                    $project: {
-                        compras: 1,
-                        nombre_taller: "$tallerDetalles.nombre_taller"
-                    }
+                  $lookup: {
+                    from: "taller",  // Unir con la colección de talleres
+                    localField: "productoDetalles._id",  // ID del producto detallado
+                    foreignField: "productos",  // Campo productos del taller
+                    as: "tallerDetalles"
+                  }
                 },
-            ]
+                {
+                  $unwind: "$tallerDetalles"  // Descomponer el array de talleres para obtener los detalles
+                },
+                {
+                  $group: {
+                    _id: {
+                      usuario: "$_id",  // ID del usuario
+                      compraId: "$compras._id",  // Agrupar por ID de compra
+                      productoId: "$productoDetalles._id"  // Agrupar por ID de producto
+                    },
+                    producto: { $first: "$productoDetalles" },  // Guardar el primer documento del producto
+                    cantidad: { $first: "$compras.cantidad" },  // Guardar la cantidad de la compra
+                    nombre_taller: { $first: "$tallerDetalles.nombre_taller" },  // Guardar el nombre del taller
+                    id_taller : { $first: "$tallerDetalles._id" },
+                  }
+                },
+                {
+                  $project: {
+                    _id: 0,  // No mostrar el ID compuesto del agrupamiento
+                    usuarioId: "$_id.usuario",  // Mostrar el ID del usuario
+                    compraId: "$_id.compraId",  // Mostrar el ID de la compra
+                    producto: 1,  // Mostrar el detalle del producto
+                    cantidad: 1,  // Mostrar la cantidad
+                    nombre_taller: 1, // Mostrar el nombre del taller
+                    id_taller: 1
+                  }
+                }
+              ]
 
             let aggDetails = await userService.agregate(agg)
             
@@ -361,46 +388,65 @@ module.exports = class UserController {
 
             let agg = [
                 {
-                    $match: {
-                        _id: ObjectId.createFromHexString(`${userId}`)
+                    "$match": {
+                        "_id": ObjectId.createFromHexString(`${userId}`)
+                    }
+                },
+                  {
+                    "$unwind": "$carrito"
+                },
+                {
+                    "$lookup": {
+                        "from": "productos",
+                        "localField": "carrito.id",
+                        "foreignField": "_id",
+                        "as": "productoInfo"
                     }
                 },
                 {
-                    $lookup: {
-                        from: "productos",
-                        localField: "carrito.id",
-                        foreignField: "_id",
-                        as: "carrito"
+                    "$unwind": "$productoInfo"
+                },
+                {
+                    "$lookup": {
+                        "from": "taller",
+                        "localField": "productoInfo._id",
+                        "foreignField": "productos",
+                        "as": "tallerDetalles"
                     }
                 },
                 {
-                    $unwind: "$carrito"
-                },
-                {
-                    $lookup: {
-                      from: "taller",                  // Colección a unir
-                      localField: "carrito._id", // Campo en productos
-                      foreignField: "productos",     // Campo en 'taller'
-                      as: "tallerDetalles"             // Nombre del array resultante
+                    "$unwind": {
+                        "path": "$tallerDetalles",
+                        "preserveNullAndEmptyArrays": true
                     }
                 },
                 {
-                    $unwind: "$tallerDetalles"         // Descomponer para que haya un documento por taller
-                },
-                {
-                    $group: {
-                        _id: "$carrito._id", // Agrupar por ID del cupón
-                        carrito: { $first: "$carrito" }, // Conservar el primer documento del cupón
-                        nombre_taller: { $first: "$tallerDetalles.nombre_taller" }, // Conservar el nombre del taller
+                    "$project": {
+                        "_id": 0,
+                        "usuario_id": "$_id",                   // Incluye el ID del usuario como `usuario_id`
+                        "carrito.cantidad": "$carrito.cantidad", // Mantén la cantidad original del carrito
+                        "productoInfo": 1,                       // Incluye la información del producto
+                        "tallerDetalles.nombre_taller": 1        // Incluye solo el nombre del taller
                     }
                 },
                 {
-                    $project: {
-                        _id:1,
-                        carrito: 1,
-                        nombre_taller: 1
+                    "$group": {
+                        "_id": "$usuario_id",                    // Agrupa por el ID del usuario
+                        "productos": {
+                            "$push": {                           // Agrega los productos como un array de objetos
+                                "cantidad": "$carrito.cantidad",
+                                "productoInfo": "$productoInfo",
+                                "nombre_taller": "$tallerDetalles.nombre_taller"
+                            }
+                        }
                     }
                 },
+                {
+                    "$project": {
+                        "_id": 1,
+                        "productos": 1                          // Mantiene el array `productos` con todos los detalles
+                    }
+                }
             ]
 
             let aggDetails = await userService.agregate(agg)
