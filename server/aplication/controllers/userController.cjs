@@ -310,7 +310,7 @@ module.exports = class UserController {
                 {
                     $lookup: {
                         from: "productos",
-                        localField: "compras.id",
+                        localField: "compras.productos",
                         foreignField: "_id",
                         as: "compras"
                     }

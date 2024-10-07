@@ -12,6 +12,8 @@ import Carga from "./pages/Carga";
 import { shoppingCartLoader } from "./pages/Shopping_Cart";
 import { discountsLoader } from "./pages/Discounts_Promotions";
 import { fetchWorkshopsLoader } from "./pages/Craft_Workshops";
+import { tallerProductsLoader } from "./pages/WorkshopPreview";
+import { favProductsLoader } from "./pages/pantalla19";
 const InicioSesion = lazy(() => import('./pages/InicioSesion'))
 const Entrada = lazy(() => import('./pages/Entrada'))
 const Home = lazy(() => import('./pages/Home'))
@@ -133,7 +135,11 @@ const router = createBrowserRouter([
     {
         path: '/workshops/related/:id',
         element: <Suspense fallback={<Carga />}><WorkshopPreview /></Suspense>,
-        loader: loader
+        loader: async ({params}) => {
+            let user = await loader()
+            let data = await tallerProductsLoader(params)
+            return {user, data}
+        }
     },
     {
         path: '/product/:id',
@@ -143,7 +149,11 @@ const router = createBrowserRouter([
     {
         path: '/crafts/favorites',
         element: <Suspense fallback={<Carga />}><Pantalla19 /></Suspense>,
-        loader: loader
+        loader: async () => {
+            let user = await loader()
+            let data = await favProductsLoader()
+            return {user, data}
+        }
     },
     {
         path: '/purchases/success',

@@ -5,22 +5,39 @@ import { ProductCategoryCard } from "../components/ProductCategoryCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+export const tallerProductsLoader = async ({id}) =>  {
+
+    try {
+        console.log(id)
+      const response = await axios.get(`http://localhost:3000/workshops/${id}/products/?`, {
+        withCredentials: true,
+      });
+      console.log(response.data)
+      return response.data // Guardar los datos del taller
+    } catch (error) {
+      console.error("Error fetching workshop data", error);
+      return false
+    }
+
+}
+
 export default function WorkshopPreview() {
     const { id } = useParams();
-    const [tallerData, setTallerData] = useState(null);  // Inicializar como null
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
     const data = useLoaderData();
+    const [tallerData, setTallerData] = useState(data.data ? data.data : null);  // Inicializar como null
+    const navigate = useNavigate();
+    const [user, setUser] = useState(data.user.user);
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
 
     useEffect(() => {
         // Redirigir si no hay datos de usuario
-        if (!data) {
+        if (!data.user || !data.data) {
           navigate('/register');
         } else {
-          setUser(data.user);
-          fetchTallerData();  // Cargar los datos del taller
+            console.log(data)
+          //setUser(data.user.user);
+          //setTallerData(data.data.productosDetalles)  // Cargar los datos del taller
         }
       }, [id, data, navigate]);
     
@@ -47,7 +64,7 @@ export default function WorkshopPreview() {
     };
     
     // Función para obtener los datos del taller
-    const fetchTallerData = async () => {
+    /* const fetchTallerData = async () => {
         try {
             console.log(id)
           const response = await axios.get(`http://localhost:3000/workshops/${id}/products/?`, {
@@ -58,9 +75,7 @@ export default function WorkshopPreview() {
           console.error("Error fetching workshop data", error);
           navigate('/404'); // Redirigir si ocurre un error o no se encuentra el taller
         }
-    };
-
-    console.log(tallerData)
+    }; */
 
     const filteredProducts = tallerData
         ? tallerData.productosDetalles.filter(product =>
@@ -111,8 +126,7 @@ export default function WorkshopPreview() {
             <section className="overflow-y-scroll h-[45dvh] grid grid-cols-2 justify-items-center sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-[40px]">
                 {filteredProducts?.length > 0 ? (
                     filteredProducts.map((product, index) => (
-                        <>
-                            {console.log(product)}
+                        
                             <ProductCategoryCard
                             key={index}
                             name={product.nombre}
@@ -120,7 +134,7 @@ export default function WorkshopPreview() {
                             img={product.img}
                             prdtId={product._id}
                         />
-                        </>
+                        
                         
                     ))
                 ) : (

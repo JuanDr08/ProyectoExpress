@@ -15,7 +15,7 @@ const Corazon = ({idProducto}) => {
       });
         if (favorito.ok) setLiked(true);
       } catch (error) {
-        console.error("El producto no se encuentra e favoritos:", error);
+        //console.error("El producto no se encuentra e favoritos:", error);
         setLiked(false)
       }
     };
@@ -30,20 +30,20 @@ const Corazon = ({idProducto}) => {
     });
       if (favorito.data) setLiked(true);
     } catch (error) {
-      console.error("El producto no se encuentra e favoritos:", error);
+      //console.error("El producto no se encuentra e favoritos:", error);
       setLiked(false)
     }   
     try {
       if (!liked) {
         // Si no está en favoritos, hacemos una petición POST para agregarlo
-        console.log('Entra a la post')
+        //console.log('Entra a la post')
         const addFavoritos = await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, {method: 'POST', credentials: 'include'});
-        console.log("Producto añadido a favoritos", addFavoritos);
+        //console.log("Producto añadido a favoritos", addFavoritos);
         setLiked(true)
       } else {
         // Si está en favoritos, hacemos una petición DELETE para eliminarlo
         const deleteFvoritos = await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, { method: 'DELETE',credentials: 'include' });
-        console.log("Producto eliminado de favoritos", deleteFvoritos);
+        //console.log("Producto eliminado de favoritos", deleteFvoritos);
         setLiked(false)
       }
     } catch (error) {

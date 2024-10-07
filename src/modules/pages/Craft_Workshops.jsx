@@ -28,15 +28,14 @@ export default function CraftWorkshops() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const data = useLoaderData();
-    const [workshops, setWorkshops] = useState(data.data);
-    console.log(data)
+    const [workshops, setWorkshops] = useState(data.data == 404 ? null : data.data);
 
 
     useEffect(()=> {
         if (!data.user) navigate('/register')
         setUser(data.user.user[0])
         //        fetchWorkshops();
-    }, [data, navigate])
+    }, [])
 
     const fetchWorkshops = async () => {
         /* try {
@@ -66,7 +65,7 @@ export default function CraftWorkshops() {
             </div>
 
             <div className="overflow-y-scroll grid grid-cols-2 gap-4 p-5" style={{ maxHeight: "75vh" }}>
-                {workshops.map((shop) => (
+                {workshops && workshops.map((shop) => (
                     <div
                         key={shop._id}
                         className="bg-[var(--color-703A31)] rounded-lg overflow-hidden shadow-md h-[190px]"

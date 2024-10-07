@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { CategoryIcons } from '../components/CategoryIcons'; 
-import  styles from '../../css/pantalla19.module.css'
+import { CategoryIcons } from '../components/CategoryIcons';
+import styles from '../../css/pantalla19.module.css'
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
@@ -20,67 +20,85 @@ const categories = [
   { name: "Pintura tradicional", icon: <svg width="30" viewBox="0 0 91 92" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="83" height="84" rx="9" stroke="white" strokeWidth="7" /><path d="M8 87L45.0742 55.6223C51.2361 50.4072 60.52 51.4699 65.344 57.9426L87 87" stroke="white" strokeWidth="7" /><mask id="path-3-inside-1_126_4192" fill="white"><rect x="29.123" y="13.334" width="23.1467" height="23.1467" rx="7" transform="rotate(45 29.123 13.334)" /></mask><rect x="29.123" y="13.334" width="23.1467" height="23.1467" rx="7" transform="rotate(45 29.123 13.334)" stroke="white" strokeWidth="16" mask="url(#path-3-inside-1_126_4192)" /></svg> }
 ];
 
+export const favProductsLoader = async () => {
+
+  try {
+    const response = await fetch('http://localhost:3000/user/favorites/products/details', {
+      credentials: 'include' // Esto incluye las cookies
+    });
+    let res = await response.json()
+    //console.log(res.data)
+    //setProductos(res.data);
+    //setData(res.data[0].favoritos)
+    return res.data
+  } catch (error) {
+    console.error('Error al obtener los productos', error);
+  }
+
+}
+
 export default function Pantalla19() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null)
-  const [productos, setProductos] = useState([]);
-  const [category, setCategory] = useState(null);
-  const [dataFiltrada, setData] = useState([]);
-  const categoriesNav = useRef(null)
   const data = useLoaderData()
+  const [user, setUser] = useState(!data.user ? null : data.user.user)
+  const [productos, setProductos] = useState(data.data);
+  const [category, setCategory] = useState(null);
+  const [dataFiltrada, setData] = useState(data.data[0].favoritos);
+  const categoriesNav = useRef(null)
 
 
-  useEffect(()=> {
+  useEffect(() => {
 
-      if (!data) navigate('/register')
-      setUser([data.user])
-      categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
-      setCategory(categoriesNav.current.firstChild)
+    if (!data) navigate('/register')
+    //setUser([data.user])
+    categoriesNav.current.firstChild.classList.add('border-b-4', 'border-b-2E1108')
+    setCategory(categoriesNav.current.firstChild)
 
-      const fetchCupon = async () => {
-        try {
-          const response = await fetch('http://localhost:3000/user/favorites/products/details', {
-          credentials: 'include' // Esto incluye las cookies
-      });
-          let res = await response.json()
-          console.log(res)
-          setProductos(res.data);
-          filtrarProductos('Textilería')
-        } catch (error) {
-          setProductos()
-          console.error('Error al obtener los productos', error);
-        }
-      };
-      fetchCupon()
-
-  },[])
-
-    const handleCategory = (catClicked) => {
-      category.classList.remove('border-b-4', 'border-b-2E1108')
-      catClicked.classList.add('border-b-4', 'border-b-2E1108')
-      setCategory(catClicked)
-      const pElement = catClicked.querySelector('p');
-      const textValue = pElement.textContent;
-      filtrarProductos(textValue)
-    }
-    // Filtrar productos por categoría
-    const filtrarProductos = (textValue) => {
-      if (!productos) return
-      const categoriaSeleccionada = textValue
-      console.log(productos)
-      if (!categoriaSeleccionada) return productos[0]?.favoritos;
-      const data = productos[0]?.favoritos.filter(favorito => favorito.categoria == categoriaSeleccionada)
-      setData(data)
-    };
-    const deleteFavorito = async (id) => {
-      console.log('entra')
-      await fetch(`http://localhost:3000/user/favorites/products/${id}`, {
-        method: 'DELETE',
+    //const fetchCupon = async () => {
+      /* try {
+        const response = await fetch('http://localhost:3000/user/favorites/products/details', {
         credentials: 'include' // Esto incluye las cookies
     });
-        console.log("Producto eliminado de favoritos");
-        window.location.reload();
-    };
+        let res = await response.json()
+        console.log(res.data)
+        setProductos(res.data); 
+        setData(res.data[0].favoritos)
+        //filtrarProductos('Textilería')
+      } catch (error) {
+        setProductos()
+        console.error('Error al obtener los productos', error);
+      } */
+    //};
+    //fetchCupon()
+
+  }, [])
+
+  const handleCategory = (catClicked) => {
+    category.classList.remove('border-b-4', 'border-b-2E1108')
+    catClicked.classList.add('border-b-4', 'border-b-2E1108')
+    setCategory(catClicked)
+    const pElement = catClicked.querySelector('p');
+    const textValue = pElement.textContent;
+    filtrarProductos(textValue)
+  }
+  // Filtrar productos por categoría
+  const filtrarProductos = (textValue) => {
+    if (!productos) return
+    const categoriaSeleccionada = textValue
+    //console.log(productos)
+    if (!categoriaSeleccionada) return productos[0]?.favoritos;
+    const data = productos[0]?.favoritos.filter(favorito => favorito.categoria == categoriaSeleccionada)
+    setData(data)
+  };
+  const deleteFavorito = async (id) => {
+    //console.log('entra')
+    await fetch(`http://localhost:3000/user/favorites/products/${id}`, {
+      method: 'DELETE',
+      credentials: 'include' // Esto incluye las cookies
+    });
+    console.log("Producto eliminado de favoritos");
+    window.location.reload();
+  };
 
 
   return (
@@ -90,36 +108,36 @@ export default function Pantalla19() {
           <Muesca></Muesca>
         </div>
         <div className={styles.boxImg}>
-        <CategoryHeaders title ='artesanias favoritas'/>
+          <CategoryHeaders title='artesanias favoritas' />
         </div>
       </header>
       <main className={styles.main}>
         <nav ref={categoriesNav} className={`${styles.categorias} flex gap-[30px] h-[100px] px-[20px] mt-5 overflow-x-auto border-b-2 border-b-2E1108 border-t-white`}>
           {
             categories.map((category, index) => (
-              <CategoryIcons key={index}  title={category.name} onClick={() => filtrarProductos()}  icon={category.icon} changeCat={handleCategory} />
+              <CategoryIcons key={index} title={category.name} onClick={() => filtrarProductos()} icon={category.icon} changeCat={handleCategory} />
             ))
           }
         </nav>
         <section className={styles.productos}>
-        { !productos ? <p>El usuario no presenta ningun producto en favoritos</p> : dataFiltrada && dataFiltrada.map((favorito) => (
-              <div className={styles.producto} key={favorito._id}>
-                <Link to={`/product/${favorito._id}`}>
-                  <div className={styles.box}>
-                    <div className={styles.boxImg}>
-                      <img src={favorito.img} alt={favorito.nombre} />
-                    </div>
-                    <div className={styles.info}>
-                      <p className={styles.nombre}>{favorito.nombre}</p>
-                      <p className={styles.precio}>S/.{favorito.precio}</p>
-                      <p className={styles.taller}>{favorito.nombre_taller}</p>
-                    </div>
+          {!productos ? <p>El usuario no presenta ningun producto en favoritos</p> : dataFiltrada && dataFiltrada.map((favorito) => (
+            <div className={styles.producto} key={favorito._id}>
+              <Link to={`/product/${favorito._id}`}>
+                <div className={styles.box}>
+                  <div className={styles.boxImg}>
+                    <img src={favorito.img} alt={favorito.nombre} />
                   </div>
-                </Link>
-                <div className={styles.x} onClick={() => deleteFavorito(favorito._id)}>
-                  <i className="bx bx-x" style={{ color: '#ffa800' }}></i>
+                  <div className={styles.info}>
+                    <p className={styles.nombre}>{favorito.nombre}</p>
+                    <p className={styles.precio}>S/.{favorito.precio}</p>
+                    <p className={styles.taller}>{favorito.nombre_taller}</p>
+                  </div>
                 </div>
+              </Link>
+              <div className={styles.x} onClick={() => deleteFavorito(favorito._id)}>
+                <i className="bx bx-x" style={{ color: '#ffa800' }}></i>
               </div>
+            </div>
           ))}
         </section>
       </main>
