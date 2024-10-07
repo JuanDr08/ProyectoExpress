@@ -14,6 +14,7 @@ import { discountsLoader } from "./pages/Discounts_Promotions";
 import { fetchWorkshopsLoader } from "./pages/Craft_Workshops";
 import { tallerProductsLoader } from "./pages/WorkshopPreview";
 import { favProductsLoader } from "./pages/pantalla19";
+import { comprasDataLoader } from "./pages/pantalla20";
 const InicioSesion = lazy(() => import('./pages/InicioSesion'))
 const Entrada = lazy(() => import('./pages/Entrada'))
 const Home = lazy(() => import('./pages/Home'))
@@ -158,7 +159,13 @@ const router = createBrowserRouter([
     {
         path: '/purchases/success',
         element: <Suspense fallback={<Carga />}><Pantalla20 /></Suspense>,
-        loader: loader
+        loader: async () => {
+
+            let user = await loader()
+            let data = await comprasDataLoader()
+            return {user, data}
+
+        }
     },
     {
         path: '/workshops/educational',
