@@ -4,13 +4,13 @@ import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { CategoryHeaders } from '../components/CategoryHeaders';
 import { Muesca } from '../components/Muesca';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export const comprasDataLoader = async () => {
 
   try {
-    const response = await axios.get(`http://localhost:3000/product/`, { withCredentials: true });
+    const response = await axios.get(`${URI}/product/`, { withCredentials: true });
 
-    const compra = await fetch('http://localhost:3000/user/purchases/details', {
+    const compra = await fetch(`${URI}/user/purchases/details`, {
       credentials: 'include' // Esto incluye las cookies
     });
     let res = await compra.json()

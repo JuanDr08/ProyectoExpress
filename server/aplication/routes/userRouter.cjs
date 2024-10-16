@@ -1,14 +1,7 @@
 // Dependencias
 const express = require('express');
 const router = express.Router(); // { mergeParams: true } merge params me permite acceder a los parametros de rutas padres
-const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
 const multer = require('multer')
-
-// Middlewares para verificacion
-const { auth, authCookie } = require('../middlewares/authenticationToken.cjs');
-const sessionAuth = require('../middlewares/sessionLogin.cjs');
-const { versionMiddleware } = require('../middlewares/version.cjs');
 
 // Controladores
 const UserController = require('../controllers/userController.cjs');

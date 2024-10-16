@@ -4,10 +4,10 @@ import { Header } from "../components/Header";
 import { useState, useEffect } from "react";
 import { PurchaseConfirmation } from "../components/PurchaseConfirmation";
 import axios from "axios";
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export const shoppingCartLoader = async () => {
     try {
-        let productos = await axios.get(`http://localhost:3000/user/cart/details`, {
+        let productos = await axios.get(`${URI}/user/cart/details`, {
             headers: {
                 'Cache-Control': 'max-age=3600',
                 'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
@@ -19,7 +19,7 @@ export const shoppingCartLoader = async () => {
             productos = [];
         }
 
-        const descuentos = await axios.get('http://localhost:3000/cupon/product/h', {
+        const descuentos = await axios.get(`${URI}/cupon/product/h`, {
             headers: {
                 'Cache-Control': 'max-age=3600',
                 'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
@@ -43,7 +43,7 @@ export default function ShoppingCart() {
 
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`http://localhost:3000/user/cart/${id}`, {
+            const res = await fetch(`${URI}/user/cart/${id}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });

@@ -4,12 +4,12 @@ import { CategoryHeaders } from "../components/CategoryHeaders";
 import { ProductCategoryCard } from "../components/ProductCategoryCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export const tallerProductsLoader = async ({id}) =>  {
 
     try {
         console.log(id)
-      const response = await axios.get(`http://localhost:3000/workshops/${id}/products/?`, {
+      const response = await axios.get(`${URI}/workshops/${id}/products/?`, {
         withCredentials: true,
       });
       console.log(response.data)
@@ -50,7 +50,7 @@ export default function WorkshopPreview() {
     const handleSearch = async () => {
         try {
           const search = searchTerm.trim() ? searchTerm : '';  // Si no hay búsqueda, enviar cadena vacía
-          const response = await axios.get(`http://localhost:3000/workshops/${id}/products/${search}`);
+          const response = await axios.get(`${URI}/workshops/${id}/products/${search}`);
           setResults(response.data.productosDetalles);  // Guardar los productos obtenidos
         } catch (error) {
           console.error('Error al realizar la búsqueda', error);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Muesca } from '../components/Muesca';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function TallerCeramica() {
 
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function TallerCeramica() {
   const fetchWorkshops = async () => {
     try {
       console.log("Fetching workshop data...");
-      const response = await axios.get(`http://localhost:3000/workshops/${id}`, {
+      const response = await axios.get(`${URI}/workshops/${id}`, {
         withCredentials: true,
       });
       console.log("Workshop data received:", response.data.data[0]);

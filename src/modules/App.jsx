@@ -39,12 +39,14 @@ const TallerCeramica = lazy(() => import('./pages/CraftInscription'))
 const InicioSesionRuraq = lazy(() => import('./pages/InicioSesionRuraq'))
 const Purchase = lazy(() => import('./pages/Purchase'))
 
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 
 async function loader() {
 
-    let res = await fetch('http://localhost:3000/auth/check', {
+    let res = await fetch(`${URI}/auth/check`, {
         credentials: 'include', cache: "no-cache"
     })
+    console.log(res)
     let data = await res.json()
     if (res.ok) {
         if (!data.authenticated) return false

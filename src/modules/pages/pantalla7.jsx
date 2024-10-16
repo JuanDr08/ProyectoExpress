@@ -3,7 +3,7 @@ import { useLocation, Link, useNavigate, useLoaderData } from 'react-router-dom'
 import  styles from '../../css/pantalla7.module.css'
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function Pantalla7() {
 
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function Pantalla7() {
     //console.log(isRegisterButtonDisabled)
     if (!isRegisterButtonDisabled) {
       try {
-        const direccion = await axios.post('http://localhost:3000/register/auth/ruraqmaki', formToSend, {
+        const direccion = await axios.post(`${URI}/register/auth/ruraqmaki`, formToSend, {
           headers: {
               'Content-Type': 'application/json'
           }

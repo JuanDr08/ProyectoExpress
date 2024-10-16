@@ -5,7 +5,7 @@ import { io } from "socket.io-client"
 import { useLoaderData, useNavigate, useParams } from "react-router-dom"
 
 // import 
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function Chat() {
     
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function Chat() {
         // Obtener los mensajes al cargar el componente
         const fetchMessages = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/chat/${currentUser._id}`, {
+                const res = await fetch(`${URI}/chat/${currentUser._id}`, {
                     method: "GET",
                     credentials: "include"
                 });
@@ -52,7 +52,7 @@ export default function Chat() {
     
         fetchMessages();
 
-        socket.current = io('http://localhost:3000');
+        socket.current = io(URI);
 
         // Registrar el usuario al conectarse
         socket.current.emit('registerUser', currentUser._id); // Emitir el ID del usuario

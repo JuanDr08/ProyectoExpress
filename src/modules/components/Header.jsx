@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react"
 import { LeftMenu } from "./Leftmenu"
 import { Link } from "react-router-dom"
 
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
+
 export function Header({photo, nick}) {
 
     const [menuchange, setMenuChange] = useState(false)
@@ -14,13 +16,13 @@ export function Header({photo, nick}) {
     
     useEffect(()=> {
 
-        fetch('http://localhost:3000/product', {credentials: "include", cache: "force-cache"})
+        fetch(`${URI}/product`, {credentials: "include", cache: "force-cache"})
             .then(res => res.json())
             .then(dat => {
                 setProductData(dat)
                 setFilteredData([...filteredData,dat])
             })
-        fetch('http://localhost:3000/workshops', {credentials: "include", cache: "force-cache"})
+        fetch(`${URI}/workshops`, {credentials: "include", cache: "force-cache"})
             .then(res => res.json())
             .then(res => {
                 setWorkshopData(res)

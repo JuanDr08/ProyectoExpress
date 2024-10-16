@@ -6,7 +6,7 @@ import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 import { CategoryHeaders } from '../components/CategoryHeaders';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 const categories = [
   { name: "Textilería", icon: <svg width="40" viewBox="0 0 112 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.999997 5.0596L1 64.9404C1 67.1851 2.82396 69 5.06809 69L101.932 69C104.176 69 106 67.1851 106 64.9404L106 5.0596C106 2.81493 104.176 0.999996 101.932 0.999996L5.06808 1C2.82395 1 0.999997 2.81494 0.999997 5.0596ZM5.06809 65.4702C4.77053 65.4702 4.53404 65.2304 4.53404 64.9404L4.53404 5.0596C4.53404 4.76961 4.77053 4.5298 5.06808 4.5298L101.932 4.5298C102.229 4.5298 102.466 4.7696 102.466 5.0596L102.466 64.9404C102.466 65.2304 102.229 65.4702 101.932 65.4702L5.06809 65.4702Z" fill="white" stroke="white" strokeWidth="2" /><path fillRule="evenodd" clipRule="evenodd" d="M104 61.5C104 60.6716 104.358 60 104.8 60L111.2 60C111.642 60 112 60.6716 112 61.5C112 62.3284 111.642 63 111.2 63L104.8 63C104.358 63 104 62.3284 104 61.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 47.5C104 47.2239 104.358 47 104.8 47L111.2 47C111.642 47 112 47.2239 112 47.5C112 47.7761 111.642 48 111.2 48L104.8 48C104.358 48 104 47.7761 104 47.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 34.5C104 34.2239 104.358 34 104.8 34L111.2 34C111.642 34 112 34.2239 112 34.5C112 34.7761 111.642 35 111.2 35L104.8 35C104.358 35 104 34.7761 104 34.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 21.5C104 21.2239 104.358 21 104.8 21L111.2 21C111.642 21 112 21.2239 112 21.5C112 21.7761 111.642 22 111.2 22L104.8 22C104.358 22 104 21.7761 104 21.5Z" fill="white" /><path fillRule="evenodd" clipRule="evenodd" d="M104 8C104 7.44772 104.358 7 104.8 7L111.2 7C111.642 7 112 7.44771 112 8C112 8.55228 111.642 9 111.2 9L104.8 9C104.358 9 104 8.55228 104 8Z" fill="white" /><path d="M4 58L4 52L104 52L104 58L4 58Z" fill="white" /><path d="M4 42L4 28L104 28L104 42L4 42Z" fill="white" /><path d="M4 18L4 11L104 11L104 18L4 18Z" fill="white" /></svg> },
   { name: "Cerámica", icon: <svg width="40" viewBox="0 0 101 95" fill="none" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M24.0011 4.99387C20.9586 4.99387 18.8922 8.09181 20.0555 10.9091L28.5379 31.452C29.8141 34.5429 29.1074 38.0998 26.7472 40.4651L6.236 61.0202C4.56845 62.6913 4.56845 65.4007 6.236 67.0718L27.8707 88.7528C28.6715 89.5553 29.7576 90.0061 30.8901 90.0061H70.11C71.2424 90.0061 72.3285 89.5553 73.1293 88.7528L94.764 67.0718C96.4316 65.4007 96.4316 62.6913 94.764 61.0202L74.1583 40.3705C71.8613 38.0685 71.1249 34.6304 72.277 31.5865L80.1483 10.7906C81.208 7.99069 79.144 4.99387 76.1558 4.99387H24.0011ZM16.373 12.4362C14.1239 6.98936 18.1189 1 24.0011 1H76.1558C81.933 1 85.9235 6.79387 83.8746 12.2071L76.0033 33.0029C75.4074 34.5774 75.7883 36.3557 76.9764 37.5464L97.5821 58.1961C100.806 61.4269 100.806 66.6651 97.5821 69.8959L75.9474 91.5769C74.3992 93.1284 72.2994 94 70.11 94H30.8901C28.7006 94 26.6008 93.1284 25.0526 91.5769L3.41794 69.8959C0.194022 66.6651 0.194022 61.4269 3.41794 58.1961L23.9291 37.641C25.15 36.4176 25.5155 34.5778 24.8553 32.9791L16.373 12.4362Z" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" /><path d="M21 17.5C21 16.5899 21.6587 16 22.2963 16H79.7037C80.3413 16 81 16.5899 81 17.5C81 18.4101 80.3413 19 79.7037 19H22.2963C21.6587 19 21 18.4101 21 17.5Z" fill="white" stroke="white" strokeWidth="2" /><path d="M5 64.5C5 63.5824 5.65771 63 6.27879 63H95.7212C96.3423 63 97 63.5824 97 64.5C97 65.4176 96.3423 66 95.7212 66H6.27879C5.65771 66 5 65.4176 5 64.5Z" fill="white" stroke="white" strokeWidth="2" /></svg> },
@@ -23,7 +23,7 @@ const categories = [
 export const favProductsLoader = async () => {
 
   try {
-    const response = await fetch('http://localhost:3000/user/favorites/products/details', {
+    const response = await fetch(`${URI}/user/favorites/products/details`, {
       credentials: 'include' // Esto incluye las cookies
     });
     let res = await response.json()
@@ -96,7 +96,7 @@ export default function Pantalla19() {
   };
   const deleteFavorito = async (id) => {
     //console.log('entra')
-    await fetch(`http://localhost:3000/user/favorites/products/${id}`, {
+    await fetch(`${URI}/user/favorites/products/${id}`, {
       method: 'DELETE',
       credentials: 'include' // Esto incluye las cookies
     });

@@ -31,7 +31,7 @@ const chatController = new ChatController()
 const createServer = () => {
     const app = express();
     app.use(cors({
-        origin: 'http://localhost:5173',
+        origin: 'https://ruraqmaki.netlify.app',
         credentials: true
     }));
     const server = http.createServer(app);
@@ -39,7 +39,7 @@ const createServer = () => {
     // Configurar Socket.io con CORS
     const io = new Server(server, {
         cors: {
-            origin: 'http://localhost:5173',
+            origin: 'https://ruraqmaki.netlify.app',
             methods: ['GET', 'POST'],
             credentials: true
         }
@@ -60,6 +60,10 @@ const createServer = () => {
     app.use('/', sessionConfigPassport, passport.initialize(), passport.session(), (req, res, next) => {
         let validRoutesUnProtected = ['/login', '/register', '/auth', '/user'];
         let isProtectedRoute = validRoutesUnProtected.some(route => req.originalUrl.startsWith(route));
+        res.setHeader('Access-Control-Allow-Origin', 'https://ruraqmaki.netlify.app');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        console.log('sesion',req.session, 'falso o true',req.isAuthenticated())
         
         if (!req.isAuthenticated() && !isProtectedRoute) {
             return res.status(401).json({ authenticated: false, user: null, details: 'No hay usuario logueado', redirect: '/' });

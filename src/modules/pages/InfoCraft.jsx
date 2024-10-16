@@ -3,7 +3,7 @@ import { Muesca } from '../components/Muesca';
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import { QRCodeSVG } from 'qrcode.react';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function InfoCraft() {
 
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function InfoCraft() {
   const fetchWorkshops = async () => {
     try {
       console.log("hola desde fetchWorkshops");
-      const response = await axios.get(`http://localhost:3000/workshops/${id}`, {
+      const response = await axios.get(`${URI}/workshops/${id}`, {
         withCredentials: true,
       });
       console.log("Datos del taller obtenidos:", response.data.data[0]);

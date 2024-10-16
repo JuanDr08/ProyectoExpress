@@ -17,7 +17,7 @@ module.exports = (passport, path) => {
     passport.use(new DiscordStrategy({
         clientID: process.env.DISCORD_CLIENT_ID,
         clientSecret: process.env.DISCORD_CLIENT_SECRET,
-        callbackURL: `http://localhost:3000/${path}/auth/discord/callback`,
+        callbackURL: `https://ruraqmaki-app.onrender.com/${path}/auth/discord/callback`,
         scope: ['identify', 'email']
         }, async (accessToken, refreshToken, profile, done) => {
 

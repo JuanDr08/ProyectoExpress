@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Muesca } from '../components/Muesca';
 import { Form, useLoaderData, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function InicioSesionRuraq() {
 
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ export default function InicioSesionRuraq() {
     e.preventDefault()
     const formData = new FormData(e.target)
     
-    let query = fetch('http://localhost:3000/login/auth/ruraqmaki', {
+    let query = fetch(`${URI}/login/auth/ruraqmaki`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

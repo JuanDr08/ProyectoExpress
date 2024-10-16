@@ -32,10 +32,10 @@ const startApp = async () => {
     }
     DBConnection()
     
-    const PORT = process.env.EXPRESS_PORT || 3000;
+    const PORT = process.env.PORT || 3000;
 
     server.listen(PORT, () => {
-        console.log(`Servidor escuchando en http://${process.env.EXPRESS_HOST}:${PORT}`);
+        console.log(`App running on port${PORT}`);
 
         // Ejemplo de enviar un mensaje desde el servidor cada 5 segundos
         // setInterval(() => {

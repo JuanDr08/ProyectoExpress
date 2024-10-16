@@ -3,14 +3,14 @@ import  styles from '../../css/pantalla17.module.css'
 import { Link, useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 // Componente para el ícono del corazón con funcionalidad de toggle
 const Corazon = ({idProducto}) => {
   const [liked, setLiked] = useState(false);
   useEffect(() => {
     const fetchFavorito= async () => {
       try{
-        const favorito = await fetch(`http://localhost:3000/user/favorite/check/${idProducto}`, {
+        const favorito = await fetch(`${URI}/user/favorite/check/${idProducto}`, {
           credentials: 'include' // Esto incluye las cookies
       });
         if (favorito.ok) setLiked(true);
@@ -25,7 +25,7 @@ const Corazon = ({idProducto}) => {
 
   const toggleHeart = async () => {
     try{
-      const favorito = await fetch(`http://localhost:3000/user/favorite/check/${idProducto}`, {
+      const favorito = await fetch(`${URI}/user/favorite/check/${idProducto}`, {
         credentials: 'include' // Esto incluye las cookies
     });
       if (favorito.data) setLiked(true);
@@ -37,12 +37,12 @@ const Corazon = ({idProducto}) => {
       if (!liked) {
         // Si no está en favoritos, hacemos una petición POST para agregarlo
         //console.log('Entra a la post')
-        const addFavoritos = await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, {method: 'POST', credentials: 'include'});
+        const addFavoritos = await fetch(`${URI}/user/favorites/products/${idProducto}`, {method: 'POST', credentials: 'include'});
         //console.log("Producto añadido a favoritos", addFavoritos);
         setLiked(true)
       } else {
         // Si está en favoritos, hacemos una petición DELETE para eliminarlo
-        const deleteFvoritos = await fetch(`http://localhost:3000/user/favorites/products/${idProducto}`, { method: 'DELETE',credentials: 'include' });
+        const deleteFvoritos = await fetch(`${URI}/user/favorites/products/${idProducto}`, { method: 'DELETE',credentials: 'include' });
         //console.log("Producto eliminado de favoritos", deleteFvoritos);
         setLiked(false)
       }
@@ -73,7 +73,7 @@ const Header =({ img, idProducto }) => {
     // Buscar si hay un producto en cupon con el idProducto
     const fetchProducto = async () => {
       try {
-        const cuponResponse = await axios.get(`http://localhost:3000/cupon/product/h`, {withCredentials: true});
+        const cuponResponse = await axios.get(`${URI}/cupon/product/h`, {withCredentials: true});
         setCupon(cuponResponse.data);
         const productoConDescuento = cuponResponse.data.find(
           (item) => item.productoInfo._id == idProducto
@@ -132,7 +132,7 @@ const MainContent = ({ idProducto, cupon, nombre, precio, descripcion, dimension
   }, [idProducto, precio, cupon]);
 
   const addCarrito = async () => {
-      const addCarrito= await fetch(`http://localhost:3000/user/cart/${idProducto}`, {
+      const addCarrito= await fetch(`${URI}/user/cart/${idProducto}`, {
         method: 'POST',
         credentials: 'include' // Esto incluye las cookies
     });
@@ -194,10 +194,10 @@ export default function Pantalla17() {
       
     const fetchProducto = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/product/${id}`, {withCredentials: true});
+        const response = await axios.get(`${URI}/product/${id}`, {withCredentials: true});
         setProducto(response.data); // Guardar los datos del producto en el estado
       
-        const cuponResponse = await axios.get(`http://localhost:3000/cupon/product/h`, {withCredentials: true});
+        const cuponResponse = await axios.get(`${URI}/cupon/product/h`, {withCredentials: true});
         setCupon(cuponResponse.data);
       } catch (error) {
         console.error("Error al obtener el producto:", error);

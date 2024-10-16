@@ -3,7 +3,7 @@ import { Footer } from "../components/Footer";
 import { useState, useEffect } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 const categories = [
     "Textilería",
     "Cerámica",
@@ -19,7 +19,7 @@ const categories = [
 
 export const discountsLoader = async () => {
     try {
-        const response = await axios.get(`http://localhost:3000/cupon/product/h`, {
+        const response = await axios.get(`${URI}/cupon/product/h`, {
             headers: {
                 'Cache-Control': 'max-age=3600',
                 'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()

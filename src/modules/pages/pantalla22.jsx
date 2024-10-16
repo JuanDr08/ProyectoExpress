@@ -4,7 +4,7 @@ import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 import { CategoryHeaders } from '../components/CategoryHeaders';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function Pantalla22() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null)
@@ -20,10 +20,10 @@ export default function Pantalla22() {
   };
   const validarCupon = async (code) => {
     try {
-      const cuponCode = await axios.get(`http://localhost:3000/cupon/find/${code}`, {withCredentials: true}); 
+      const cuponCode = await axios.get(`${URI}/cupon/find/${code}`, {withCredentials: true}); 
       const id = cuponCode.data._id
       console.log(id)
-      const agregarCupon = await fetch(`http://localhost:3000/user/coupons/${id}`, {
+      const agregarCupon = await fetch(`${URI}/user/coupons/${id}`, {
         method: 'POST',
         credentials: 'include' // Esto incluye las cookies
     });
@@ -37,7 +37,7 @@ export default function Pantalla22() {
   }
   const addCarrito = async (idProducto) => {
       try{
-        const addCarrito= await fetch(`http://localhost:3000/user/cart/${idProducto}`, {
+        const addCarrito= await fetch(`${URI}/user/cart/${idProducto}`, {
           method: 'POST',
           credentials: 'include' // Esto incluye las cookies
       });
@@ -52,7 +52,7 @@ export default function Pantalla22() {
   useEffect(()=> {
     const fetchCupon = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/coupons/details`, {withCredentials: true}); 
+        const response = await axios.get(`${URI}/user/coupons/details`, {withCredentials: true}); 
         console.log(response)
         setCupones(response.data.data)
       } catch (error) {

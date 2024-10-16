@@ -4,7 +4,7 @@ import { useLoaderData, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Muesca } from '../components/Muesca';
 import { CategoryHeaders } from '../components/CategoryHeaders';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function Pantalla21() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null)
@@ -37,7 +37,7 @@ export default function Pantalla21() {
      // Función para hacer la solicitud a la API
      const fetchTaller = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/workshops/`, {withCredentials: true}); 
+          const response = await axios.get(`${URI}/workshops/`, {withCredentials: true}); 
           setTalleres(response.data); // Almacena los productos en el estado
           setFilteredData(response.data)
         } catch (error) {

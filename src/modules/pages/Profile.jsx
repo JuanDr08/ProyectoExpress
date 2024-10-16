@@ -5,12 +5,12 @@ import { useState, useEffect } from 'react';
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { useLoaderData, useNavigate, Form } from 'react-router-dom';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function Profile() {
 
     const handleLogout = async() => {
         try {
-            const res = await fetch("http://localhost:3000/logout", {
+            const res = await fetch(`${URI}/logout`, {
                 method: 'PUT',
                 credentials: 'include',
                 
@@ -87,7 +87,7 @@ export default function Profile() {
         }
     
         try {
-            const response = await fetch('http://localhost:3000/user/edit', {
+            const response = await fetch(`${URI}/user/edit`, {
                 method: 'PUT',
                 body: formDataToSend,
                 credentials: 'include',

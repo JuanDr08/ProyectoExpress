@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
+
 export const PurchaseConfirmation = ({ productos, quantities, total, onClose }) => {
     const navigate = useNavigate();
     productos = JSON.parse(productos)
@@ -10,7 +12,7 @@ export const PurchaseConfirmation = ({ productos, quantities, total, onClose }) 
         const totalCantidad = productos.reduce((acc, item, index, arr) => acc + quantities[index], 0);
         try {
             const productoIds = productos.map(({productoInfo}) => productoInfo._id);
-            let query = await fetch(`http://localhost:3000/user/purchases`, {
+            let query = await fetch(`${URI}/user/purchases`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -28,7 +30,7 @@ export const PurchaseConfirmation = ({ productos, quantities, total, onClose }) 
             // Si la compra fue exitosa, eliminar del carrito
             if (res.status === 200) {
                 for (let id of productoIds) {
-                    await fetch(`http://localhost:3000/user/cart/${id}`, {
+                    await fetch(`${URI}/user/cart/${id}`, {
                         method: 'DELETE',
                         credentials: 'include',
                     });

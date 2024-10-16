@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export default function InicioSesion() {
 
 	const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function InicioSesion() {
 		const left = window.innerWidth / 2 - width / 2;
 		const top = window.innerHeight / 2 - height / 2;
 
-		const url = `http://localhost:3000/login/auth/${auth}`; // Cambia esto por tu URL del backend
+		const url = `${URI}/login/auth/${auth}`; // Cambia esto por tu URL del backend
 		const popup = window.open(
 			url,
 			`${auth} Login`,
@@ -26,11 +26,12 @@ export default function InicioSesion() {
 
 		// Escuchar el mensaje desde el popup
 		const handleMessage = (event) => {
-			if (event.origin !== 'http://localhost:3000') return; // Cambia esto por tu URL del backend
+			if (event.origin !== URI) return; // Cambia esto por tu URL del backend
 
 			if (event.data.success) {
+				console.log('evento', event, 'data', event.data, 'success', event.data.success)
 				popup.close(); // Cierra el popup
-				window.location.href = 'http://localhost:5173/'; // Redirige a tu frontend
+				//window.location.href = '/'; // Redirige a tu frontend
 			}
 		};
 

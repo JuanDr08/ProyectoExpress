@@ -3,11 +3,11 @@ import { Footer } from "../components/Footer";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+const URI = import.meta.env.VITE_BACKEND_URI || 'http://localhost:3000'
 export const fetchWorkshopsLoader = async () => {
 
     try {
-        const response = await axios.get('http://localhost:3000/workshops', {
+        const response = await axios.get(`${URI}/workshops`, {
             headers: {
                 'Cache-Control': 'max-age=3600',
                 'Expires': new Date(Date.now() + 3600 * 1000).toUTCString()
