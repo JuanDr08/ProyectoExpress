@@ -19,20 +19,20 @@ A pesar de la rica tradición artesanal en Bucaramanga, los artesanos locales en
 
 1. **Gestión de Usuarios**
 - *Registro e Inicio de Sesión*
-   
+  
 - **Perfiles de Usuario (Compradores):**
    - **Actualización de Información*
-  
+    
    - *Actualización de Foto de Perfil*
-  
+    
     - *Favoritos de Artesanías*
 
     - *Favoritos de Talleres*
      
   - *Historial de Compras*
-   
+  
   - *Talleres Inscritos*
-     
+    
    - *Lista de Cupones*
   
    - *Chat con Artesanos*
@@ -50,7 +50,7 @@ A pesar de la rica tradición artesanal en Bucaramanga, los artesanos locales en
    - *Búsqueda de Productos*
 
    -**Filtrado por Categorías*
-     
+   
    - *Filtrado de Talleres*
    
 4. **Carrito y Proceso de Compra**
@@ -64,7 +64,6 @@ A pesar de la rica tradición artesanal en Bucaramanga, los artesanos locales en
 5. **Comunicación**
    - *Mensajes Directos*
 
-   
 6. **Talleres Artesanales**
 
    - *Perfil de Talleres:*
@@ -103,6 +102,57 @@ Para poder utilizar este proyecto, sigue los siguientes pasos:
 
 ### Documentacion de las apis del backend
 
+## Registro de usuario
+
+- **Ruta POST**
+`http://localhost:3000/register/auth/ruraqmaki`
+- **Parámetros**:
+
+  ```json
+  {
+  "nick": "profe",
+  "password": "123456",
+  "email": "campuslands@gmail.com"
+  }
+  ```
+
+  
+- **Devuelve:**
+
+  ```json
+  {
+  "code": 201,
+  "message": "Usuario creado satisfactoriamente"
+  }
+  ```
+
+  
+
+## Logueo de usuarios
+
+- **Ruta POST**
+`http://localhost:3000/login/auth/ruraqmaki`
+- **Parámetros**:
+
+  ```json
+  {
+  "username": "profe",
+  "password": "123456"
+  }
+  ```
+
+  
+- **Devuelve:**
+
+  ```json
+  {
+  "code": 200,
+  "msg": "login exitoso"
+  }
+  ```
+
+  
+
 ## Api de usuarios
 
 **Base URL:** 
@@ -118,12 +168,37 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Parámetros**:
   - `:id` (string): ID del producto a verificar.
 
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/favorite/check/66f48a8f40b5da2f795aa7b0`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "exists": true
+  }
+  ```
+  
+  
+
 ---
 
 **GET /cart**
 
 - **Descripción**: Obtiene todos los artículos del campo `carrito` del usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
+
+  ```json
+  {
+  "status": 200,
+  "data": {
+    "carrito": []
+  }
+  }
+  ```
+
+  
 
 ---
 
@@ -131,20 +206,67 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 
 - **Descripción**: Obtiene todos los cupones asociados con el usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": {
+    "cupones": [
+      "66f46eb340b5da2f795aa7ab"
+    ]
+  }
+  }
+  ```
+
+  
 ---
 
 **GET /purchases**
 
 - **Descripción**: Obtiene todas las compras realizadas por el usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": {
+    "compras": [
+      {
+        "productos": [
+          "66f48a8f40b5da2f795aa7af"
+        ],
+        "cantidad": 1,
+        "total": 18000
+      },
+      ...
+    ]
+  }
+  }
+  ```
+
+  
 ---
 
 **GET /favorites/workshops**
 
 - **Descripción**: Obtiene todos los talleres favoritos del usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
+
+  ```json
+  {
+  "status": 200,
+  "data": {
+    "talleres_favoritos": [
+      "651a0d9f78f9f8e9b6e8b55b"
+    ]
+  }
+  }
+  ```
+
+  
 
 ---
 
@@ -152,48 +274,268 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 
 - **Descripción**: Obtiene todos los talleres en los que el usuario está inscrito.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": {
+    "talleres_inscritos": [
+      "651a0d9f78f9f8e9b6e8b55b"
+    ]
+  }
+  }
+  ```
+
+  
 ---
 
 **GET /favorites/products/details**
 
 - **Descripción**: Obtiene los detalles de todos los productos favoritos del usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": [
+    {
+      "_id": "67041056d2cb2d63933a7c49",
+      "favoritos": [
+        {
+          "_id": "66f4821b40b5da2f795aa7ad",
+          "nombre": "Bazany",
+          "descripcion": "Collar verde en Tagua",
+          "categoria": "Joyería",
+          "precio": 10000,
+          "cantidad": 1,
+          "dimensiones": "15 x 30 cm",
+          "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/9529_bazany-collar-tagua.jpg"
+        }
+      ]
+    }
+  ]
+  }
+  ```
+
+  
 ---
 
 **GET /cart/details**
 
 - **Descripción**: Obtiene los detalles de todos los productos en el carrito del usuario, incluyendo información sobre los talleres asociados.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
+  en caso de que no tenga ninguna compra
 
+  ```json
+  {
+  "status": 404,
+  "message": "El usuario no presenta contenido en compras"
+  }
+  en caso de que si tenga compra
+  {
+  "status": 200,
+  "data": [
+    {
+      "_id": "67041056d2cb2d63933a7c49",
+      "productos": [
+        {
+          "cantidad": "2",
+          "productoInfo": {
+            "_id": "66f48a8f40b5da2f795aa7af",
+            "nombre": "Porta Velas",
+            "descripcion": "Porta velas elaborado a mano en arcilla y pintado con esmaltes al horno",
+            "categoria": "Cerámica",
+            "precio": 10000,
+            "cantidad": 1,
+            "dimensiones": "5 x 10 cm",
+            "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/38697_disen%CC%83o_sin_ti%CC%81tulo_(15).jpg"
+          },
+          "nombre_taller": "El salario"
+        }
+      ]
+    }
+  ]
+  }
+  ```
+
+  
 ---
 
 **GET /purchases/details**
 
 - **Descripción**: Obtiene los detalles de todas las compras del usuario, incluyendo información sobre los talleres asociados.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": [
+    {
+      "producto": {
+        "_id": "66f48a8f40b5da2f795aa7b3",
+        "nombre": "Mochila Wayuu",
+        "descripcion": "Tejido artesanal que refleja la historia de antepasados y la naturaleza",
+        "categoria": "Textilería",
+        "precio": 15000,
+        "cantidad": 1,
+        "dimensiones": "30 x 50 cm",
+        "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/39051_disen%CC%83o_sin_ti%CC%81tulo_(6).jpg"
+      },
+      "cantidad": 1,
+      "nombre_taller": "Los Anticuarios",
+      "id_taller": "651a0d9f78f9f8e9b6e8b55c",
+      "usuarioId": "67041056d2cb2d63933a7c49"
+    },
+    ...
+  ]
+  ```
+  
+  
 ---
 
 **GET /favorites/workshops/details**
 
 - **Descripción**: Obtiene los detalles de todos los talleres favoritos del usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": [
+    {
+      "_id": "67041056d2cb2d63933a7c49",
+      "talleres_favoritos": [
+        {
+          "_id": "651a0d9f78f9f8e9b6e8b55b",
+          "nombre_taller": "El salario",
+          "lugar": {
+            "sitio": "Calle 1 # 9-79",
+            "ciudad": "Bucaramanga",
+            "pais": "Colombia"
+          },
+          "imagen": "https://artesaniasdecolombia.com.co/Documentos/Contenido/45800_32897_almacen-serresuela-artesanias-colombia-2019-g.jpeg",
+          "productos": [
+            "66f4821b40b5da2f795aa7ad",
+            "66f48a8f40b5da2f795aa7ae",
+            "66f48a8f40b5da2f795aa7af",
+            "66f48a8f40b5da2f795aa7b0",
+            "66f48a8f40b5da2f795aa7b1"
+          ],
+          "publico": "Para el publico en general",
+          "encargado": "Tito Normando",
+          "nombre_lugar_taller": "",
+          "descripcion": "En nuestra tienda encontrará el lugar ideal para enamorarse de las tradiciones artesanales de nuestra tierra, recorrer la geografía colombiana de sur a norte a través de las piezas creadas por manos artesanas, y encontrar el regalo perfecto.",
+          "video": "https://www.youtube.com/embed/IHK37AD4oy0?si=aTS5X-UAeggfsZAj",
+          "QR": "",
+          "duracion": "3 meses",
+          "fecha_inicio": "10 de Septiembre",
+          "hora": "10:00 a.m",
+          "materiales": "Materiales dados en clase",
+          "modalidad": "Presencial",
+          "cupos": 30,
+          "categoria": "joyería",
+          "fecha": "2024-09-10T05:00:00.000Z",
+          "videoQR": "https://www.youtube.com/watch?v=IHK37AD4oy0&ab_channel=Colombiatravel"
+        }
+      ]
+    }
+  ]
+  }
+  ```
+
+  
 ---
 
 **GET /subscribed/workshops/details**
 
 - **Descripción**: Obtiene los detalles de todos los talleres en los que el usuario está inscrito.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
 
+  ```json
+  {
+  "status": 200,
+  "data": [
+    {
+      "_id": "67041056d2cb2d63933a7c49",
+      "talleres_inscritos": [
+        {
+          "_id": "651a0d9f78f9f8e9b6e8b55b",
+          "nombre_taller": "El salario",
+          "lugar": {
+            "sitio": "Calle 1 # 9-79",
+            "ciudad": "Bucaramanga",
+            "pais": "Colombia"
+          },
+          "imagen": "https://artesaniasdecolombia.com.co/Documentos/Contenido/45800_32897_almacen-serresuela-artesanias-colombia-2019-g.jpeg",
+          "productos": [
+            "66f4821b40b5da2f795aa7ad",
+            "66f48a8f40b5da2f795aa7ae",
+            "66f48a8f40b5da2f795aa7af",
+            "66f48a8f40b5da2f795aa7b0",
+            "66f48a8f40b5da2f795aa7b1"
+          ],
+          "publico": "Para el publico en general",
+          "encargado": "Tito Normando",
+          "nombre_lugar_taller": "",
+          "descripcion": "En nuestra tienda encontrará el lugar ideal para enamorarse de las tradiciones artesanales de nuestra tierra, recorrer la geografía colombiana de sur a norte a través de las piezas creadas por manos artesanas, y encontrar el regalo perfecto.",
+          "video": "https://www.youtube.com/embed/IHK37AD4oy0?si=aTS5X-UAeggfsZAj",
+          "QR": "",
+          "duracion": "3 meses",
+          "fecha_inicio": "10 de Septiembre",
+          "hora": "10:00 a.m",
+          "materiales": "Materiales dados en clase",
+          "modalidad": "Presencial",
+          "cupos": 30,
+          "categoria": "joyería",
+          "fecha": "2024-09-10T05:00:00.000Z",
+          "videoQR": "https://www.youtube.com/watch?v=IHK37AD4oy0&ab_channel=Colombiatravel"
+        }
+      ]
+    }
+  ]
+  }
+  ```
+
+  
 ---
 
 **GET /coupons/details**
 
 - **Descripción**: Obtiene los detalles de todos los cupones asociados con el usuario.
 - **Parámetros**: Ninguno.
+- **Devuelve:**
+
+  ```json
+  {
+  "status": 200,
+  "data": [
+    {
+      "_id": "66f46eb340b5da2f795aa7ab",
+      "cupones": {
+        "_id": "66f46eb340b5da2f795aa7ab",
+        "descuento": 15,
+        "codigo": "f3t5H",
+        "idProductos": [
+          "66f4821b40b5da2f795aa7ad",
+          "66f48a8f40b5da2f795aa7ae"
+        ],
+        "fechaVencimiento": "2024-10-31T05:00:00.000Z"
+      },
+      "nombre_taller": "El salario",
+      "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/9529_bazany-collar-tagua.jpg",
+      "id": "66f4821b40b5da2f795aa7ad"
+    }
+  ]
+  }
+  ```
+
+  
 
 ---
 
@@ -202,6 +544,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Agrega un producto con el `id` especificado a la lista de favoritos del usuario.
 - **Parámetros**:
   - `:id` (string): ID del producto a agregar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/favorites/products/66f4821b40b5da2f795aa7ad`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Producto agregado con exito al carrito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -210,15 +564,60 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Agrega un producto con el `id` especificado al carrito del usuario.
 - **Parámetros**:
   - `:id` (string): ID del producto a agregar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/cart/66f4821b40b5da2f795aa7ad`
+- **Devuelve:**
+  
+  ```json
+  {
+  "status": 200,
+  "message": "Producto agregado con exito al carrito"
+  }
+  ```
+  
+  
 
 ---
 
-**POST /purchases/:id**
+**POST /purchases/**
 
 - **Descripción**: Agrega un producto con el `id` especificado a la lista de compras del usuario.
-- **Parámetros**:
-  - `:id` (string): ID del producto a agregar.
-
+- **Body**:
+  
+  - ```json
+    `
+    {
+    productos: [id, id, id],
+    cantidad: str,
+    total: str
+    }
+    ` (string): ID del producto a agregar.
+    ```
+  
+    
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/purchases/`
+  **body**:
+  
+  ```json
+  {
+    "productos": ["66f4821b40b5da2f795aa7ad"],
+    "cantidad": 1,
+    "total": 15000
+  }
+  ```
+  
+  
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Producto agregado con exito al carrito"
+  }
+  ```
+  
+  
 ---
 
 **POST /favorites/workshops/:id**
@@ -226,6 +625,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Agrega un taller con el `id` especificado a la lista de talleres favoritos del usuario.
 - **Parámetros**:
   - `:id` (string): ID del taller a agregar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/favorites/workshops/651a0d9f78f9f8e9b6e8b55b`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Producto agregado con exito al carrito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -234,6 +645,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Agrega un taller con el `id` especificado a la lista de talleres inscritos del usuario.
 - **Parámetros**:
   - `:id` (string): ID del taller a agregar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/subscribed/workshops/651a0d9f78f9f8e9b6e8b55b`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Producto agregado con exito al carrito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -242,6 +665,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Agrega un cupón con el `id` especificado a la lista de cupones del usuario.
 - **Parámetros**:
   - `:id` (string): ID del cupón a agregar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/coupons/66f46eb340b5da2f795aa7ab`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Producto agregado con exito al carrito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -250,7 +685,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Elimina un producto con el `id` especificado de la lista de favoritos del usuario.
 - **Parámetros**:
   - `:id` (string): ID del producto a eliminar.
-
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/favorites/products/66f48a8f40b5da2f795aa7b0`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Documento eliminado con exito"
+  }
+  ```
+  
+  
 ---
 
 **DELETE /cart/:id**
@@ -258,6 +704,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Elimina un producto con el `id` especificado del carrito del usuario.
 - **Parámetros**:
   - `:id` (string): ID del producto a eliminar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/cart/66f48a8f40b5da2f795aa7b0`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Producto eliminado del carrito con exito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -266,6 +724,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Elimina un taller con el `id` especificado de la lista de talleres favoritos del usuario.
 - **Parámetros**:
   - `:id` (string): ID del taller a eliminar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/favorites/workshops/651a0d9f78f9f8e9b6e8b55b`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Documento eliminado con exito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -274,7 +744,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Elimina un taller con el `id` especificado de la lista de talleres inscritos del usuario.
 - **Parámetros**:
   - `:id` (string): ID del taller a eliminar.
-
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/subscribed/workshops/651a0d9f78f9f8e9b6e8b55b`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Documento eliminado con exito"
+  }
+  ```
+  
+  
 ---
 
 **DELETE /coupons/:id**
@@ -282,6 +763,18 @@ Esta API permite gestionar diferentes funcionalidades relacionadas con el usuari
 - **Descripción**: Elimina un cupón con el `id` especificado de la lista de cupones del usuario.
 - **Parámetros**:
   - `:id` (string): ID del cupón a eliminar.
+- **Ejemplo de uso:**
+  `http://localhost:3000/user/subscribed/workshops/66f46eb340b5da2f795aa7ab`
+- **Devuelve:**
+  
+  ```json
+  {
+    "status": 200,
+    "message": "Documento eliminado con exito"
+  }
+  ```
+  
+  
 
 ---
 
@@ -313,6 +806,24 @@ Esta API permite gestionar los productos, incluyendo la obtención de productos 
   - `:id` (string): ID del producto que se desea obtener.
 - **Validaciones**:
   - Se valida que el `id` proporcionado sea un ID de producto válido.
+- **Ejemplo de uso:**
+  `http://localhost:3000/product/66f4821b40b5da2f795aa7ad`
+- **Devuelve:**
+  
+  ```json
+  {
+  "_id": "66f4821b40b5da2f795aa7ad",
+  "nombre": "Bazany",
+  "descripcion": "Collar verde en Tagua",
+  "categoria": "Joyería",
+  "precio": 10000,
+  "cantidad": 1,
+  "dimensiones": "15 x 30 cm",
+  "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/9529_bazany-collar-tagua.jpg"
+  }
+  ```
+  
+  
   
 ---
 
@@ -323,30 +834,50 @@ Esta API permite gestionar los productos, incluyendo la obtención de productos 
   - `:category` (string): Nombre de la categoría por la que se desea filtrar los productos.
 - **Validaciones**:
   - Se valida que la `category` proporcionada sea una categoría válida dentro del sistema.
-
+- **Ejemplo de uso:**
+  `http://localhost:3000/product/find/Joyería`
+- **Devuelve:**
+  
+  ```json
+  {
+    "_id": "66f4821b40b5da2f795aa7ad",
+    "nombre": "Bazany",
+    "descripcion": "Collar verde en Tagua",
+    "categoria": "Joyería",
+    "precio": 10000,
+    "cantidad": 1,
+    "dimensiones": "15 x 30 cm",
+    "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/9529_bazany-collar-tagua.jpg"
+  }
+  ```
+  
+  
 ---
 
  **GET /**
 
 - **Descripción**: Obtiene una lista de todos los productos disponibles en el sistema.
 - **Parámetros**: Ninguno.
-
----
-
- **PUT /:id**
-
-- **Descripción**: Actualiza la información de un producto específico basado en el `id` proporcionado.
-- **Parámetros**:
-  - `:id` (string): ID del producto que se desea actualizar.
-  - **Body** (JSON): Se debe proporcionar un cuerpo en formato JSON con los datos del producto a actualizar, que pueden incluir:
-    - `nombre`: Nombre del producto.
-    - `descripcion`: Descripción del producto.
-    - `precio`: Precio del producto.
-    - `categoria`: Categoría a la que pertenece el producto.
-    - Otros campos que sean relevantes para el producto.
-- **Validaciones**:
-  - Se valida que el `id` proporcionado sea un ID de producto válido.
-  - Se validan los datos de actualización proporcionados en el cuerpo de la solicitud.
+- **Devuelve:**
+  
+  ```json
+  [
+    {
+      "_id": "66f4821b40b5da2f795aa7ad",
+      "nombre": "Bazany",
+      "descripcion": "Collar verde en Tagua",
+      "categoria": "Joyería",
+      "precio": 10000,
+      "cantidad": 1,
+      "dimensiones": "15 x 30 cm",
+      "img": "https://artesaniasdecolombia.com.co/Documentos/Galeria/9529_bazany-collar-tagua.jpg",
+      "nombre_taller": "El salario"
+    },
+    ...
+  ]
+  ```
+  
+  
 
 ---
 
@@ -409,11 +940,50 @@ Esta API permite gestionar la obtención de todos los workshops (talleres) dispo
   - `200 OK`: Si la solicitud se completa con éxito y retorna los productos del workshop.
   - `404 Not Found`: Si no se encuentra un workshop con el `workshopId` proporcionado.
   - `500 Internal Server Error`: Si ocurre un error en el servidor.
+- **Devuelve:**
 
----
+  ```json
+  - [
+    {
+      "_id": "651a0d9f78f9f8e9b6e8b55b",
+      "nombre_taller": "El salario",
+      "lugar": {
+        "sitio": "Calle 1 # 9-79",
+        "ciudad": "Bucaramanga",
+        "pais": "Colombia"
+      },
+      "imagen": "https://artesaniasdecolombia.com.co/Documentos/Contenido/45800_32897_almacen-serresuela-artesanias-colombia-2019-g.jpeg",
+      "productos": [
+        "66f4821b40b5da2f795aa7ad",
+        "66f48a8f40b5da2f795aa7ae",
+        "66f48a8f40b5da2f795aa7af",
+        "66f48a8f40b5da2f795aa7b0",
+        "66f48a8f40b5da2f795aa7b1"
+      ],
+      "publico": "Para el publico en general",
+      "encargado": "Tito Normando",
+      "nombre_lugar_taller": "",
+      "descripcion": "En nuestra tienda encontrará el lugar ideal para enamorarse de las tradiciones artesanales de nuestra tierra, recorrer la geografía colombiana de sur a norte a través de las piezas creadas por manos artesanas, y encontrar el regalo perfecto.",
+      "video": "https://www.youtube.com/embed/IHK37AD4oy0?si=aTS5X-UAeggfsZAj",
+      "QR": "",
+      "duracion": "3 meses",
+      "fecha_inicio": "10 de Septiembre",
+      "hora": "10:00 a.m",
+      "materiales": "Materiales dados en clase",
+      "modalidad": "Presencial",
+      "cupos": 30,
+      "categoria": "joyería",
+      "fecha": "2024-09-10T05:00:00.000Z",
+      "videoQR": "https://www.youtube.com/watch?v=IHK37AD4oy0&ab_channel=Colombiatravel"
+    },
+    ...
+    ]
+  
+  ---
+  ```
 
+  
 ### Notas adicionales:
 
 - La ruta `GET /:workshopId/:search?` es flexible, permitiendo tanto la obtención de todos los productos de un workshop específico como la aplicación de filtros para buscar productos relacionados.
 - La ruta raíz `GET /` proporciona una manera sencilla de listar todos los workshops disponibles sin ningún filtro.
-

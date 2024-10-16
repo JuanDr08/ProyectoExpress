@@ -56,7 +56,16 @@ export default function CraftWorkshops() {
 
 
     return (
-        <main>
+        <main className="py-[70px]">
+
+            <svg className='absolute z-[-1] right-0' width="300px" viewBox="0 0 693 1381" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1375.94" y="690.242" width="969.008" height="969.008" transform="rotate(135 1375.94 690.242)" stroke="#703A31" strokeOpacity="0.51" strokeWidth="7"/>
+            </svg>
+
+            <svg className='absolute z-[-1] left-0 bottom-1 transform rotate-180' width="300px" viewBox="0 0 693 1381" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1375.94" y="690.242" width="969.008" height="969.008" transform="rotate(135 1375.94 690.242)" stroke="#703A31" strokeOpacity="0.51" strokeWidth="7"/>
+            </svg>
+
             <Header nick={user?.nick} photo={user?.photo} />
 
             <div className="upper flex flex-col p-5 gap-2">
